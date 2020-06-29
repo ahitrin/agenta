@@ -6,5 +6,5 @@ package agenta;
  * явным способом или как-то ещё. Это не влияет на саму логику работы программы.
 */
 public interface Initiator {
-	InputParameters getParameters();
+    InputParameters getParameters();
 }

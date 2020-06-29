@@ -1,6 +1,6 @@
 package agenta;
 
 public enum UnitPlacementType {
-	LINE,
-	RANDOM
+    LINE,
+    RANDOM
 }

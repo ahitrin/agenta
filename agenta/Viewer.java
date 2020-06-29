@@ -5,5 +5,5 @@ package agenta;
 */
 
 public interface Viewer {
-	void update(Map map);
+    void update(Map map);
 }
