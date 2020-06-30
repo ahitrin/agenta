@@ -1,32 +1,55 @@
-import agenta.*;
-import java.util.*;
+import java.util.NoSuchElementException;
+import java.util.StringTokenizer;
 
-public class ManualCommander extends BaseCommander {
+import agenta.BaseCommander;
+import agenta.Commander;
+import agenta.Unit;
+import agenta.UnitCommand;
+import agenta.UnitState;
+
+public class ManualCommander extends BaseCommander
+{
     private UnitState state = UnitState.ATTACK;
     private int priority = 1;
-    
-    public void act(){
-        for(Commander c: subordinates){
-            if(c instanceof Unit){
+
+    public void act()
+    {
+        for (Commander c : subordinates)
+        {
+            if (c instanceof Unit)
+            {
                 UnitCommand uc = new UnitCommand(((Unit)c).getType(), state, priority);
                 c.obtain(uc);
             }
         }
     }
-    
-    public void set(String value){
+
+    public void set(String value)
+    {
         String s = value.toLowerCase();
         int pri;
         StringTokenizer st = new StringTokenizer(s);
-        try{
+        try
+        {
             s = st.nextToken();
             pri = new Integer(st.nextToken()).intValue();
-        }catch(NoSuchElementException nse){
+        }
+        catch (NoSuchElementException nse)
+        {
             return;
         }
-        if(s.equals("stand")){ state = UnitState.STAND; }
-        else if(s.equals("attack")){ state = UnitState.ATTACK; }
-        else if(s.equals("escape")){ state = UnitState.ESCAPE; }
+        if (s.equals("stand"))
+        {
+            state = UnitState.STAND;
+        }
+        else if (s.equals("attack"))
+        {
+            state = UnitState.ATTACK;
+        }
+        else if (s.equals("escape"))
+        {
+            state = UnitState.ESCAPE;
+        }
         priority = pri;
     }
 }

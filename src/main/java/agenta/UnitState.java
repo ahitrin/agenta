@@ -1,6 +1,7 @@
 package agenta;
 
-public enum UnitState {
+public enum UnitState
+{
     STAND,
     ATTACK,
     ESCAPE

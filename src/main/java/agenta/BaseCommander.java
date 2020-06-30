@@ -7,7 +7,8 @@ import java.util.Vector;
  * @author Ahitrin
  *
  */
-public class BaseCommander implements Commander {
+public class BaseCommander implements Commander
+{
     /**
      * Список подчинённых
      */
@@ -20,19 +21,28 @@ public class BaseCommander implements Commander {
      * Очередь входящих сообщений/приказов
      */
     protected Vector<Command> queue = new Vector<Command>();
-    
+
     // Не делаем ничего
-    public void act(){}
-    
+    public void act()
+    {
+    }
+
     // Не делаем ничего
-    public void obtain(Command com){ queue.add(com); }
+    public void obtain(Command com)
+    {
+        queue.add(com);
+    }
 
     // Стандартный алгоритм регистрации связи с другим командиром
-    public void submit(Commander comm, boolean subordinate){
-        if(subordinate){
+    public void submit(Commander comm, boolean subordinate)
+    {
+        if (subordinate)
+        {
             subordinates.add(comm);
             comm.submit(this, false);
-        }else{
+        }
+        else
+        {
             overlord = comm;
         }
     }

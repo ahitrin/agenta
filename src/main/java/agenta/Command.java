@@ -1,4 +1,5 @@
 package agenta;
 
-public interface Command {
+public interface Command
+{
 }

@@ -1,6 +1,7 @@
 package agenta;
 
-public enum MapCellType {
+public enum MapCellType
+{
     GRASS,
     TREE
 }

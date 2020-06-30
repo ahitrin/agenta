@@ -10,56 +10,66 @@ import agenta.UnitDatabase;
 import agenta.UnitPlacementType;
 
 /**
-    Инициализатор из командной строки. Считывает файл с описанием расположения и
-    количества юнитов. Также получает и передаёт в <code>inputParameters</code> командиров.
-*/
+ Инициализатор из командной строки. Считывает файл с описанием расположения и
+ количества юнитов. Также получает и передаёт в <code>inputParameters</code> командиров.
+ */
 
-public class CommandLineInitiator implements Initiator {
+public class CommandLineInitiator implements Initiator
+{
     private InputParameters inputParameters = new InputParameters();
 
-    public CommandLineInitiator(String initFile, Commander com1, Commander com2){
+    public CommandLineInitiator(String initFile, Commander com1, Commander com2)
+    {
         String s1 = "", s2 = "";
-        try{
+        try
+        {
             BufferedReader br = new BufferedReader(new FileReader(initFile));
             int temp;
             StringBuilder sb = new StringBuilder(80);
-            while((temp = br.read()) != -1)
+            while ((temp = br.read()) != -1)
                 sb.append((char)temp);
             br.close();
             s1 = sb.toString();
 
-        }catch(FileNotFoundException e){
+        }
+        catch (FileNotFoundException e)
+        {
             System.err.println("CommandLineInitiator - File not found: " + initFile);
             System.exit(0);
-        }catch(Exception e){
+        }
+        catch (Exception e)
+        {
             System.err.println(e);
             System.exit(0);
         }
         s1 = s1.toLowerCase();
 
         StringTokenizer st = new StringTokenizer(s1);
-        if(!st.hasMoreTokens()){
+        if (!st.hasMoreTokens())
+        {
             System.err.println("File " + initFile + " is empty!");
             System.exit(0);
         }
 
         // Получаем тип расположения юнитов - по линиям или случайным образом
         s1 = st.nextToken();
-        if(s1.equals("line"))
+        if (s1.equals("line"))
             inputParameters.setUnitPlacement(UnitPlacementType.LINE);
-        else if(s1.equals("random"))
+        else if (s1.equals("random"))
             inputParameters.setUnitPlacement(UnitPlacementType.RANDOM);
-        else{
+        else
+        {
             System.err.println("CommandLineInitiator - Error in " + initFile +
-                             ": words \"line\" or \"random\" expected");
+                    ": words \"line\" or \"random\" expected");
             System.exit(0);
         }
 
         // here read & setup units - not done yet
         UnitDatabase ud = UnitDatabase.get();
         int player0, player1;
-        while(st.hasMoreTokens())
-            try{
+        while (st.hasMoreTokens())
+            try
+            {
                 // получаем тип юнита
                 s1 = st.nextToken();
                 // получаем количество юнитов у обоих игроков
@@ -71,7 +81,9 @@ public class CommandLineInitiator implements Initiator {
                 // добавляем юнит в параметры
                 inputParameters.addUnit(ud.indexOf(s1), player0, player1);
 
-            }catch(Exception e){
+            }
+            catch (Exception e)
+            {
                 System.err.println("CommandLineInitiator - Error in file " + initFile);
             }
 
@@ -80,7 +92,8 @@ public class CommandLineInitiator implements Initiator {
         inputParameters.addCommander(com2);
     }
 
-    public InputParameters getParameters() {
+    public InputParameters getParameters()
+    {
         return inputParameters;
     }
 }
