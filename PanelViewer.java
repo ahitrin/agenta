@@ -13,32 +13,32 @@ class PanelViewer extends JPanel implements Viewer {
     private Image iGrass, iTree;
     private Image[] iFootman = new Image[2], iArcher = new Image[2];
     private Image[] iKnight = new Image[2], iGryphon = new Image[2];
-    private BufferedImage current, old;    
+    private BufferedImage current, old;
     private boolean enabled;
-    
+
     public PanelViewer(){
         super();
         setSize(450, 450);
-        
-        iGrass = getToolkit().getImage("Pictures\\grass0.gif");
-        iTree = getToolkit().getImage("Pictures\\tree0.gif");
-        iFootman[0] = getToolkit().getImage("Pictures\\Footman0.gif");
-        iFootman[1] = getToolkit().getImage("Pictures\\Footman1.gif");
-        iArcher[0] = getToolkit().getImage("Pictures\\archer0.gif");
-        iArcher[1] = getToolkit().getImage("Pictures\\archer1.gif");
-        iKnight[0] = getToolkit().getImage("Pictures\\knight0.gif");
-        iKnight[1] = getToolkit().getImage("Pictures\\knight1.gif");
-        iGryphon[0] = getToolkit().getImage("Pictures\\gryphon0.gif");
-        iGryphon[1] = getToolkit().getImage("Pictures\\gryphon1.gif");
+
+        iGrass = getToolkit().getImage("Pictures/grass0.gif");
+        iTree = getToolkit().getImage("Pictures/tree0.gif");
+        iFootman[0] = getToolkit().getImage("Pictures/Footman0.gif");
+        iFootman[1] = getToolkit().getImage("Pictures/Footman1.gif");
+        iArcher[0] = getToolkit().getImage("Pictures/archer0.gif");
+        iArcher[1] = getToolkit().getImage("Pictures/archer1.gif");
+        iKnight[0] = getToolkit().getImage("Pictures/knight0.gif");
+        iKnight[1] = getToolkit().getImage("Pictures/knight1.gif");
+        iGryphon[0] = getToolkit().getImage("Pictures/gryphon0.gif");
+        iGryphon[1] = getToolkit().getImage("Pictures/gryphon1.gif");
 
         setVisible(true);
     }
-    
+
     public void update(Map map) {
         old = current;
         enabled = false;
         int size = map.getSIZE();
-        
+
         Unit u = null;
         char c = ' ';
         Image ima = null;
