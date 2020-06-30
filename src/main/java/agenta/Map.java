@@ -1,6 +1,6 @@
 package agenta;
 
-import java.util.*;
+import java.util.Vector;
 
 public class Map {
     private final int SIZE = 18;

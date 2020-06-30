@@ -1,4 +1,4 @@
-import agenta.*;
+import agenta.Engine;
 
 class AgentaTest {
     public static void main(String[] args) {

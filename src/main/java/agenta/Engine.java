@@ -1,6 +1,6 @@
 package agenta;
 
-import java.util.*;
+import java.util.Vector;
 
 /*
     Здесь идёт процесс обработки. Движку при создании передаются входные параметры

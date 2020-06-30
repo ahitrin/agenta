@@ -1,6 +1,7 @@
 package agenta;
 
-import java.util.*;
+import java.util.Random;
+import java.util.Vector;
 /**
  * Юнит. Ходит по карте, слушается приказов и бъёт врагов
  * @author Ahitrin

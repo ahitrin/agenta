@@ -1,6 +1,13 @@
-import agenta.*;
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.StringTokenizer;
+import java.util.Vector;
+
+import agenta.Command;
+import agenta.Commander;
+import agenta.UnitDatabase;
+import agenta.UnitType;
 
 /**
   <p>Простой командующий. Умеет считывать себя из текстового файла, задаёт команды только

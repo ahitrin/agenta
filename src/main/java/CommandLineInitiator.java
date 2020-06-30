@@ -1,6 +1,13 @@
-import agenta.*;
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.StringTokenizer;
+
+import agenta.Commander;
+import agenta.Initiator;
+import agenta.InputParameters;
+import agenta.UnitDatabase;
+import agenta.UnitPlacementType;
 
 /**
     Инициализатор из командной строки. Считывает файл с описанием расположения и

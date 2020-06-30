@@ -1,6 +1,6 @@
 package agenta;
 
-import java.util.*;
+import java.util.Vector;
 
 /**
  * Базовый класс для командиров.

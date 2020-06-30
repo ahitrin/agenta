@@ -1,9 +1,14 @@
-import agenta.*;
-
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+
 import javax.swing.*;
+
+import agenta.Engine;
+import agenta.Map;
+import agenta.Unit;
+import agenta.Viewer;
 
 /**
  * Выводим изображение не на саму форму, а на панель на этой форме.

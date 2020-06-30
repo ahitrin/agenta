@@ -1,7 +1,8 @@
 package agenta;
 
-import java.io.*;
-import java.util.*;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.util.Vector;
 
 /**
   Загружает и хранит список используемых в игре типов юнитов. В классе реализован шаблон
