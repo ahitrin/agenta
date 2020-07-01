@@ -5,6 +5,7 @@ package agenta;
  * интерфейса может использовать командную строку, визуальные формы, задавать параметры
  * явным способом или как-то ещё. Это не влияет на саму логику работы программы.
  */
+@FunctionalInterface
 public interface Initiator
 {
     InputParameters getParameters();

@@ -8,8 +8,8 @@ import java.util.Random;
  */
 public final class SingleRandom
 {
-    private static Random rand = new Random();
-    private static SingleRandom instance = new SingleRandom();
+    private static final Random rand = new Random();
+    private static final SingleRandom instance = new SingleRandom();
 
     public static SingleRandom get()
     {

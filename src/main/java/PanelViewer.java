@@ -16,9 +16,12 @@ import agenta.Viewer;
  */
 class PanelViewer extends JPanel implements Viewer
 {
-    private Image iGrass, iTree;
-    private Image[] iFootman = new Image[2], iArcher = new Image[2];
-    private Image[] iKnight = new Image[2], iGryphon = new Image[2];
+    private final Image iGrass;
+    private final Image iTree;
+    private final Image[] iFootman = new Image[2];
+    private final Image[] iArcher = new Image[2];
+    private final Image[] iKnight = new Image[2];
+    private final Image[] iGryphon = new Image[2];
     private BufferedImage current, old;
     private boolean enabled;
 
@@ -115,11 +118,12 @@ class PanelViewerFrame extends JFrame
         PanelViewerFrame f = new PanelViewerFrame("Agenta test");
         f.doRun();
     }
-    PanelViewer p = null;
-    Engine e = null;
-    ManualCommander mc0 = new ManualCommander(), mc1 = new ManualCommander();
+    private PanelViewer p = null;
+    private Engine e = null;
+    private ManualCommander mc0 = new ManualCommander();
+    private ManualCommander mc1 = new ManualCommander();
 
-    public PanelViewerFrame(String caption)
+    private PanelViewerFrame(String caption)
     {
         super(caption);
         p = new PanelViewer();
@@ -160,7 +164,7 @@ class PanelViewerFrame extends JFrame
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    public void doRun()
+    private void doRun()
     {
         while (e.getWinner() == -1)
         {
@@ -177,7 +181,7 @@ class PanelViewerFrame extends JFrame
 
 class PanelViewerListener implements ActionListener
 {
-    private ManualCommander target;
+    private final ManualCommander target;
 
     public PanelViewerListener(ManualCommander target)
     {

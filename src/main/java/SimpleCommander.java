@@ -1,8 +1,9 @@
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
-import java.util.Vector;
 
 import agenta.Command;
 import agenta.Commander;
@@ -37,9 +38,9 @@ class SimpleCommander implements Commander
         for (int i = 0; i < ud.size(); i++)
             System.out.println(ud.nameOf(i) + sc.hasNewOrder(ud.typeOf(i)));
     }
-    private Vector<String> commands = new Vector<String>();
-    private Vector<String> types = new Vector<String>();
-    private Vector<Boolean> flags = new Vector<Boolean>();
+    private final List<String> commands = new ArrayList<>();
+    private final List<String> types = new ArrayList<>();
+    private final List<Boolean> flags = new ArrayList<>();
 
     public SimpleCommander(String fileName)
     {
@@ -79,7 +80,7 @@ class SimpleCommander implements Commander
         // флаг - надо ли читать авторитет из парсера
         boolean flag;
         UnitDatabase ud = UnitDatabase.get();
-        Vector<String> orders = new Vector<String>(3);
+        List<String> orders = new ArrayList<>(3);
         orders.add("attack");
         orders.add("stand");
         orders.add("escape");
@@ -123,7 +124,7 @@ class SimpleCommander implements Commander
                     throw new Exception();
                 }
                 commands.add(s2);
-                flags.add(new Boolean("true"));
+                flags.add(Boolean.TRUE);
             }
             catch (Exception e)
             {
@@ -139,17 +140,17 @@ class SimpleCommander implements Commander
     public String getOrder(UnitType ut)
     {
         int i = types.indexOf(ut.getName());
-        if (flags.get(i).booleanValue())
+        if (flags.get(i))
         {
-            flags.set(i, new Boolean("false"));
+            flags.set(i, Boolean.FALSE);
             return commands.get(i);
         }
         return null;
     }
 
-    public boolean hasNewOrder(UnitType ut)
+    private boolean hasNewOrder(UnitType ut)
     {
-        return flags.get(types.indexOf(ut.getName())).booleanValue();
+        return flags.get(types.indexOf(ut.getName()));
     }
 
     public void obtain(Command com)

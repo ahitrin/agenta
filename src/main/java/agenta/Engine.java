@@ -1,6 +1,7 @@
 package agenta;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
     Здесь идёт процесс обработки. Движку при создании передаются входные параметры
@@ -13,13 +14,11 @@ import java.util.Vector;
 
 public final class Engine
 {
-    private Map map = new Map();
-    private Vector<Unit> units = new Vector<Unit>();
-    private int unitCounter[] = new int[2];
-    private Commander commanders[] = new Commander[2];
-    private UnitDatabase ud = UnitDatabase.get();
-    private Vector<Viewer> viewers = new Vector<Viewer>();
-    private SingleRandom generator = SingleRandom.get();
+    private final Map map = new Map();
+    private final List<Unit> units = new ArrayList<>();
+    private final int[] unitCounter = new int[2];
+    private final Commander[] commanders = new Commander[2];
+    private final List<Viewer> viewers = new ArrayList<>();
     private int winner = -1;
 
     public Engine(InputParameters ip)
@@ -29,6 +28,7 @@ public final class Engine
         commanders[0] = ip.getCommander(0);
         commanders[1] = ip.getCommander(1);
 
+        UnitDatabase ud = UnitDatabase.get();
         for (int i = 0; i < ud.size(); i++)
         {
             for (int player = 0; player < 2; player++)
@@ -40,6 +40,7 @@ public final class Engine
                     int x, y;
                     do
                     {
+                        SingleRandom generator = SingleRandom.get();
                         x = generator.nextInt(map.getSIZE());
                         y = generator.nextInt(map.getSIZE());
                     }
@@ -105,10 +106,10 @@ public final class Engine
         commanders[1].act();
     }
 
-    public void updateViewers()
+    private void updateViewers()
     {
-        for (int i = 0; i < viewers.size(); i++)
-            viewers.get(i).update(map);
+        for (Viewer viewer : viewers)
+            viewer.update(map);
     }
 
 }

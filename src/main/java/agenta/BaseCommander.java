@@ -1,6 +1,7 @@
 package agenta;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Базовый класс для командиров.
@@ -12,19 +13,23 @@ public class BaseCommander implements Commander
     /**
      * Список подчинённых
      */
-    protected Vector<Commander> subordinates = new Vector<Commander>();
+    protected List<Commander> subordinates = new ArrayList<>();
     /**
      * Единственный начальник
      */
-    protected Commander overlord;
+    private Commander overlord;
     /**
      * Очередь входящих сообщений/приказов
      */
-    protected Vector<Command> queue = new Vector<Command>();
+    private List<Command> queue = new ArrayList<>();
 
     // Не делаем ничего
     public void act()
     {
+        while (!queue.isEmpty())
+        {
+            System.out.println(queue.remove(0).toString());
+        }
     }
 
     // Не делаем ничего

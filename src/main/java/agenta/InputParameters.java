@@ -9,14 +9,16 @@ package agenta;
   - ссылки на объекты класса Commander, отвечающие за управление юнитами
 */
 
+import java.util.Arrays;
+
 public final class InputParameters
 {
     private static final int MAX_UNITS_PER_TYPE = 20;
     private UnitPlacementType unitPlacement = UnitPlacementType.RANDOM;
-    private boolean[] initialized;
-    private int[] player0;
-    private int[] player1;
-    private Commander commanders[] = new Commander[2];
+    private final boolean[] initialized;
+    private final int[] player0;
+    private final int[] player1;
+    private final Commander[] commanders = new Commander[2];
     private int commanderCounter = 0;
 
     public InputParameters()
@@ -29,8 +31,7 @@ public final class InputParameters
         player1 = new int[size];
         commanders[0] = null;
         commanders[1] = null;
-        for (int i = 0; i < initialized.length; i++)
-            initialized[i] = false;
+        Arrays.fill(initialized, false);
     }
 
     public void addCommander(Commander commander)
@@ -51,7 +52,7 @@ public final class InputParameters
     {
         try
         {
-            if ((player0 < 0) || (player1 < 0) || (player1 > MAX_UNITS_PER_TYPE) ||
+            if ((player0 < 0) || (player1 < 0) || (player0 > MAX_UNITS_PER_TYPE) ||
                     (player1 > MAX_UNITS_PER_TYPE))
                 throw new ArrayIndexOutOfBoundsException();
             if (!initialized[index])

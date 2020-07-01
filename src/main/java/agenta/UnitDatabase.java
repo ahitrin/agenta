@@ -2,7 +2,8 @@ package agenta;
 
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  Загружает и хранит список используемых в игре типов юнитов. В классе реализован шаблон
@@ -12,7 +13,7 @@ import java.util.Vector;
  */
 public final class UnitDatabase
 {
-    private static UnitDatabase instance = new UnitDatabase();
+    private static final UnitDatabase instance = new UnitDatabase();
 
     public static UnitDatabase get()
     {
@@ -32,8 +33,8 @@ public final class UnitDatabase
                 System.out.println("" + i + " - " + ud.nameOf(i));
         }
     }
-    private Vector<UnitType> unitTypes = new Vector<UnitType>();
-    private Vector<String> unitNames = new Vector<String>();
+    private final List<UnitType> unitTypes = new ArrayList<>();
+    private final List<String> unitNames = new ArrayList<>();
 
     private UnitDatabase()
     {

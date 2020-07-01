@@ -7,7 +7,7 @@ public class MapPlacementType implements Serializable
     public static final int GROUND = 1;
     public static final int AIR = 2;
 
-    private int value;
+    private final int value;
 
     public MapPlacementType(int value)
     {

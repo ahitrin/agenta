@@ -1,13 +1,13 @@
 package agenta;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Map
 {
-    SingleRandom generator = SingleRandom.get();
-    private final int SIZE = 18;
-    private final int TREE_NUMBER = 20;
-    private MapCell cells[][];
+    private SingleRandom generator = SingleRandom.get();
+    private static final int SIZE = 18;
+    private final MapCell[][] cells;
 
     public Map()
     {
@@ -18,6 +18,7 @@ public class Map
             for (y = 0; y < SIZE; y++)
                 cells[x][y] = new MapCell();
 
+        int TREE_NUMBER = 20;
         do
         {
             x = generator.nextInt(SIZE);
@@ -106,7 +107,7 @@ public class Map
      */
     public MapObject[] getObjectsInRadius(int x, int y, float r)
     {
-        Vector<MapObject> vec = new Vector<MapObject>();
+        List<MapObject> vec = new ArrayList<>();
         MapObject o;
 
         int limit = Math.round(r);

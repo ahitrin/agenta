@@ -32,23 +32,23 @@ public class ManualCommander extends BaseCommander
         try
         {
             s = st.nextToken();
-            pri = new Integer(st.nextToken()).intValue();
+            pri = Integer.parseInt(st.nextToken());
         }
         catch (NoSuchElementException nse)
         {
             return;
         }
-        if (s.equals("stand"))
+        switch (s)
         {
+        case "stand":
             state = UnitState.STAND;
-        }
-        else if (s.equals("attack"))
-        {
+            break;
+        case "attack":
             state = UnitState.ATTACK;
-        }
-        else if (s.equals("escape"))
-        {
+            break;
+        case "escape":
             state = UnitState.ESCAPE;
+            break;
         }
         priority = pri;
     }

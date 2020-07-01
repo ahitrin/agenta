@@ -86,9 +86,9 @@ public class UnitType implements Serializable
     private int visibility = 0;
     private int speed = 0;
     private int cost = 0;
-    private int healthLimit[] = null;
+    private int[] healthLimit = null;
 
-    public UnitType()
+    private UnitType()
     {
         healthLimit = new int[MAX_PRIORITY];
     }
@@ -124,7 +124,7 @@ public class UnitType implements Serializable
         return baseAttack;
     }
 
-    public int getCost()
+    private int getCost()
     {
         return cost;
     }
@@ -171,7 +171,7 @@ public class UnitType implements Serializable
         return walk.getValue();
     }
 
-    public void setCost(int value)
+    private void setCost(int value)
     {
         cost = value;
     }

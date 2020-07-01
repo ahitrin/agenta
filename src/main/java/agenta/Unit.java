@@ -1,7 +1,8 @@
 package agenta;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-import java.util.Vector;
 
 /**
  * Юнит. Ходит по карте, слушается приказов и бъёт врагов
@@ -14,23 +15,23 @@ public class Unit extends MapObject implements Commander
      * @param objs Входящий список объектов
      * @return Только объекты-юниты из входящего списка
      */
-    public static Unit[] filterUnits(MapObject[] objs)
+    private static Unit[] filterUnits(MapObject[] objs)
     {
-        Vector<Unit> units = new Vector<Unit>();
+        List<Unit> units = new ArrayList<>();
 
-        for (int i = 0; i < objs.length; i++)
+        for (MapObject obj : objs)
         {
-            if (objs[i] instanceof Unit)
-                units.add((Unit)objs[i]);
+            if (obj instanceof Unit)
+                units.add((Unit)obj);
         }
         Unit[] u = new Unit[units.size()];
         return units.toArray(u);
     }
-    private UnitType type;
+    private final UnitType type;
     private UnitState state;
-    private Map map;
+    private final Map map;
     private Unit target;
-    private int player;
+    private final int player;
     private int speedCounter, attackCounter, healthCounter;
     private int currentHitPoints;
     private UnitCommand currentCommand = null;
@@ -112,8 +113,8 @@ public class Unit extends MapObject implements Commander
                 {
                     selectTarget(neighbours, true);
                     int dx = target.x - x, dy = target.y - y;
-                    dx = (dx > 0) ? 1 : (dx < 0) ? -1 : 0;
-                    dy = (dy > 0) ? 1 : (dy < 0) ? -1 : 0;
+                    dx = Integer.compare(dx, 0);
+                    dy = Integer.compare(dy, 0);
                     doMove(dx, dy);
                 }
                 else
@@ -151,7 +152,7 @@ public class Unit extends MapObject implements Commander
      * Нанесение удара юнитом
      * @return Величина наносимого повреждения
      */
-    public int doAttack()
+    private int doAttack()
     {
         if (attackCounter > 0)
             return 0;
@@ -165,7 +166,7 @@ public class Unit extends MapObject implements Commander
      * @param dx Смещение по x
      * @param dy Смещение по y
      */
-    public void doMove(int dx, int dy)
+    private void doMove(int dx, int dy)
     {
         if (speedCounter > 0)
             return;
@@ -179,17 +180,17 @@ public class Unit extends MapObject implements Commander
 
     /**
      * Фильтрует список юнитов, оставляя только те, которые юнит может атаковать
-     * @param Входящий список юнитов
+     * @param units Входящий список юнитов
      * @return Юниты, которые могут быть атакованы
      */
-    public Unit[] filterCanAttack(Unit[] units)
+    private Unit[] filterCanAttack(Unit[] units)
     {
-        Vector<Unit> able = new Vector<Unit>();
+        List<Unit> able = new ArrayList<>();
 
-        for (int i = 0; i < units.length; i++)
+        for (Unit unit : units)
         {
-            if ((type.getAttackType() & units[i].getPlacementType()) != 0)
-                able.add(units[i]);
+            if ((type.getAttackType() & unit.getPlacementType()) != 0)
+                able.add(unit);
         }
         Unit[] u = new Unit[able.size()];
         return able.toArray(u);
@@ -200,14 +201,14 @@ public class Unit extends MapObject implements Commander
      * @param units Входящий список юнитов
      * @return Враги из входящего списка
      */
-    public Unit[] filterEnemies(Unit[] units)
+    private Unit[] filterEnemies(Unit[] units)
     {
-        Vector<Unit> enemies = new Vector<Unit>();
+        List<Unit> enemies = new ArrayList<>();
 
-        for (int i = 0; i < units.length; i++)
+        for (Unit unit : units)
         {
-            if (units[i].getPlayer() != player)
-                enemies.add(units[i]);
+            if (unit.getPlayer() != player)
+                enemies.add(unit);
         }
 
         Unit[] u = new Unit[enemies.size()];
@@ -221,12 +222,12 @@ public class Unit extends MapObject implements Commander
      */
     public Unit[] filterFriends(Unit[] units)
     {
-        Vector<Unit> friends = new Vector<Unit>();
+        List<Unit> friends = new ArrayList<>();
 
-        for (int i = 0; i < units.length; i++)
+        for (Unit unit : units)
         {
-            if (units[i].getPlayer() == player)
-                friends.add(units[i]);
+            if (unit.getPlayer() == player)
+                friends.add(unit);
         }
         Unit[] u = new Unit[friends.size()];
         return friends.toArray(u);
@@ -239,14 +240,14 @@ public class Unit extends MapObject implements Commander
      */
     public MapObject[] filterInAttackRadius(MapObject[] objs)
     {
-        Vector<MapObject> avail = new Vector<MapObject>();
+        List<MapObject> avail = new ArrayList<>();
 
         float limit = type.getRange() * type.getRange();
-        for (int i = 0; i < objs.length; i++)
+        for (MapObject obj : objs)
         {
-            if (objs[i].x * objs[i].x + objs[i].y * objs[i].y - x * x - y * y <= limit)
+            if (obj.x * obj.x + obj.y * obj.y - x * x - y * y <= limit)
             {
-                avail.add(objs[i]);
+                avail.add(obj);
             }
         }
 
@@ -306,7 +307,7 @@ public class Unit extends MapObject implements Commander
      * @param units Список юнитов
      * @return Случайный юнит
      */
-    public Unit selectTarget(Unit[] units, boolean useOld)
+    private Unit selectTarget(Unit[] units, boolean useOld)
     {
         if (useOld && (target != null))
             return target;
@@ -330,7 +331,7 @@ public class Unit extends MapObject implements Commander
      * Обработка повреждения юнита.
      * @param value Величина повреждений.
      */
-    public void sufferDamage(int value)
+    private void sufferDamage(int value)
     {
         if (currentHitPoints <= 0)
             return;

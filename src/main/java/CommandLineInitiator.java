@@ -16,7 +16,7 @@ import agenta.UnitPlacementType;
 
 public class CommandLineInitiator implements Initiator
 {
-    private InputParameters inputParameters = new InputParameters();
+    private final InputParameters inputParameters = new InputParameters();
 
     public CommandLineInitiator(String initFile, Commander com1, Commander com2)
     {
