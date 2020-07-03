@@ -32,8 +32,8 @@ class PanelViewer extends JPanel implements Viewer
 
         iGrass = getToolkit().getImage("Pictures/grass0.gif");
         iTree = getToolkit().getImage("Pictures/tree0.gif");
-        iFootman[0] = getToolkit().getImage("Pictures/Footman0.gif");
-        iFootman[1] = getToolkit().getImage("Pictures/Footman1.gif");
+        iFootman[0] = getToolkit().getImage("Pictures/footman0.gif");
+        iFootman[1] = getToolkit().getImage("Pictures/footman1.gif");
         iArcher[0] = getToolkit().getImage("Pictures/archer0.gif");
         iArcher[1] = getToolkit().getImage("Pictures/archer1.gif");
         iKnight[0] = getToolkit().getImage("Pictures/knight0.gif");
