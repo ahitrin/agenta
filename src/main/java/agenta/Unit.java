@@ -92,7 +92,7 @@ public class Unit extends MapObject implements Commander
             if (!neighbours.isEmpty())
             {
                 // пока что атакуем случайно выбранного противника
-                selectTarget(neighbours.toArray(new Unit[0]), true).sufferDamage(doAttack());
+                selectTarget(neighbours, true).sufferDamage(doAttack());
             }
             break;
         case ATTACK:
@@ -104,14 +104,14 @@ public class Unit extends MapObject implements Commander
             neighbours = filterCanAttack(filterEnemies(filterUnits(
                     map.getObjectsInRadius(x, y, type.getRange()))));
             if (!neighbours.isEmpty())
-                selectTarget(neighbours.toArray(new Unit[0]), true).sufferDamage(doAttack());
+                selectTarget(neighbours, true).sufferDamage(doAttack());
             else
             {
                 neighbours = filterCanAttack(filterEnemies(filterUnits(
                         map.getObjectsInRadius(x, y, type.getVisibility()))));
                 if (!neighbours.isEmpty())
                 {
-                    selectTarget(neighbours.toArray(new Unit[0]), true);
+                    selectTarget(neighbours, true);
                     int dx = target.x - x, dy = target.y - y;
                     dx = Integer.compare(dx, 0);
                     dy = Integer.compare(dy, 0);
@@ -218,7 +218,7 @@ public class Unit extends MapObject implements Commander
      * @param units Входящий список юнитов
      * @return Дружественные из входящего списка
      */
-    public Unit[] filterFriends(Unit[] units)
+    public List<Unit> filterFriends(List<Unit> units)
     {
         List<Unit> friends = new ArrayList<>();
 
@@ -227,8 +227,7 @@ public class Unit extends MapObject implements Commander
             if (unit.getPlayer() == player)
                 friends.add(unit);
         }
-        Unit[] u = new Unit[friends.size()];
-        return friends.toArray(u);
+        return friends;
     }
 
     /**
@@ -236,7 +235,7 @@ public class Unit extends MapObject implements Commander
      * @param objs Входящий список объектов
      * @return Только доступные для атаки объекты
      */
-    public MapObject[] filterInAttackRadius(MapObject[] objs)
+    public List<MapObject> filterInAttackRadius(List<MapObject> objs)
     {
         List<MapObject> avail = new ArrayList<>();
 
@@ -249,8 +248,7 @@ public class Unit extends MapObject implements Commander
             }
         }
 
-        MapObject[] mo = new MapObject[avail.size()];
-        return avail.toArray(mo);
+        return avail;
     }
 
     public int getPlacementType()
@@ -305,12 +303,12 @@ public class Unit extends MapObject implements Commander
      * @param units Список юнитов
      * @return Случайный юнит
      */
-    private Unit selectTarget(Unit[] units, boolean useOld)
+    private Unit selectTarget(List<Unit> units, boolean useOld)
     {
         if (useOld && (target != null))
             return target;
-        if (units.length > 0)
-            target = units[SingleRandom.get().nextInt(units.length)];
+        if (!units.isEmpty())
+            target = units.get(SingleRandom.get().nextInt(units.size()));
         else
             target = null;
         return target;
