@@ -129,8 +129,9 @@ public class Unit extends MapObject implements Commander
             /*
              * Юнит пытается убежать от врагов
              */
-            neighbours = filterEnemies(filterUnits(
-                    map.getObjectsInRadius(x, y, type.getVisibility())));
+            final Object[] newNeighbours = filterEnemies(filterUnits(
+                    map.getObjectsInRadius(x, y, type.getVisibility()))).toArray();
+            neighbours = (Unit[])newNeighbours;
             if (neighbours.length > 0)
             {
                 double dx = 0, dy = 0, r;
@@ -183,7 +184,7 @@ public class Unit extends MapObject implements Commander
      * @param units Входящий список юнитов
      * @return Юниты, которые могут быть атакованы
      */
-    private Unit[] filterCanAttack(Unit[] units)
+    private Unit[] filterCanAttack(List<Unit> units)
     {
         List<Unit> able = new ArrayList<>();
 
@@ -201,7 +202,7 @@ public class Unit extends MapObject implements Commander
      * @param units Входящий список юнитов
      * @return Враги из входящего списка
      */
-    private Unit[] filterEnemies(List<Unit> units)
+    private List<Unit> filterEnemies(List<Unit> units)
     {
         List<Unit> enemies = new ArrayList<>();
 
@@ -211,8 +212,7 @@ public class Unit extends MapObject implements Commander
                 enemies.add(unit);
         }
 
-        Unit[] u = new Unit[enemies.size()];
-        return enemies.toArray(u);
+        return enemies;
     }
 
     /**
