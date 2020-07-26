@@ -15,10 +15,6 @@ public class BaseCommander implements Commander
      */
     protected List<Commander> subordinates = new ArrayList<>();
     /**
-     * Единственный начальник
-     */
-    private Commander overlord;
-    /**
      * Очередь входящих сообщений/приказов
      */
     private List<Command> queue = new ArrayList<>();
@@ -48,7 +44,6 @@ public class BaseCommander implements Commander
         }
         else
         {
-            overlord = comm;
         }
     }
 

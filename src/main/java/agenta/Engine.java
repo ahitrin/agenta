@@ -70,12 +70,6 @@ public final class Engine
         return winner;
     }
 
-    // Удаляет вид по его идентификатору
-    public void removeViewer(int index)
-    {
-        viewers.remove(index);
-    }
-
     // Один шаг работы
     public void step()
     {
