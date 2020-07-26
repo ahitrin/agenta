@@ -15,7 +15,7 @@ public class Unit extends MapObject implements Commander
      * @param objs Входящий список объектов
      * @return Только объекты-юниты из входящего списка
      */
-    private static Unit[] filterUnits(MapObject[] objs)
+    private static Unit[] filterUnits(List<MapObject> objs)
     {
         List<Unit> units = new ArrayList<>();
 

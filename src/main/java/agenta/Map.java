@@ -105,9 +105,9 @@ public class Map
      * @param r Радиус
      * @return Список объектов
      */
-    public MapObject[] getObjectsInRadius(int x, int y, float r)
+    public List<MapObject> getObjectsInRadius(int x, int y, float r)
     {
-        List<MapObject> vec = new ArrayList<>();
+        List<MapObject> objects = new ArrayList<>();
         MapObject o;
 
         int limit = Math.round(r);
@@ -120,17 +120,15 @@ public class Map
                     continue;
                 if ((o = getAirObject(x + i, y + j)) != null)
                 {
-                    vec.add(o);
+                    objects.add(o);
                 }
                 if ((o = getGroundObject(x + i, y + j)) != null)
                 {
-                    vec.add(o);
+                    objects.add(o);
                 }
             }
         }
-
-        MapObject[] obj = new MapObject[vec.size()];
-        return vec.toArray(obj);
+        return objects;
     }
 
     public int getSIZE()
