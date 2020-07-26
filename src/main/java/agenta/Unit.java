@@ -15,7 +15,7 @@ public class Unit extends MapObject implements Commander
      * @param objs Входящий список объектов
      * @return Только объекты-юниты из входящего списка
      */
-    private static Unit[] filterUnits(List<MapObject> objs)
+    private static List<Unit> filterUnits(List<MapObject> objs)
     {
         List<Unit> units = new ArrayList<>();
 
@@ -24,9 +24,9 @@ public class Unit extends MapObject implements Commander
             if (obj instanceof Unit)
                 units.add((Unit)obj);
         }
-        Unit[] u = new Unit[units.size()];
-        return units.toArray(u);
+        return units;
     }
+
     private final UnitType type;
     private UnitState state;
     private final Map map;
@@ -201,7 +201,7 @@ public class Unit extends MapObject implements Commander
      * @param units Входящий список юнитов
      * @return Враги из входящего списка
      */
-    private Unit[] filterEnemies(Unit[] units)
+    private Unit[] filterEnemies(List<Unit> units)
     {
         List<Unit> enemies = new ArrayList<>();
 
