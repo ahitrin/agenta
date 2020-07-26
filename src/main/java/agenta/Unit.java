@@ -79,7 +79,7 @@ public class Unit extends MapObject implements Commander
             if (!target.isAlive())
                 target = null;
         }
-        Unit[] neighbours = null;
+        List<Unit> neighbours;
         switch (state)
         {
         case STAND:
@@ -89,10 +89,10 @@ public class Unit extends MapObject implements Commander
              */
             neighbours = filterCanAttack(filterEnemies(filterUnits(
                     map.getObjectsInRadius(x, y, type.getRange()))));
-            if (neighbours.length > 0)
+            if (!neighbours.isEmpty())
             {
                 // пока что атакуем случайно выбранного противника
-                selectTarget(neighbours, true).sufferDamage(doAttack());
+                selectTarget(neighbours.toArray(new Unit[0]), true).sufferDamage(doAttack());
             }
             break;
         case ATTACK:
@@ -103,15 +103,15 @@ public class Unit extends MapObject implements Commander
              */
             neighbours = filterCanAttack(filterEnemies(filterUnits(
                     map.getObjectsInRadius(x, y, type.getRange()))));
-            if (neighbours.length > 0)
-                selectTarget(neighbours, true).sufferDamage(doAttack());
+            if (!neighbours.isEmpty())
+                selectTarget(neighbours.toArray(new Unit[0]), true).sufferDamage(doAttack());
             else
             {
                 neighbours = filterCanAttack(filterEnemies(filterUnits(
                         map.getObjectsInRadius(x, y, type.getVisibility()))));
-                if (neighbours.length > 0)
+                if (!neighbours.isEmpty())
                 {
-                    selectTarget(neighbours, true);
+                    selectTarget(neighbours.toArray(new Unit[0]), true);
                     int dx = target.x - x, dy = target.y - y;
                     dx = Integer.compare(dx, 0);
                     dy = Integer.compare(dy, 0);
@@ -129,10 +129,9 @@ public class Unit extends MapObject implements Commander
             /*
              * Юнит пытается убежать от врагов
              */
-            final Object[] newNeighbours = filterEnemies(filterUnits(
-                    map.getObjectsInRadius(x, y, type.getVisibility()))).toArray();
-            neighbours = (Unit[])newNeighbours;
-            if (neighbours.length > 0)
+            neighbours = filterEnemies(filterUnits(
+                    map.getObjectsInRadius(x, y, type.getVisibility())));
+            if (!neighbours.isEmpty())
             {
                 double dx = 0, dy = 0, r;
                 for (Unit uu : neighbours)
@@ -184,7 +183,7 @@ public class Unit extends MapObject implements Commander
      * @param units Входящий список юнитов
      * @return Юниты, которые могут быть атакованы
      */
-    private Unit[] filterCanAttack(List<Unit> units)
+    private List<Unit> filterCanAttack(List<Unit> units)
     {
         List<Unit> able = new ArrayList<>();
 
@@ -193,8 +192,7 @@ public class Unit extends MapObject implements Commander
             if ((type.getAttackType() & unit.getPlacementType()) != 0)
                 able.add(unit);
         }
-        Unit[] u = new Unit[able.size()];
-        return able.toArray(u);
+        return able;
     }
 
     /**
