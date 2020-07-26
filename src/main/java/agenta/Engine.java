@@ -41,8 +41,8 @@ public final class Engine
                     do
                     {
                         SingleRandom generator = SingleRandom.get();
-                        x = generator.nextInt(map.getSIZE());
-                        y = generator.nextInt(map.getSIZE());
+                        x = generator.nextInt(Map.SIZE);
+                        y = generator.nextInt(Map.SIZE);
                     }
                     while (!map.canPlaceObject(unit, x, y));
                     map.placeObject(unit, x, y);

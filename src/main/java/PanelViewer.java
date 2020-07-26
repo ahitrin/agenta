@@ -56,7 +56,7 @@ class PanelViewer extends JPanel implements Viewer
     {
         old = current;
         enabled = false;
-        int size = map.getSIZE();
+        int size = Map.SIZE;
 
         Unit u = null;
         char c = ' ';

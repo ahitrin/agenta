@@ -5,8 +5,8 @@ import java.util.List;
 
 public class Map
 {
+    public static final int SIZE = 18;
     private SingleRandom generator = SingleRandom.get();
-    private static final int SIZE = 18;
     private final MapCell[][] cells;
 
     public Map()
@@ -131,11 +131,6 @@ public class Map
         return objects;
     }
 
-    public int getSIZE()
-    {
-        return SIZE;
-    }
-
     public void placeObject(MapObject obj, int x, int y)
     {
         if (canPlaceObject(obj, x, y))
@@ -171,7 +166,7 @@ public class Map
 
     public String toString()
     {
-        String s = "";
+        StringBuilder s = new StringBuilder();
 
         for (int i = 0; i < SIZE; i++)
         {
@@ -180,15 +175,15 @@ public class Map
                 switch (cells[i][j].getType())
                 {
                 case GRASS:
-                    s = s + '.';
+                    s.append('.');
                     break;
                 case TREE:
-                    s = s + '#';
+                    s.append('#');
                     break;
                 }
             }
-            s = s + '\n';
+            s.append('\n');
         }
-        return s;
+        return s.toString();
     }
 }
