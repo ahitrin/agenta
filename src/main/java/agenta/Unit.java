@@ -349,17 +349,10 @@ public class Unit extends MapObject implements Commander
             if (state != UnitState.ESCAPE)
                 System.out.println(toString() + " runs away");
             state = UnitState.ESCAPE;
-            // М.б., извещаем командира
-            // commander.obtain(null);
         }
         if (currentHitPoints <= 0)
         {
             System.out.println(toString() + " is dead");
-            if (commander != null)
-            {
-                // Извещаем командира о своей смерти :)
-                commander.obtain(null);
-            }
             map.removeObject(this, x, y);
         }
     }
