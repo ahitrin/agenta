@@ -35,7 +35,6 @@ public class Unit extends MapObject implements Commander
     private int speedCounter, attackCounter, healthCounter;
     private int currentHitPoints;
     private UnitCommand currentCommand = null;
-    private Commander commander = null;
 
     public Unit(UnitType type, int player, Map map)
     {
@@ -324,8 +323,6 @@ public class Unit extends MapObject implements Commander
      */
     public void submit(Commander comm, boolean subordinate)
     {
-        if (!subordinate)
-            commander = comm;
     }
 
     /**
