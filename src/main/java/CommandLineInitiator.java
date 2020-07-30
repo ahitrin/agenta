@@ -4,17 +4,15 @@ import java.io.FileReader;
 import java.util.StringTokenizer;
 
 import agenta.Commander;
-import agenta.Initiator;
 import agenta.InputParameters;
 import agenta.UnitDatabase;
-import agenta.UnitPlacementType;
 
 /**
  Инициализатор из командной строки. Считывает файл с описанием расположения и
  количества юнитов. Также получает и передаёт в <code>inputParameters</code> командиров.
  */
 
-public class CommandLineInitiator implements Initiator
+public class CommandLineInitiator
 {
     private final InputParameters inputParameters = new InputParameters();
 
@@ -53,16 +51,7 @@ public class CommandLineInitiator implements Initiator
 
         // Получаем тип расположения юнитов - по линиям или случайным образом
         s1 = st.nextToken();
-        if (s1.equals("line"))
-            inputParameters.setUnitPlacement(UnitPlacementType.LINE);
-        else if (s1.equals("random"))
-            inputParameters.setUnitPlacement(UnitPlacementType.RANDOM);
-        else
-        {
-            System.err.println("CommandLineInitiator - Error in " + initFile +
-                    ": words \"line\" or \"random\" expected");
-            System.exit(0);
-        }
+        // unused
 
         // here read & setup units - not done yet
         UnitDatabase ud = UnitDatabase.get();

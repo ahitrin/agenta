@@ -14,7 +14,6 @@ import java.util.Arrays;
 public final class InputParameters
 {
     private static final int MAX_UNITS_PER_TYPE = 20;
-    private UnitPlacementType unitPlacement = UnitPlacementType.RANDOM;
     private final boolean[] initialized;
     private final int[] player0;
     private final int[] player1;
@@ -87,15 +86,5 @@ public final class InputParameters
                 return 0;
             }
         return 0;
-    }
-
-    public UnitPlacementType getUnitPlacement()
-    {
-        return unitPlacement;
-    }
-
-    public void setUnitPlacement(UnitPlacementType up)
-    {
-        unitPlacement = up;
     }
 }
