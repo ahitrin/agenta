@@ -158,7 +158,9 @@ public class Unit extends MapObject implements Commander
             return 0;
         attackCounter = type.getAttackSpeed();
         Random gen = new Random();
-        return gen.nextInt(type.getRandAttack()) + type.getBaseAttack();
+        final int damage = gen.nextInt(type.getRandAttack()) + type.getBaseAttack();
+        System.out.println(toString() + " strikes with " + damage);
+        return damage;
     }
 
     /**
@@ -292,6 +294,9 @@ public class Unit extends MapObject implements Commander
         }
         if (uc.getType() == type)
         {
+            if (currentCommand.getState() != uc.getState()) {
+                System.out.println(toString() + " will " + uc.toString());
+            }
             currentCommand = uc;
             if (currentHitPoints >= type.getHealthLimit(uc.getPriority()))
                 state = uc.getState();
@@ -336,15 +341,20 @@ public class Unit extends MapObject implements Commander
         {
             healthCounter = 100;
         }
+        if (value > 0)
+            System.out.println(toString() + " has " + currentHitPoints + " HP");
         // Проверка на приоритет приказа над самосохранением
         if (currentHitPoints < type.getHealthLimit(currentCommand.getPriority()))
         {
+            if (state != UnitState.ESCAPE)
+                System.out.println(toString() + " runs away");
             state = UnitState.ESCAPE;
             // М.б., извещаем командира
             // commander.obtain(null);
         }
         if (currentHitPoints <= 0)
         {
+            System.out.println(toString() + " is dead");
             if (commander != null)
             {
                 // Извещаем командира о своей смерти :)
