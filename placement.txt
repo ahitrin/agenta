@@ -1,5 +1,4 @@
             LINE
-footman		10	5
+footman		10	10
 archer		10	10
-knight		2	4
-gryphon		0	2
+knight		4	4
