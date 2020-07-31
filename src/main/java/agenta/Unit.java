@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.github.javafaker.Faker;
+
 /**
  * Юнит. Ходит по карте, слушается приказов и бъёт врагов
  * @author Ahitrin
@@ -34,8 +36,9 @@ public class Unit extends MapObject implements Commander
     private final int player;
     private int speedCounter, attackCounter, healthCounter;
     private int currentHitPoints;
-    private UnitCommand currentCommand = null;
-    int kills = 0;
+    private UnitCommand currentCommand;
+    private int kills = 0;
+    private String name;
 
     public Unit(UnitType type, int player, Map map)
     {
@@ -48,6 +51,7 @@ public class Unit extends MapObject implements Commander
         currentHitPoints = type.getHitPoints();
         state = UnitState.STAND;
         currentCommand = new UnitCommand(type, state, UnitType.MAX_PRIORITY);
+        name = new Faker().name().firstName();
     }
 
     /**
@@ -367,6 +371,6 @@ public class Unit extends MapObject implements Commander
 
     public String toString()
     {
-        return type.toString() + player + " (" + kills + " ks) at [" + x + ", " + y + "]";
+        return name + " " + type.toString() + player + " (" + kills + " ks) at [" + x + ", " + y + "]";
     }
 }
