@@ -35,6 +35,7 @@ public class Unit extends MapObject implements Commander
     private int speedCounter, attackCounter, healthCounter;
     private int currentHitPoints;
     private UnitCommand currentCommand = null;
+    int kills = 0;
 
     public Unit(UnitType type, int player, Map map)
     {
@@ -154,6 +155,9 @@ public class Unit extends MapObject implements Commander
             System.out.println(toString() + " strikes " + other.toString() + " with " + damage);
         }
         other.sufferDamage(damage);
+        if (!other.isAlive()) {
+            kills += 1;
+        }
     }
 
     /**
@@ -338,7 +342,7 @@ public class Unit extends MapObject implements Commander
      */
     private void sufferDamage(int value)
     {
-        if (currentHitPoints <= 0)
+        if (!isAlive())
             return;
         currentHitPoints -= value;
         if (healthCounter == -1)
@@ -354,7 +358,7 @@ public class Unit extends MapObject implements Commander
                 System.out.println(toString() + " runs away");
             state = UnitState.ESCAPE;
         }
-        if (currentHitPoints <= 0)
+        if (!isAlive())
         {
             System.out.println(toString() + " is dead");
             map.removeObject(this, x, y);
@@ -363,6 +367,6 @@ public class Unit extends MapObject implements Commander
 
     public String toString()
     {
-        return type.toString() + player + " at [" + x + ", " + y + "]";
+        return type.toString() + player + " (" + kills + " ks) at [" + x + ", " + y + "]";
     }
 }
