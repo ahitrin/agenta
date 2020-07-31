@@ -14,7 +14,6 @@ public class UnitType implements Serializable
         UnitType ut0 = new UnitType();
         UnitType ut1 = new UnitType();
         UnitType ut2 = new UnitType();
-        UnitType ut3 = new UnitType();
 
         ut0.setName("Footman");
         ut0.setBaseAttack(5);
@@ -52,24 +51,11 @@ public class UnitType implements Serializable
         ut2.setHitPoints(110);
         ut2.setCost(3);
 
-        ut3.setName("Gryphon");
-        ut3.setBaseAttack(5);
-        ut3.setRandAttack(4);
-        ut3.setRange(5.1f);
-        ut3.setAttackSpeed(40);
-        ut3.setAttackType(MapPlacementType.AIR | MapPlacementType.GROUND);
-        ut3.setWalk(MapPlacementType.AIR);
-        ut3.setVisibility(9);
-        ut3.setSpeed(50);
-        ut3.setHitPoints(80);
-        ut3.setCost(4);
-
         ObjectOutputStream str = new ObjectOutputStream(new FileOutputStream("types.ser"));
 
         str.writeObject(ut0);
         str.writeObject(ut1);
         str.writeObject(ut2);
-        str.writeObject(ut3);
         str.flush();
         str.close();
 
