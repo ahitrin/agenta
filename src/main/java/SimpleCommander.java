@@ -25,8 +25,6 @@ import agenta.UnitType;
 
 class SimpleCommander implements Commander
 {
-    please fail
-
     public static void main(String[] args)
     {
         if (args.length != 1)
