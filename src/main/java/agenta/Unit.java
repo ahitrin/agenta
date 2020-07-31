@@ -91,7 +91,7 @@ public class Unit extends MapObject implements Commander
             if (!neighbours.isEmpty())
             {
                 // пока что атакуем случайно выбранного противника
-                selectTarget(neighbours, true).sufferDamage(doAttack());
+                performAttack(selectTarget(neighbours, true));
             }
             break;
         case ATTACK:
@@ -103,7 +103,7 @@ public class Unit extends MapObject implements Commander
             neighbours = filterCanAttack(filterEnemies(filterUnits(
                     map.getObjectsInRadius(x, y, type.getRange()))));
             if (!neighbours.isEmpty())
-                selectTarget(neighbours, true).sufferDamage(doAttack());
+                performAttack(selectTarget(neighbours, true));
             else
             {
                 neighbours = filterCanAttack(filterEnemies(filterUnits(
@@ -147,6 +147,15 @@ public class Unit extends MapObject implements Commander
         }
     }
 
+    private void performAttack(Unit other)
+    {
+        int damage = doAttack();
+        if (damage > 0) {
+            System.out.println(toString() + " strikes " + other.toString() + " with " + damage);
+        }
+        other.sufferDamage(damage);
+    }
+
     /**
      * Нанесение удара юнитом
      * @return Величина наносимого повреждения
@@ -157,9 +166,7 @@ public class Unit extends MapObject implements Commander
             return 0;
         attackCounter = type.getAttackSpeed();
         Random gen = new Random();
-        final int damage = gen.nextInt(type.getRandAttack()) + type.getBaseAttack();
-        System.out.println(toString() + " strikes with " + damage);
-        return damage;
+        return gen.nextInt(type.getRandAttack()) + type.getBaseAttack();
     }
 
     /**
