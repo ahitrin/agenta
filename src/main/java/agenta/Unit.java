@@ -1,5 +1,6 @@
 package agenta;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -155,11 +156,13 @@ public class Unit extends MapObject implements Commander
     private void performAttack(Unit other)
     {
         int damage = doAttack();
-        if (damage > 0) {
-            System.out.println(toString() + " strikes " + other.toString() + " with " + damage);
+        if (damage > 0)
+        {
+            System.out.println(MessageFormat.format("{0} strikes {1} with {2}", toString(), other.toString(), damage));
         }
         other.sufferDamage(damage);
-        if (!other.isAlive()) {
+        if (!other.isAlive())
+        {
             kills += 1;
         }
     }
@@ -308,7 +311,8 @@ public class Unit extends MapObject implements Commander
         }
         if (uc.getType() == type)
         {
-            if (currentCommand.getState() != uc.getState()) {
+            if (currentCommand.getState() != uc.getState())
+            {
                 System.out.println(toString() + " will " + uc.toString());
             }
             currentCommand = uc;
@@ -354,23 +358,23 @@ public class Unit extends MapObject implements Commander
             healthCounter = 100;
         }
         if (value > 0)
-            System.out.println(toString() + " has " + currentHitPoints + " HP");
+            System.out.println(MessageFormat.format("{0} has {1} HP", toString(), currentHitPoints));
         // Проверка на приоритет приказа над самосохранением
         if (currentHitPoints < type.getHealthLimit(currentCommand.getPriority()))
         {
             if (state != UnitState.ESCAPE)
-                System.out.println(toString() + " runs away");
+                System.out.println(MessageFormat.format("{0} runs away", toString()));
             state = UnitState.ESCAPE;
         }
         if (!isAlive())
         {
-            System.out.println(toString() + " is dead");
+            System.out.println(MessageFormat.format("{0} is dead", toString()));
             map.removeObject(this, x, y);
         }
     }
 
     public String toString()
     {
-        return name + " " + type.toString() + player + " (" + kills + " ks) at [" + x + ", " + y + "]";
+        return MessageFormat.format("{0} {1}{2} ({3} ks) at [{4}, {5}]", name, type.toString(), player, kills, x, y);
     }
 }
