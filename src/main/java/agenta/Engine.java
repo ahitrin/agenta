@@ -59,7 +59,7 @@ public final class Engine
             {
                 for (int j = 0; j < ip.getUnit(i, player); j++)
                 {
-                    unit = new Unit(ud.typeOf(i), player, map);
+                    unit = new Unit(ud.typeOf(i), player, map, SingleRandom.get());
                     unitCounter[player]++;
                     int x, y;
                     do

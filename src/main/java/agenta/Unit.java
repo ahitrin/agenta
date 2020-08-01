@@ -2,7 +2,6 @@ package agenta;
 
 import java.text.MessageFormat;
 import java.util.List;
-import java.util.Random;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -36,20 +35,21 @@ public class Unit extends MapObject implements Commander
     private UnitCommand currentCommand;
     private int kills = 0;
     private String name;
+    private final SingleRandom random;
 
-    public Unit(UnitType type, int player, Map map)
+    public Unit(UnitType type, int player, Map map, SingleRandom random)
     {
         this.type = type;
         this.player = player;
         this.map = map;
-        SingleRandom gen = SingleRandom.get();
-        speedCounter = gen.nextInt(type.getSpeed()) + 1;
-        attackCounter = gen.nextInt(type.getAttackSpeed()) + 1;
+        this.random = random;
+        speedCounter = this.random.nextInt(type.getSpeed()) + 1;
+        attackCounter = this.random.nextInt(type.getAttackSpeed()) + 1;
         currentHitPoints = type.getHitPoints();
         state = UnitState.ATTACK;
         currentCommand = new UnitCommand(state, UnitType.MIN_PRIORITY);
         name = new Faker().name().firstName();
-        healthCounter = gen.nextInt(100) + 1;
+        healthCounter = this.random.nextInt(100) + 1;
     }
 
     /**
@@ -254,8 +254,7 @@ public class Unit extends MapObject implements Commander
             return 0;
         }
         attackCounter = type.getAttackSpeed();
-        Random gen = new Random();
-        return gen.nextInt(type.getRandAttack()) + type.getBaseAttack();
+        return random.nextInt(type.getRandAttack()) + type.getBaseAttack();
     }
 
     /**
