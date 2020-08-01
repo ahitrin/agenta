@@ -1,14 +1,11 @@
+package agenta;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
-
-import agenta.Command;
-import agenta.Commander;
-import agenta.UnitDatabase;
-import agenta.UnitType;
 
 /**
  <p>Простой командующий. Умеет считывать себя из текстового файла, задаёт команды только
@@ -29,7 +26,7 @@ class SimpleCommander implements Commander
     {
         if (args.length != 1)
         {
-            System.err.println("Format: java SimpleCommander filename");
+            System.err.println("Format: java agenta.SimpleCommander filename");
             System.exit(0);
         }
         SimpleCommander sc = new SimpleCommander(args[0]);
@@ -64,7 +61,7 @@ class SimpleCommander implements Commander
         }
         catch (FileNotFoundException e)
         {
-            System.err.println("SimpleCommander - File not found: " + fileName);
+            System.err.println("agenta.SimpleCommander - File not found: " + fileName);
             System.exit(0);
         }
         catch (Exception e)
@@ -146,7 +143,7 @@ class SimpleCommander implements Commander
             }
             catch (Exception e)
             {
-                System.err.println("SimpleCommander - Error in file " + fileName);
+                System.err.println("agenta.SimpleCommander - Error in file " + fileName);
                 System.exit(0);
             }
         }

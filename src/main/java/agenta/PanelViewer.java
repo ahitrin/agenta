@@ -1,12 +1,9 @@
+package agenta;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import javax.swing.*;
-
-import agenta.Engine;
-import agenta.Map;
-import agenta.Unit;
-import agenta.Viewer;
 
 /**
  * Выводим изображение не на саму форму, а на панель на этой форме.

@@ -1,3 +1,5 @@
+package agenta;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -34,7 +36,7 @@ public class CommandLineInitiator
         }
         catch (FileNotFoundException e)
         {
-            System.err.println("CommandLineInitiator - File not found: " + initFile);
+            System.err.println("agenta.CommandLineInitiator - File not found: " + initFile);
             System.exit(0);
         }
         catch (Exception e)
@@ -76,7 +78,7 @@ public class CommandLineInitiator
             }
             catch (Exception e)
             {
-                System.err.println("CommandLineInitiator - Error in file " + initFile);
+                System.err.println("agenta.CommandLineInitiator - Error in file " + initFile);
             }
         }
 
