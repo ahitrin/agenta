@@ -3,11 +3,11 @@ package agenta;
 class MapCell
 {
     private MapCellType type = MapCellType.GRASS;
-    private MapObject groundObject = null;
+    private MapObject object = null;
 
-    public MapObject getGroundObject()
+    public MapObject getObject()
     {
-        return groundObject;
+        return object;
     }
 
     public MapCellType getType()
@@ -15,9 +15,9 @@ class MapCell
         return type;
     }
 
-    public void setGroundObject(MapObject obj)
+    public void setObject(MapObject obj)
     {
-        groundObject = obj;
+        object = obj;
     }
 
     public void setType(MapCellType type)

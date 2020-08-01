@@ -49,7 +49,7 @@ public class Map
         try
         {
             return (cells[x][y].getType() == MapCellType.GRASS) &&
-                    (cells[x][y].getGroundObject() == null);
+                    (cells[x][y].getObject() == null);
         }
         catch (Exception e)
         {
@@ -73,7 +73,7 @@ public class Map
     {
         try
         {
-            return cells[x][y].getGroundObject();
+            return cells[x][y].getObject();
         }
         catch (Exception e)
         {
@@ -117,7 +117,7 @@ public class Map
     {
         if (canPlaceObject(obj, x, y))
         {
-            cells[x][y].setGroundObject(obj);
+            cells[x][y].setObject(obj);
             obj.moveTo(x, y);
         }
     }
@@ -126,9 +126,9 @@ public class Map
     {
         try
         {
-            if (cells[x][y].getGroundObject() == obj)
+            if (cells[x][y].getObject() == obj)
             {
-                cells[x][y].setGroundObject(null);
+                cells[x][y].setObject(null);
             }
         }
         catch (Exception e)
