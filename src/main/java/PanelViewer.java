@@ -142,31 +142,6 @@ class PanelViewerFrame extends JFrame
 
         Container c = getContentPane();
         c.add(p, BorderLayout.CENTER);
-        JPanel buttons = new JPanel();
-        buttons.setLayout(new GridLayout(6, 2, 10, 10));
-        JButton bs0 = new JButton("Stand"), ba0 = new JButton("Attack"), be0 = new JButton("Escape");
-        JButton bs1 = new JButton("Stand"), ba1 = new JButton("Attack"), be1 = new JButton("Escape");
-        PanelViewerListener l0 = new PanelViewerListener(mc0), l1 = new PanelViewerListener(mc1);
-        bs0.addActionListener(l0);
-        ba0.addActionListener(l0);
-        be0.addActionListener(l0);
-        bs1.addActionListener(l1);
-        ba1.addActionListener(l1);
-        be1.addActionListener(l1);
-        buttons.add(bs0);
-        buttons.add(new JSpinner());
-        buttons.add(ba0);
-        buttons.add(new JSpinner());
-        buttons.add(be0);
-        buttons.add(new JSpinner());
-        buttons.add(bs1);
-        buttons.add(new JSpinner());
-        buttons.add(ba1);
-        buttons.add(new JSpinner());
-        buttons.add(be1);
-        buttons.add(new JSpinner());
-
-        c.add(buttons, BorderLayout.EAST);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
