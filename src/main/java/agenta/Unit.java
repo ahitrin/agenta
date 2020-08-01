@@ -105,7 +105,7 @@ public class Unit extends MapObject implements Commander
             if (!neighbours.isEmpty())
             {
                 // пока что атакуем случайно выбранного противника
-                performAttack(selectTarget(neighbours, true));
+                performAttack(selectTarget(neighbours));
             }
             break;
         case ATTACK:
@@ -118,7 +118,7 @@ public class Unit extends MapObject implements Commander
                     map.getObjectsInRadius(x, y, type.getRange())));
             if (!neighbours.isEmpty())
             {
-                performAttack(selectTarget(neighbours, true));
+                performAttack(selectTarget(neighbours));
             }
             else
             {
@@ -126,7 +126,7 @@ public class Unit extends MapObject implements Commander
                         map.getObjectsInRadius(x, y, type.getVisibility())));
                 if (!neighbours.isEmpty())
                 {
-                    selectTarget(neighbours, true);
+                    selectTarget(neighbours);
                     int dx = target.x - x, dy = target.y - y;
                     dx = Integer.compare(dx, 0);
                     dy = Integer.compare(dy, 0);
@@ -309,9 +309,9 @@ public class Unit extends MapObject implements Commander
      * @param units Список юнитов
      * @return Случайный юнит
      */
-    private Unit selectTarget(List<Unit> units, boolean useOld)
+    private Unit selectTarget(List<Unit> units)
     {
-        if (useOld && (target != null))
+        if ((target != null) && units.contains(target))
         {
             return target;
         }
