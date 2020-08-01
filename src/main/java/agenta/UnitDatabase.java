@@ -20,22 +20,6 @@ public final class UnitDatabase
         return instance;
     }
 
-    // debug
-    public static void main(String[] args)
-    {
-        UnitDatabase ud = UnitDatabase.get();
-        System.out.println("Index of knight = " + ud.indexOf("knight"));
-        System.out.println("Index of Abracadabra = " + ud.indexOf("Abracadabra"));
-        System.out.println("Unit types list:");
-        for (int i = 0; i < 5; i++)
-        {
-            if (ud.typeOf(i) != null)
-            {
-                System.out.println("" + i + " - " + ud.nameOf(i));
-            }
-        }
-    }
-
     private final List<UnitType> unitTypes = new ArrayList<>();
     private final List<String> unitNames = new ArrayList<>();
 
