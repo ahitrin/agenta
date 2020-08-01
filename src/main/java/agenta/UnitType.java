@@ -67,7 +67,7 @@ public class UnitType implements Serializable
     private int cost = 0;
     private int[] healthLimit = null;
 
-    private UnitType()
+    UnitType()
     {
         healthLimit = new int[MAX_PRIORITY];
     }
@@ -145,7 +145,7 @@ public class UnitType implements Serializable
         return cost;
     }
 
-    private void setAttackSpeed(int value)
+    void setAttackSpeed(int value)
     {
         attackSpeed = value;
     }
@@ -160,7 +160,7 @@ public class UnitType implements Serializable
         cost = value;
     }
 
-    private void setHitPoints(int value)
+    void setHitPoints(int value)
     {
         hitPoints = value;
         for (int i = 0; i < healthLimit.length; i++)
@@ -184,7 +184,7 @@ public class UnitType implements Serializable
         range = value;
     }
 
-    private void setSpeed(int value)
+    void setSpeed(int value)
     {
         speed = value;
     }
@@ -193,5 +193,4 @@ public class UnitType implements Serializable
     {
         visibility = value;
     }
-
 }
