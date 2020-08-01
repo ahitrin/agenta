@@ -25,7 +25,9 @@ public class CommandLineInitiator
             int temp;
             StringBuilder sb = new StringBuilder(80);
             while ((temp = br.read()) != -1)
+            {
                 sb.append((char)temp);
+            }
             br.close();
             s1 = sb.toString();
 
@@ -57,6 +59,7 @@ public class CommandLineInitiator
         UnitDatabase ud = UnitDatabase.get();
         int player0, player1;
         while (st.hasMoreTokens())
+        {
             try
             {
                 // получаем тип юнита
@@ -75,6 +78,7 @@ public class CommandLineInitiator
             {
                 System.err.println("CommandLineInitiator - Error in file " + initFile);
             }
+        }
 
         // добавляем командиров
         inputParameters.addCommander(com1);

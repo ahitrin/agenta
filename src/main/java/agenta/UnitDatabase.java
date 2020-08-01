@@ -30,9 +30,12 @@ public final class UnitDatabase
         for (int i = 0; i < 5; i++)
         {
             if (ud.typeOf(i) != null)
+            {
                 System.out.println("" + i + " - " + ud.nameOf(i));
+            }
         }
     }
+
     private final List<UnitType> unitTypes = new ArrayList<>();
     private final List<String> unitNames = new ArrayList<>();
 
@@ -69,7 +72,9 @@ public final class UnitDatabase
     public String nameOf(int index)
     {
         if ((index >= 0) && (index < unitTypes.size()))
+        {
             return unitTypes.get(index).getName();
+        }
         return null;
     }
 
@@ -81,7 +86,9 @@ public final class UnitDatabase
     public UnitType typeOf(int index)
     {    // возвращаем не сам тип, а его копию
         if ((index >= 0) && (index < unitTypes.size()))
+        {
             return new UnitType(unitTypes.get(index));
+        }
         return null;
     }
 

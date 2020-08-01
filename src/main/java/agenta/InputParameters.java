@@ -36,7 +36,9 @@ public final class InputParameters
     public void addCommander(Commander commander)
     {
         if (commanderCounter >= 2)
+        {
             return;
+        }
         commanders[commanderCounter] = commander;
         commanderCounter++;
     }
@@ -53,7 +55,9 @@ public final class InputParameters
         {
             if ((player0 < 0) || (player1 < 0) || (player0 > MAX_UNITS_PER_TYPE) ||
                     (player1 > MAX_UNITS_PER_TYPE))
+            {
                 throw new ArrayIndexOutOfBoundsException();
+            }
             if (!initialized[index])
             {
                 this.player0[index] = player0;
@@ -69,13 +73,16 @@ public final class InputParameters
     public Commander getCommander(int index)
     {
         if ((index >= 0) && (index < commanderCounter))
+        {
             return commanders[index];
+        }
         return null;
     }
 
     public int getUnit(int index, int player)
     {
         if ((index >= 0) && (index < initialized.length))
+        {
             switch (player)
             {
             case 0:
@@ -85,6 +92,7 @@ public final class InputParameters
             default:
                 return 0;
             }
+        }
         return 0;
     }
 }

@@ -15,8 +15,12 @@ public class Map
 
         cells = new MapCell[SIZE][SIZE];
         for (x = 0; x < SIZE; x++)
+        {
             for (y = 0; y < SIZE; y++)
+            {
                 cells[x][y] = new MapCell();
+            }
+        }
 
         int TREE_NUMBER = 20;
         do
@@ -109,7 +113,9 @@ public class Map
             {
                 int sum = i * i + j * j;
                 if ((sum > r * r) || (sum == 0))
+                {
                     continue;
+                }
                 if ((o = getAirObject(x + i, y + j)) != null)
                 {
                     objects.add(o);
@@ -137,9 +143,13 @@ public class Map
         try
         {
             if (cells[x][y].getAirObject() == obj)
+            {
                 cells[x][y].setAirObject(null);
+            }
             if (cells[x][y].getGroundObject() == obj)
+            {
                 cells[x][y].setGroundObject(null);
+            }
         }
         catch (Exception e)
         {

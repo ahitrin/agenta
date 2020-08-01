@@ -75,7 +75,9 @@ public final class Engine
     {
         // Если хотя бы один из игроков не имеет юнитов, финиш
         if ((unitCounter[0] * unitCounter[1]) == 0)
+        {
             return;
+        }
         updateViewers();
 
         for (int i = 0; i < units.size(); i++)
@@ -103,7 +105,9 @@ public final class Engine
     private void updateViewers()
     {
         for (Viewer viewer : viewers)
+        {
             viewer.update(map);
+        }
     }
 
 }

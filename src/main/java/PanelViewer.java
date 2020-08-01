@@ -47,9 +47,13 @@ class PanelViewer extends JPanel implements Viewer
     public void paint(Graphics g)
     {
         if (enabled)
+        {
             g.drawImage(current, 0, 0, this);
+        }
         else
+        {
             g.drawImage(old, 0, 0, this);
+        }
     }
 
     public void update(Map map)
@@ -69,7 +73,9 @@ class PanelViewer extends JPanel implements Viewer
             {
                 u = (Unit)(map.getAirObject(i, j));
                 if (u == null)
+                {
                     u = (Unit)(map.getGroundObject(i, j));
+                }
 
                 if (u != null)
                 {
@@ -118,6 +124,7 @@ class PanelViewerFrame extends JFrame
         PanelViewerFrame f = new PanelViewerFrame("Agenta test");
         f.doRun();
     }
+
     private PanelViewer p = null;
     private Engine e = null;
     private ManualCommander mc0 = new ManualCommander();

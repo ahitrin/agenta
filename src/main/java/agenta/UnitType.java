@@ -55,6 +55,7 @@ public class UnitType implements Serializable
 
         System.out.println("Done");
     }
+
     private String name = "";
     private int hitPoints = 0;
     private int baseAttack = 0;
@@ -95,15 +96,12 @@ public class UnitType implements Serializable
         return baseAttack;
     }
 
-    private int getCost()
-    {
-        return cost;
-    }
-
     public int getHealthLimit(int index)
     {
         if ((index < healthLimit.length) && (index >= 0))
+        {
             return healthLimit[index];
+        }
         return -1;
     }
 
@@ -137,14 +135,14 @@ public class UnitType implements Serializable
         return visibility;
     }
 
-    private void setCost(int value)
-    {
-        cost = value;
-    }
-
     public String toString()
     {
         return name;
+    }
+
+    private int getCost()
+    {
+        return cost;
     }
 
     private void setAttackSpeed(int value)
@@ -157,11 +155,18 @@ public class UnitType implements Serializable
         baseAttack = value;
     }
 
+    private void setCost(int value)
+    {
+        cost = value;
+    }
+
     private void setHitPoints(int value)
     {
         hitPoints = value;
         for (int i = 0; i < healthLimit.length; i++)
+        {
             healthLimit[i] = (4 - i) * hitPoints / 5;
+        }
     }
 
     private void setName(String name)

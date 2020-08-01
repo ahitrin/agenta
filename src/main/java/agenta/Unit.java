@@ -25,7 +25,9 @@ public class Unit extends MapObject implements Commander
         for (MapObject obj : objs)
         {
             if (obj instanceof Unit)
+            {
                 units.add((Unit)obj);
+            }
         }
         return units;
     }
@@ -67,22 +69,34 @@ public class Unit extends MapObject implements Commander
             {
                 healthCounter = 100;
                 if (currentHitPoints < type.getHitPoints())
+                {
                     currentHitPoints++;
+                }
                 if (currentHitPoints == type.getHitPoints())
+                {
                     healthCounter = -1;
+                }
             }
         }
         if (attackCounter > 0)
+        {
             attackCounter--;
+        }
         if (speedCounter > 0)
+        {
             speedCounter--;
+        }
         if ((attackCounter > 0) && (speedCounter > 0))
+        {
             return;
+        }
 
         if (target != null)
         {
             if (!target.isAlive())
+            {
                 target = null;
+            }
         }
         List<Unit> neighbours;
         switch (state)
@@ -109,7 +123,9 @@ public class Unit extends MapObject implements Commander
             neighbours = filterCanAttack(filterEnemies(filterUnits(
                     map.getObjectsInRadius(x, y, type.getRange()))));
             if (!neighbours.isEmpty())
+            {
                 performAttack(selectTarget(neighbours, true));
+            }
             else
             {
                 neighbours = filterCanAttack(filterEnemies(filterUnits(
@@ -153,78 +169,6 @@ public class Unit extends MapObject implements Commander
         }
     }
 
-    private void performAttack(Unit other)
-    {
-        int damage = doAttack();
-        if (damage > 0)
-        {
-            System.out.println(MessageFormat.format("{0} strikes {1} with {2}", toString(), other.toString(), damage));
-        }
-        other.sufferDamage(damage);
-        if (!other.isAlive())
-        {
-            kills += 1;
-        }
-    }
-
-    /**
-     * Нанесение удара юнитом
-     * @return Величина наносимого повреждения
-     */
-    private int doAttack()
-    {
-        if (attackCounter > 0)
-            return 0;
-        attackCounter = type.getAttackSpeed();
-        Random gen = new Random();
-        return gen.nextInt(type.getRandAttack()) + type.getBaseAttack();
-    }
-
-    /**
-     * Перемещает юнит по карте.
-     * @param dx Смещение по x
-     * @param dy Смещение по y
-     */
-    private void doMove(int dx, int dy)
-    {
-        if (speedCounter > 0)
-            return;
-        if (map.canPlaceObject(this, x + dx, y + dy))
-        {
-            map.removeObject(this, x, y);
-            map.placeObject(this, x + dx, y + dy);
-            speedCounter = type.getSpeed();
-        }
-    }
-
-    /**
-     * Фильтрует список юнитов, оставляя только те, которые юнит может атаковать
-     * @param units Входящий список юнитов
-     * @return Юниты, которые могут быть атакованы
-     */
-    private List<Unit> filterCanAttack(List<Unit> units)
-    {
-        return units;
-    }
-
-    /**
-     * Фильтрует список юнитов, оставляя только врагов
-     * @param units Входящий список юнитов
-     * @return Враги из входящего списка
-     */
-    private List<Unit> filterEnemies(List<Unit> units)
-    {
-        List<Unit> enemies = new ArrayList<>();
-
-        for (Unit unit : units)
-        {
-            if (unit.getPlayer() != player)
-                enemies.add(unit);
-        }
-
-        return enemies;
-    }
-
     /**
      * Фильтрует список юнитов, оставляя только дружественных
      * @param units Входящий список юнитов
@@ -237,7 +181,9 @@ public class Unit extends MapObject implements Commander
         for (Unit unit : units)
         {
             if (unit.getPlayer() == player)
+            {
                 friends.add(unit);
+            }
         }
         return friends;
     }
@@ -305,7 +251,99 @@ public class Unit extends MapObject implements Commander
             }
             currentCommand = uc;
             if (currentHitPoints >= type.getHealthLimit(uc.getPriority()))
+            {
                 state = uc.getState();
+            }
+        }
+    }
+
+    /**
+     * Пока что реализуем только регистрацию командующего
+     */
+    public void submit(Commander comm, boolean subordinate)
+    {
+    }
+
+    public String toString()
+    {
+        return MessageFormat.format("{0} {1}{2} ({3} ks) at [{4}, {5}]", name, type.toString(), player, kills, x, y);
+    }
+
+    /**
+     * Нанесение удара юнитом
+     * @return Величина наносимого повреждения
+     */
+    private int doAttack()
+    {
+        if (attackCounter > 0)
+        {
+            return 0;
+        }
+        attackCounter = type.getAttackSpeed();
+        Random gen = new Random();
+        return gen.nextInt(type.getRandAttack()) + type.getBaseAttack();
+    }
+
+    /**
+     * Перемещает юнит по карте.
+     * @param dx Смещение по x
+     * @param dy Смещение по y
+     */
+    private void doMove(int dx, int dy)
+    {
+        if (speedCounter > 0)
+        {
+            return;
+        }
+        if (map.canPlaceObject(this, x + dx, y + dy))
+        {
+            map.removeObject(this, x, y);
+            map.placeObject(this, x + dx, y + dy);
+            speedCounter = type.getSpeed();
+        }
+    }
+
+    /**
+     * Фильтрует список юнитов, оставляя только те, которые юнит может атаковать
+     * @param units Входящий список юнитов
+     * @return Юниты, которые могут быть атакованы
+     */
+    private List<Unit> filterCanAttack(List<Unit> units)
+    {
+        return units;
+    }
+
+    /**
+     * Фильтрует список юнитов, оставляя только врагов
+     * @param units Входящий список юнитов
+     * @return Враги из входящего списка
+     */
+    private List<Unit> filterEnemies(List<Unit> units)
+    {
+        List<Unit> enemies = new ArrayList<>();
+
+        for (Unit unit : units)
+        {
+            if (unit.getPlayer() != player)
+            {
+                enemies.add(unit);
+            }
+        }
+
+        return enemies;
+    }
+
+    private void performAttack(Unit other)
+    {
+        int damage = doAttack();
+        if (damage > 0)
+        {
+            System.out.println(MessageFormat.format("{0} strikes {1} with {2}", toString(), other.toString(), damage));
+        }
+        other.sufferDamage(damage);
+        if (!other.isAlive())
+        {
+            kills += 1;
         }
     }
 
@@ -317,19 +355,18 @@ public class Unit extends MapObject implements Commander
     private Unit selectTarget(List<Unit> units, boolean useOld)
     {
         if (useOld && (target != null))
+        {
             return target;
+        }
         if (!units.isEmpty())
+        {
             target = units.get(SingleRandom.get().nextInt(units.size()));
+        }
         else
+        {
             target = null;
+        }
         return target;
-    }
-
-    /**
-     * Пока что реализуем только регистрацию командующего
-     */
-    public void submit(Commander comm, boolean subordinate)
-    {
     }
 
     /**
@@ -339,19 +376,25 @@ public class Unit extends MapObject implements Commander
     private void sufferDamage(int value)
     {
         if (!isAlive())
+        {
             return;
+        }
         currentHitPoints -= value;
         if (healthCounter == -1)
         {
             healthCounter = 100;
         }
         if (value > 0)
+        {
             System.out.println(MessageFormat.format("{0} has {1} HP", toString(), currentHitPoints));
+        }
         // Проверка на приоритет приказа над самосохранением
         if (currentHitPoints < type.getHealthLimit(currentCommand.getPriority()))
         {
             if (state != UnitState.ESCAPE)
+            {
                 System.out.println(MessageFormat.format("{0} runs away", toString()));
+            }
             state = UnitState.ESCAPE;
         }
         if (!isAlive())
@@ -359,10 +402,5 @@ public class Unit extends MapObject implements Commander
             System.out.println(MessageFormat.format("{0} is dead", toString()));
             map.removeObject(this, x, y);
         }
-    }
-
-    public String toString()
-    {
-        return MessageFormat.format("{0} {1}{2} ({3} ks) at [{4}, {5}]", name, type.toString(), player, kills, x, y);
     }
 }

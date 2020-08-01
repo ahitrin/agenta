@@ -36,8 +36,11 @@ class SimpleCommander implements Commander
         UnitDatabase ud = UnitDatabase.get();
 
         for (int i = 0; i < ud.size(); i++)
+        {
             System.out.println(ud.nameOf(i) + sc.hasNewOrder(ud.typeOf(i)));
+        }
     }
+
     private final List<String> commands = new ArrayList<>();
     private final List<String> types = new ArrayList<>();
     private final List<Boolean> flags = new ArrayList<>();
@@ -52,7 +55,9 @@ class SimpleCommander implements Commander
             int temp;
             StringBuilder sb = new StringBuilder(80);
             while ((temp = br.read()) != -1)
+            {
                 sb.append((char)temp);
+            }
             br.close();
             s1 = sb.toString();
 
@@ -85,13 +90,16 @@ class SimpleCommander implements Commander
         orders.add("stand");
         orders.add("escape");
         while (st.hasMoreTokens())
+        {
             try
             {
                 flag = true;
                 // получаем тип юнита
                 s2 = st.nextToken();
                 if (ud.indexOf(s2) == -1)
+                {
                     throw new Exception();
+                }
                 types.add(s2);
 
                 // получаем тип приказа
@@ -102,20 +110,30 @@ class SimpleCommander implements Commander
                 case 0: // получаем тип атакуемого юнита
                     s1 = st.nextToken();
                     if (ud.indexOf(s1) != -1)
+                    {
                         s2 = s2 + " " + s1;
-                        // это поле может отсутствовать!
+                    }
+                    // это поле может отсутствовать!
                     else
+                    {
                         flag = false;
+                    }
                     // никаких "break"! Надо идти дальше
 
                 case 1: // получаем авторитет приказа (целое число от 1 до 4)
                     if (flag)
+                    {
                         s1 = st.nextToken().substring(0, 1);
+                    }
                     int temp = Integer.parseInt(s1);
                     if ((temp >= 1) && (temp <= 4))
+                    {
                         s2 = s2 + " " + s1;
+                    }
                     else
+                    {
                         throw new Exception();
+                    }
                     // снова идём дальше
 
                 case 2: // конец  приказа
@@ -131,6 +149,7 @@ class SimpleCommander implements Commander
                 System.err.println("SimpleCommander - Error in file " + fileName);
                 System.exit(0);
             }
+        }
     }
 
     public void act()
@@ -148,16 +167,16 @@ class SimpleCommander implements Commander
         return null;
     }
 
-    private boolean hasNewOrder(UnitType ut)
-    {
-        return flags.get(types.indexOf(ut.getName()));
-    }
-
     public void obtain(Command com)
     {
     }
 
     public void submit(Commander comm, boolean subordinate)
     {
+    }
+
+    private boolean hasNewOrder(UnitType ut)
+    {
+        return flags.get(types.indexOf(ut.getName()));
     }
 }
