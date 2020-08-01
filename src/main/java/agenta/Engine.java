@@ -14,6 +14,7 @@ import java.util.List;
 
 public final class Engine
 {
+    private final InputParameters ip;
     private final Map map = new Map();
     private final List<Unit> units = new ArrayList<>();
     private final int[] unitCounter = new int[2];
@@ -22,6 +23,28 @@ public final class Engine
     private int winner = -1;
 
     public Engine(InputParameters ip)
+    {
+        this.ip = ip;
+    }
+
+    // Позволяет подключить к движку вид. Возвращается идентификатор вида
+    public int addViewer(Viewer viewer)
+    {
+        viewers.add(viewer);
+        return viewers.size();
+    }
+
+    public String getMap()
+    {
+        return map.toString();
+    }
+
+    public int getWinner()
+    {
+        return winner;
+    }
+
+    public void init()
     {
         // Расставляем юнитов на карте
         Unit unit;
@@ -51,23 +74,6 @@ public final class Engine
                 }
             }
         }
-    }
-
-    // Позволяет подключить к движку вид. Возвращается идентификатор вида
-    public int addViewer(Viewer viewer)
-    {
-        viewers.add(viewer);
-        return viewers.size();
-    }
-
-    public String getMap()
-    {
-        return map.toString();
-    }
-
-    public int getWinner()
-    {
-        return winner;
     }
 
     // Один шаг работы
