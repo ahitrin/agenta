@@ -44,21 +44,13 @@ public class Map
     {
         try
         {
-            switch (obj.getPlacementType())
-            {
-            case MapPlacementType.GROUND:
-                return (cells[x][y].getType() == MapCellType.GRASS) &&
-                        (cells[x][y].getGroundObject() == null);
-            case MapPlacementType.AIR:
-                return (cells[x][y].getAirObject() == null);
-            default:
-                return false;
-            }
+            return (cells[x][y].getType() == MapCellType.GRASS) &&
+                    (cells[x][y].getGroundObject() == null);
         }
         catch (Exception e)
         {
+            return false;
         }
-        return false;
     }
 
     public MapObject getAirObject(int x, int y)
@@ -135,17 +127,7 @@ public class Map
     {
         if (canPlaceObject(obj, x, y))
         {
-            switch (obj.getPlacementType())
-            {
-            case MapPlacementType.GROUND:
-                cells[x][y].setGroundObject(obj);
-                break;
-            case MapPlacementType.AIR:
-                cells[x][y].setAirObject(obj);
-                break;
-            default:
-                break;
-            }
+            cells[x][y].setGroundObject(obj);
             obj.moveTo(x, y);
         }
     }

@@ -204,14 +204,7 @@ public class Unit extends MapObject implements Commander
      */
     private List<Unit> filterCanAttack(List<Unit> units)
     {
-        List<Unit> able = new ArrayList<>();
-
-        for (Unit unit : units)
-        {
-            if ((type.getAttackType() & unit.getPlacementType()) != 0)
-                able.add(unit);
-        }
-        return able;
+        return units;
     }
 
     /**
