@@ -47,7 +47,7 @@ public class Unit extends MapObject implements Commander
         attackCounter = gen.nextInt(type.getAttackSpeed()) + 1;
         currentHitPoints = type.getHitPoints();
         state = UnitState.ATTACK;
-        currentCommand = new UnitCommand(type, state, UnitType.MIN_PRIORITY);
+        currentCommand = new UnitCommand(state, UnitType.MIN_PRIORITY);
         name = new Faker().name().firstName();
         healthCounter = gen.nextInt(100) + 1;
     }
@@ -70,7 +70,7 @@ public class Unit extends MapObject implements Commander
                 if (currentHitPoints >= type.getHealthLimit(currentCommand.getPriority()) &&
                         state == UnitState.ESCAPE)
                 {
-                    obtain(new UnitCommand(type, UnitState.ATTACK, currentCommand.getPriority() - 1));
+                    obtain(new UnitCommand(UnitState.ATTACK, currentCommand.getPriority() - 1));
                 }
                 if (currentHitPoints == type.getHitPoints())
                 {
@@ -226,17 +226,14 @@ public class Unit extends MapObject implements Commander
         {
             return;
         }
-        if (uc.getType() == type)
+        if (currentCommand.getState() != uc.getState())
         {
-            if (currentCommand.getState() != uc.getState())
-            {
-                System.out.println(toString() + " will " + uc.toString());
-            }
-            currentCommand = uc;
-            if (currentHitPoints >= type.getHealthLimit(uc.getPriority()))
-            {
-                state = uc.getState();
-            }
+            System.out.println(toString() + " will " + uc.toString());
+        }
+        currentCommand = uc;
+        if (currentHitPoints >= type.getHealthLimit(uc.getPriority()))
+        {
+            state = uc.getState();
         }
     }
 
@@ -354,7 +351,7 @@ public class Unit extends MapObject implements Commander
         // Проверка на приоритет приказа над самосохранением
         if (currentHitPoints < type.getHealthLimit(currentCommand.getPriority()))
         {
-            obtain(new UnitCommand(type, UnitState.ESCAPE, currentCommand.getPriority() + 1));
+            obtain(new UnitCommand(UnitState.ESCAPE, currentCommand.getPriority() + 1));
         }
         if (!isAlive())
         {
