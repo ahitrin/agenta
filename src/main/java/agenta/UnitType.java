@@ -20,7 +20,6 @@ public class UnitType implements Serializable
         ut0.setRandAttack(6);
         ut0.setRange(1.45f);
         ut0.setAttackSpeed(25);
-        ut0.setAttackType(MapPlacementType.GROUND);
         ut0.setWalk(MapPlacementType.GROUND);
         ut0.setVisibility(7);
         ut0.setSpeed(40);
@@ -32,7 +31,6 @@ public class UnitType implements Serializable
         ut1.setRandAttack(5);
         ut1.setRange(5.5f);
         ut1.setAttackSpeed(40);
-        ut1.setAttackType(MapPlacementType.AIR | MapPlacementType.GROUND);
         ut1.setWalk(MapPlacementType.GROUND);
         ut1.setVisibility(7);
         ut1.setSpeed(40);
@@ -44,7 +42,6 @@ public class UnitType implements Serializable
         ut2.setRandAttack(7);
         ut2.setRange(1.45f);
         ut2.setAttackSpeed(40);
-        ut2.setAttackType(MapPlacementType.GROUND);
         ut2.setWalk(MapPlacementType.GROUND);
         ut2.setVisibility(7);
         ut2.setSpeed(25);
@@ -68,7 +65,6 @@ public class UnitType implements Serializable
     private int attackSpeed = 0;
     private float range = 0f;
     private MapPlacementType walk = null;
-    private MapPlacementType attackType = null;
     private int visibility = 0;
     private int speed = 0;
     private int cost = 0;
@@ -88,7 +84,6 @@ public class UnitType implements Serializable
         setRange(ut.getRange());
         setAttackSpeed(ut.getAttackSpeed());
         setWalk(ut.getWalk());
-        setAttackType(ut.getAttackType());
         setVisibility(ut.getVisibility());
         setSpeed(ut.getSpeed());
         setHitPoints(ut.getHitPoints());
@@ -98,11 +93,6 @@ public class UnitType implements Serializable
     public int getAttackSpeed()
     {
         return attackSpeed;
-    }
-
-    public int getAttackType()
-    {
-        return attackType.getValue();
     }
 
     public int getBaseAttack()
@@ -170,11 +160,6 @@ public class UnitType implements Serializable
     private void setAttackSpeed(int value)
     {
         attackSpeed = value;
-    }
-
-    private void setAttackType(int value)
-    {
-        attackType = new MapPlacementType(value);
     }
 
     private void setBaseAttack(int value)
