@@ -4,6 +4,8 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import com.github.javafaker.Faker;
 
@@ -13,6 +15,7 @@ import com.github.javafaker.Faker;
  */
 public class Unit extends MapObject implements Commander
 {
+    private static final Predicate<MapObject> IS_UNIT = o -> o instanceof Unit;
     /**
      * Фильтрует список объектов, отбрасывая из него всех не-юнитов
      * @param objs Входящий список объектов
@@ -20,16 +23,7 @@ public class Unit extends MapObject implements Commander
      */
     private static List<Unit> filterUnits(List<MapObject> objs)
     {
-        List<Unit> units = new ArrayList<>();
-
-        for (MapObject obj : objs)
-        {
-            if (obj instanceof Unit)
-            {
-                units.add((Unit)obj);
-            }
-        }
-        return units;
+        return objs.stream().filter(IS_UNIT).map(o -> (Unit) o).collect(Collectors.toList());
     }
 
     private final UnitType type;
