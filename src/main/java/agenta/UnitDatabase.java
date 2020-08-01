@@ -51,7 +51,7 @@ public final class UnitDatabase
         }
         catch (Exception e)
         {
-            System.err.println(e);
+            e.printStackTrace();
             System.exit(0);
         }
     }

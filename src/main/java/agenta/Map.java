@@ -69,8 +69,8 @@ public class Map
         }
         catch (Exception e)
         {
+            return null;
         }
-        return null;
     }
 
     public MapCellType getCellType(int x, int y)
@@ -81,8 +81,8 @@ public class Map
         }
         catch (Exception e)
         {
+            return MapCellType.TREE;
         }
-        return MapCellType.TREE;
     }
 
     public MapObject getGroundObject(int x, int y)
@@ -93,8 +93,8 @@ public class Map
         }
         catch (Exception e)
         {
+            return null;
         }
-        return null;
     }
 
     /**

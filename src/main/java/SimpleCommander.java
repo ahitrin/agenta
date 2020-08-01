@@ -64,7 +64,7 @@ class SimpleCommander implements Commander
         }
         catch (Exception e)
         {
-            System.err.println(e);
+            e.printStackTrace();
             System.exit(0);
         }
         s1 = s1.toLowerCase();
