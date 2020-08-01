@@ -25,13 +25,11 @@ public class Map
 
     /**
      * Проверяет, можно ли поставить данный объект в даную точку на карте.
-     * При этом учитывается, наземный или воздушный этот объект
-     * @param obj Проверяемый объект
      * @param x
      * @param y
      * @return
      */
-    public boolean canPlaceObject(MapObject obj, int x, int y)
+    public boolean canPlaceObject(int x, int y)
     {
         try
         {
@@ -102,7 +100,7 @@ public class Map
 
     public void placeObject(MapObject obj, int x, int y)
     {
-        if (canPlaceObject(obj, x, y))
+        if (canPlaceObject(x, y))
         {
             cells[x][y].setObject(obj);
             obj.moveTo(x, y);

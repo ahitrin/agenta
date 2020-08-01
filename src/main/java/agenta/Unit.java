@@ -296,7 +296,7 @@ public class Unit extends MapObject implements Commander
         {
             return;
         }
-        if (map.canPlaceObject(this, x + dx, y + dy))
+        if (map.canPlaceObject(x + dx, y + dy))
         {
             map.removeObject(this, x, y);
             map.placeObject(this, x + dx, y + dy);

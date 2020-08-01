@@ -68,7 +68,7 @@ public final class Engine
                         x = generator.nextInt(Map.SIZE);
                         y = generator.nextInt(Map.SIZE);
                     }
-                    while (!map.canPlaceObject(unit, x, y));
+                    while (!map.canPlaceObject(x, y));
                     map.placeObject(unit, x, y);
                     units.add(unit);
                     commanders[player].submit(unit, true);
