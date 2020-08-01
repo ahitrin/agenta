@@ -41,7 +41,7 @@ public final class UnitDatabase
         try
         {
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream("types.ser"));
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 3; i++)
             {
                 unitTypes.add((UnitType)ois.readObject());
                 unitNames.add(unitTypes.get(i).getName().toLowerCase());
