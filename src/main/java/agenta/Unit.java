@@ -215,17 +215,11 @@ public class Unit extends MapObject implements Commander
      */
     public void obtain(Command com)
     {
-        /*if(!(com instanceof UnitCommand))
-            return;*/
-        UnitCommand uc = null;
-        try
-        {
-            uc = (UnitCommand)com;
-        }
-        catch (Exception e)
+        if (!(com instanceof UnitCommand))
         {
             return;
         }
+        UnitCommand uc = (UnitCommand)com;
         if (currentCommand.getState() != uc.getState())
         {
             System.out.println(toString() + " will " + uc.toString());
