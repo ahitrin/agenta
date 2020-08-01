@@ -101,8 +101,8 @@ public class Unit extends MapObject implements Commander
              * Находясь в этом состоянии, юнит не двигается с места. Противник
              * атакуется только в том случае, когда он находится на расстоянии атаки
              */
-            neighbours = filterCanAttack(filterEnemies(filterUnits(
-                    map.getObjectsInRadius(x, y, type.getRange()))));
+            neighbours = filterEnemies(filterUnits(
+                    map.getObjectsInRadius(x, y, type.getRange())));
             if (!neighbours.isEmpty())
             {
                 // пока что атакуем случайно выбранного противника
@@ -115,16 +115,16 @@ public class Unit extends MapObject implements Commander
              * нет, юнит пытается найти противника в радиусе своей зоны видимости. Если же
              * и там нет врага, то юнит движется случайным образом
              */
-            neighbours = filterCanAttack(filterEnemies(filterUnits(
-                    map.getObjectsInRadius(x, y, type.getRange()))));
+            neighbours = filterEnemies(filterUnits(
+                    map.getObjectsInRadius(x, y, type.getRange())));
             if (!neighbours.isEmpty())
             {
                 performAttack(selectTarget(neighbours, true));
             }
             else
             {
-                neighbours = filterCanAttack(filterEnemies(filterUnits(
-                        map.getObjectsInRadius(x, y, type.getVisibility()))));
+                neighbours = filterEnemies(filterUnits(
+                        map.getObjectsInRadius(x, y, type.getVisibility())));
                 if (!neighbours.isEmpty())
                 {
                     selectTarget(neighbours, true);
@@ -279,16 +279,6 @@ public class Unit extends MapObject implements Commander
             map.placeObject(this, x + dx, y + dy);
             speedCounter = type.getSpeed();
         }
-    }
-
-    /**
-     * Фильтрует список юнитов, оставляя только те, которые юнит может атаковать
-     * @param units Входящий список юнитов
-     * @return Юниты, которые могут быть атакованы
-     */
-    private List<Unit> filterCanAttack(List<Unit> units)
-    {
-        return units;
     }
 
     /**
