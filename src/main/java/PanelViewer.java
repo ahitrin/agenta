@@ -1,6 +1,4 @@
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.*;
@@ -121,8 +119,8 @@ class PanelViewerFrame extends JFrame
         f.doRun();
     }
 
-    private PanelViewer p = null;
-    private Engine e = null;
+    private PanelViewer p;
+    private Engine e;
     private ManualCommander mc0 = new ManualCommander();
     private ManualCommander mc1 = new ManualCommander();
 
@@ -154,20 +152,5 @@ class PanelViewerFrame extends JFrame
         JOptionPane.showMessageDialog(this, "Player " + e.getWinner() + " has won!",
                 "End of game", JOptionPane.INFORMATION_MESSAGE);
         p.repaint();
-    }
-}
-
-class PanelViewerListener implements ActionListener
-{
-    private final ManualCommander target;
-
-    public PanelViewerListener(ManualCommander target)
-    {
-        this.target = target;
-    }
-
-    public void actionPerformed(ActionEvent e)
-    {
-        target.set(e.getActionCommand() + "1");
     }
 }
