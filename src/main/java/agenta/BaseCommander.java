@@ -42,9 +42,6 @@ public class BaseCommander implements Commander
             subordinates.add(comm);
             comm.submit(this, false);
         }
-        else
-        {
-        }
     }
 
 }

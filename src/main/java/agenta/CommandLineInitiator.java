@@ -5,10 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.StringTokenizer;
 
-import agenta.Commander;
-import agenta.InputParameters;
-import agenta.UnitDatabase;
-
 /**
  Инициализатор из командной строки. Считывает файл с описанием расположения и
  количества юнитов. Также получает и передаёт в <code>inputParameters</code> командиров.

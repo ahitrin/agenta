@@ -118,8 +118,8 @@ class PanelViewerFrame extends JFrame
 
     private PanelViewer p;
     private Engine e;
-    private ManualCommander mc0 = new ManualCommander();
-    private ManualCommander mc1 = new ManualCommander();
+    private Commander mc0 = new BaseCommander();
+    private Commander mc1 = new BaseCommander();
 
     private PanelViewerFrame(String caption)
     {
