@@ -21,19 +21,6 @@ public class Map
                 cells[x][y] = new MapCell();
             }
         }
-
-        int TREE_NUMBER = 20;
-        do
-        {
-            x = generator.nextInt(SIZE);
-            y = generator.nextInt(SIZE);
-            if (cells[x][y].getType() == MapCellType.GRASS)
-            {
-                cells[x][y].setType(MapCellType.TREE);
-                i++;
-            }
-        }
-        while (i < TREE_NUMBER);
     }
 
     /**
@@ -133,6 +120,22 @@ public class Map
         }
         catch (Exception e)
         {
+        }
+    }
+
+    public void renderTrees()
+    {
+        int i = 20;
+        int x, y;
+        while (i > 0)
+        {
+            x = generator.nextInt(SIZE);
+            y = generator.nextInt(SIZE);
+            if (cells[x][y].getType() == MapCellType.GRASS)
+            {
+                cells[x][y].setType(MapCellType.TREE);
+                i--;
+            }
         }
     }
 

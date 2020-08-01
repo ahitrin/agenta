@@ -46,6 +46,7 @@ public final class Engine
 
     public void init()
     {
+        map.renderTrees();
         // Расставляем юнитов на карте
         Unit unit;
         commanders[0] = ip.getCommander(0);
