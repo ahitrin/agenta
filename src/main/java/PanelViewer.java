@@ -71,11 +71,7 @@ class PanelViewer extends JPanel implements Viewer
         {
             for (int j = 0; j < size; j++)
             {
-                u = (Unit)(map.getAirObject(i, j));
-                if (u == null)
-                {
-                    u = (Unit)(map.getGroundObject(i, j));
-                }
+                u = (Unit)(map.getGroundObject(i, j));
 
                 if (u != null)
                 {

@@ -57,18 +57,6 @@ public class Map
         }
     }
 
-    public MapObject getAirObject(int x, int y)
-    {
-        try
-        {
-            return cells[x][y].getAirObject();
-        }
-        catch (Exception e)
-        {
-            return null;
-        }
-    }
-
     public MapCellType getCellType(int x, int y)
     {
         try
@@ -116,10 +104,6 @@ public class Map
                 {
                     continue;
                 }
-                if ((o = getAirObject(x + i, y + j)) != null)
-                {
-                    objects.add(o);
-                }
                 if ((o = getGroundObject(x + i, y + j)) != null)
                 {
                     objects.add(o);
@@ -142,10 +126,6 @@ public class Map
     {
         try
         {
-            if (cells[x][y].getAirObject() == obj)
-            {
-                cells[x][y].setAirObject(null);
-            }
             if (cells[x][y].getGroundObject() == obj)
             {
                 cells[x][y].setGroundObject(null);
