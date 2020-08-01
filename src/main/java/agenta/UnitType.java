@@ -20,7 +20,6 @@ public class UnitType implements Serializable
         ut0.setRandAttack(6);
         ut0.setRange(1.45f);
         ut0.setAttackSpeed(25);
-        ut0.setWalk(MapPlacementType.GROUND);
         ut0.setVisibility(7);
         ut0.setSpeed(40);
         ut0.setHitPoints(70);
@@ -31,7 +30,6 @@ public class UnitType implements Serializable
         ut1.setRandAttack(5);
         ut1.setRange(5.5f);
         ut1.setAttackSpeed(40);
-        ut1.setWalk(MapPlacementType.GROUND);
         ut1.setVisibility(7);
         ut1.setSpeed(40);
         ut1.setHitPoints(55);
@@ -42,7 +40,6 @@ public class UnitType implements Serializable
         ut2.setRandAttack(7);
         ut2.setRange(1.45f);
         ut2.setAttackSpeed(40);
-        ut2.setWalk(MapPlacementType.GROUND);
         ut2.setVisibility(7);
         ut2.setSpeed(25);
         ut2.setHitPoints(110);
@@ -64,7 +61,6 @@ public class UnitType implements Serializable
     private int randAttack = 0;
     private int attackSpeed = 0;
     private float range = 0f;
-    private MapPlacementType walk = null;
     private int visibility = 0;
     private int speed = 0;
     private int cost = 0;
@@ -83,7 +79,6 @@ public class UnitType implements Serializable
         setRandAttack(ut.getRandAttack());
         setRange(ut.getRange());
         setAttackSpeed(ut.getAttackSpeed());
-        setWalk(ut.getWalk());
         setVisibility(ut.getVisibility());
         setSpeed(ut.getSpeed());
         setHitPoints(ut.getHitPoints());
@@ -142,11 +137,6 @@ public class UnitType implements Serializable
         return visibility;
     }
 
-    public int getWalk()
-    {
-        return walk.getValue();
-    }
-
     private void setCost(int value)
     {
         cost = value;
@@ -197,11 +187,6 @@ public class UnitType implements Serializable
     private void setVisibility(int value)
     {
         visibility = value;
-    }
-
-    private void setWalk(int value)
-    {
-        walk = new MapPlacementType(value);
     }
 
 }
