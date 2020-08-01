@@ -55,6 +55,7 @@ public class Unit extends MapObject implements Commander
         state = UnitState.STAND;
         currentCommand = new UnitCommand(type, state, UnitType.MAX_PRIORITY);
         name = new Faker().name().firstName();
+        healthCounter = gen.nextInt(100);
     }
 
     /**
