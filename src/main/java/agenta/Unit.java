@@ -1,7 +1,6 @@
 package agenta;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
@@ -288,17 +287,7 @@ public class Unit extends MapObject implements Commander
      */
     private List<Unit> filterEnemies(List<Unit> units)
     {
-        List<Unit> enemies = new ArrayList<>();
-
-        for (Unit unit : units)
-        {
-            if (unit.getPlayer() != player)
-            {
-                enemies.add(unit);
-            }
-        }
-
-        return enemies;
+        return units.stream().filter(u -> u.getPlayer() != player).collect(Collectors.toList());
     }
 
     private void performAttack(Unit other)
