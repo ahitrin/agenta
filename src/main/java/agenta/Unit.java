@@ -263,11 +263,6 @@ public class Unit extends MapObject implements Commander
         return avail;
     }
 
-    public int getPlacementType()
-    {
-        return type.getWalk();
-    }
-
     public int getPlayer()
     {
         return player;

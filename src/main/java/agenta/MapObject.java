@@ -7,11 +7,6 @@ public abstract class MapObject
 {
     protected int x, y;
 
-    public int getPlacementType()
-    {
-        return 0;
-    }
-
     public final int getX()
     {
         return x;
