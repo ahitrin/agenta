@@ -171,16 +171,7 @@ public class Unit extends MapObject implements Commander
      */
     public List<Unit> filterFriends(List<Unit> units)
     {
-        List<Unit> friends = new ArrayList<>();
-
-        for (Unit unit : units)
-        {
-            if (unit.getPlayer() == player)
-            {
-                friends.add(unit);
-            }
-        }
-        return friends;
+        return units.stream().filter(u -> u.getPlayer() == player).collect(Collectors.toList());
     }
 
     /**
@@ -190,18 +181,10 @@ public class Unit extends MapObject implements Commander
      */
     public List<MapObject> filterInAttackRadius(List<MapObject> objs)
     {
-        List<MapObject> avail = new ArrayList<>();
-
         float limit = type.getRange() * type.getRange();
-        for (MapObject obj : objs)
-        {
-            if (obj.x * obj.x + obj.y * obj.y - x * x - y * y <= limit)
-            {
-                avail.add(obj);
-            }
-        }
-
-        return avail;
+        return objs.stream()
+                .filter(obj -> obj.x * obj.x + obj.y * obj.y - x * x - y * y <= limit)
+                .collect(Collectors.toList());
     }
 
     public int getPlayer()
