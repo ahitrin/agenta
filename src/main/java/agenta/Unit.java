@@ -52,8 +52,8 @@ public class Unit extends MapObject implements Commander
         speedCounter = gen.nextInt(type.getSpeed()) + 1;
         attackCounter = gen.nextInt(type.getAttackSpeed()) + 1;
         currentHitPoints = type.getHitPoints();
-        state = UnitState.STAND;
-        currentCommand = new UnitCommand(type, state, UnitType.MAX_PRIORITY);
+        state = UnitState.ATTACK;
+        currentCommand = new UnitCommand(type, state, UnitType.MIN_PRIORITY);
         name = new Faker().name().firstName();
         healthCounter = gen.nextInt(100);
     }
