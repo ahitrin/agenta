@@ -30,39 +30,33 @@ public class Map
      */
     public boolean canPlaceObject(int x, int y)
     {
-        try
-        {
-            return (cells[x][y].getType() == MapCellType.GRASS) &&
-                    (cells[x][y].getObject() == null);
-        }
-        catch (Exception e)
+        if ((x < 0) || (y < 0) ||
+                (x >= SIZE) || (y >= SIZE))
         {
             return false;
         }
+        return (cells[x][y].getType() == MapCellType.GRASS) &&
+                (cells[x][y].getObject() == null);
     }
 
     public MapCellType getCellType(int x, int y)
     {
-        try
-        {
-            return cells[x][y].getType();
-        }
-        catch (Exception e)
+        if ((x < 0) || (y < 0) ||
+                (x >= SIZE) || (y >= SIZE))
         {
             return MapCellType.TREE;
         }
+        return cells[x][y].getType();
     }
 
     public MapObject getGroundObject(int x, int y)
     {
-        try
-        {
-            return cells[x][y].getObject();
-        }
-        catch (Exception e)
+        if ((x < 0) || (y < 0) ||
+                (x >= SIZE) || (y >= SIZE))
         {
             return null;
         }
+        return cells[x][y].getObject();
     }
 
     /**
