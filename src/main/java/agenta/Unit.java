@@ -140,8 +140,8 @@ public class Unit extends MapObject implements Commander
                 }
                 else
                 {
-                    int dx = SingleRandom.get().nextInt(3) - 1;
-                    int dy = SingleRandom.get().nextInt(3) - 1;
+                    int dx = random.nextInt(3) - 1;
+                    int dy = random.nextInt(3) - 1;
                     doMove(dx, dy);
                 }
             }
@@ -313,7 +313,7 @@ public class Unit extends MapObject implements Commander
         }
         if (!units.isEmpty())
         {
-            target = units.get(SingleRandom.get().nextInt(units.size()));
+            target = units.get(random.nextInt(units.size()));
         }
         else
         {
