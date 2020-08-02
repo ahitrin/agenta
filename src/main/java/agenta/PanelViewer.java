@@ -16,7 +16,6 @@ class PanelViewer extends JPanel implements Viewer
     private final Image[] iFootman = new Image[2];
     private final Image[] iArcher = new Image[2];
     private final Image[] iKnight = new Image[2];
-    private final Image[] iGryphon = new Image[2];
     private BufferedImage current, old;
     private boolean enabled;
 
@@ -33,8 +32,6 @@ class PanelViewer extends JPanel implements Viewer
         iArcher[1] = getToolkit().getImage("Pictures/archer1.gif");
         iKnight[0] = getToolkit().getImage("Pictures/knight0.gif");
         iKnight[1] = getToolkit().getImage("Pictures/knight1.gif");
-        iGryphon[0] = getToolkit().getImage("Pictures/gryphon0.gif");
-        iGryphon[1] = getToolkit().getImage("Pictures/gryphon1.gif");
 
         setVisible(true);
     }
@@ -82,9 +79,6 @@ class PanelViewer extends JPanel implements Viewer
                         break;
                     case 'k':
                         ima = iKnight[u.getPlayer()];
-                        break;
-                    case 'g':
-                        ima = iGryphon[u.getPlayer()];
                         break;
                     }
                 }
