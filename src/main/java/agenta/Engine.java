@@ -21,10 +21,12 @@ public final class Engine
     private final Commander[] commanders = new Commander[2];
     private final List<Viewer> viewers = new ArrayList<>();
     private int winner = -1;
+    private final SingleRandom generator;
 
-    public Engine(InputParameters ip)
+    public Engine(InputParameters ip, SingleRandom generator)
     {
         this.ip = ip;
+        this.generator = generator;
     }
 
     // Позволяет подключить к движку вид. Возвращается идентификатор вида
@@ -59,12 +61,11 @@ public final class Engine
             {
                 for (int j = 0; j < ip.getUnit(i, player); j++)
                 {
-                    unit = new Unit(ud.typeOf(i), player, map, SingleRandom.get());
+                    unit = new Unit(ud.typeOf(i), player, map, generator);
                     unitCounter[player]++;
                     int x, y;
                     do
                     {
-                        SingleRandom generator = SingleRandom.get();
                         x = generator.nextInt(Map.SIZE);
                         y = generator.nextInt(Map.SIZE);
                     }

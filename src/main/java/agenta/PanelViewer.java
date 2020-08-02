@@ -126,7 +126,7 @@ class PanelViewerFrame extends JFrame
         super(caption);
         p = new PanelViewer();
         CommandLineInitiator cli = new CommandLineInitiator("placement.txt", mc0, mc1);
-        e = new Engine(cli.getParameters());
+        e = new Engine(cli.getParameters(), SingleRandom.get());
         e.init();
         e.addViewer(p);
 
