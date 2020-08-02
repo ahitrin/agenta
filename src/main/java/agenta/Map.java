@@ -6,17 +6,16 @@ import java.util.List;
 public class Map
 {
     public static final int SIZE = 18;
-    private SingleRandom generator = SingleRandom.get();
+    private final SingleRandom generator;
     private final MapCell[][] cells;
 
-    public Map()
+    public Map(SingleRandom generator)
     {
-        int x, y, i = 0;
-
+        this.generator = generator;
         cells = new MapCell[SIZE][SIZE];
-        for (x = 0; x < SIZE; x++)
+        for (int x = 0; x < SIZE; x++)
         {
-            for (y = 0; y < SIZE; y++)
+            for (int y = 0; y < SIZE; y++)
             {
                 cells[x][y] = new MapCell();
             }

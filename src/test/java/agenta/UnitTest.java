@@ -16,8 +16,8 @@ class UnitTest {
         type.setAttackSpeed(3);
         type.setHitPoints(10);
         int player = 13;
-        Map map = new Map();
         SingleRandom random = SingleRandom.get();
+        Map map = new Map(random);
         Unit unit = new Unit(type, player, map, random);
         assertTrue(unit.isAlive());
     }

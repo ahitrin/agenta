@@ -15,18 +15,19 @@ import java.util.List;
 public final class Engine
 {
     private final InputParameters ip;
-    private final Map map = new Map();
+    private final Map map;
     private final List<Unit> units = new ArrayList<>();
     private final int[] unitCounter = new int[2];
     private final Commander[] commanders = new Commander[2];
     private final List<Viewer> viewers = new ArrayList<>();
-    private int winner = -1;
     private final SingleRandom generator;
+    private int winner = -1;
 
     public Engine(InputParameters ip, SingleRandom generator)
     {
         this.ip = ip;
         this.generator = generator;
+        map = new Map(generator);
     }
 
     // Позволяет подключить к движку вид. Возвращается идентификатор вида
