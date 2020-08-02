@@ -106,24 +106,21 @@ class PanelViewerFrame extends JFrame
 {
     public static void main(String[] args)
     {
-        PanelViewerFrame f = new PanelViewerFrame("Agenta test");
-        f.doRun();
-    }
-
-    private PanelViewer p;
-    private Engine e;
-    private Commander mc0 = new BaseCommander();
-    private Commander mc1 = new BaseCommander();
-
-    private PanelViewerFrame(String caption)
-    {
-        super(caption);
-        p = new PanelViewer();
+        PanelViewer p = new PanelViewer();
+        Commander mc0 = new BaseCommander();
+        Commander mc1 = new BaseCommander();
         CommandLineInitiator cli = new CommandLineInitiator("placement.txt", mc0, mc1);
         cli.load();
-        e = new Engine(cli.getParameters(), SingleRandom.get());
+        Engine e = new Engine(cli.getParameters(), SingleRandom.get());
         e.init();
         e.addViewer(p);
+        PanelViewerFrame f = new PanelViewerFrame("Agenta test", p);
+        PanelViewerFrame.doRun(e, f, p);
+    }
+
+    private PanelViewerFrame(String caption, PanelViewer p)
+    {
+        super(caption);
 
         setSize(550, 480);
 
@@ -133,7 +130,7 @@ class PanelViewerFrame extends JFrame
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    private void doRun()
+    private static void doRun(Engine e, PanelViewerFrame parentComponent, PanelViewer p)
     {
         while (e.getWinner() == -1)
         {
@@ -142,7 +139,7 @@ class PanelViewerFrame extends JFrame
                 Thread.sleep(5);
             }catch(InterruptedException ex){}*/
         }
-        JOptionPane.showMessageDialog(this, "Player " + e.getWinner() + " has won!",
+        JOptionPane.showMessageDialog(parentComponent, "Player " + e.getWinner() + " has won!",
                 "End of game", JOptionPane.INFORMATION_MESSAGE);
         p.repaint();
     }
