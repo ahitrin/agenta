@@ -49,10 +49,6 @@ public class CommandLineInitiator
             System.exit(0);
         }
 
-        // Получаем тип расположения юнитов - по линиям или случайным образом
-        s1 = st.nextToken();
-        // unused
-
         // here read & setup units - not done yet
         UnitDatabase ud = UnitDatabase.get();
         int player0, player1;
