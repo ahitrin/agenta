@@ -23,7 +23,6 @@ public class UnitType implements Serializable
         ut0.setVisibility(7);
         ut0.setSpeed(40);
         ut0.setHitPoints(70);
-        ut0.setCost(2);
 
         ut1.setName("Archer");
         ut1.setBaseAttack(3);
@@ -33,7 +32,6 @@ public class UnitType implements Serializable
         ut1.setVisibility(7);
         ut1.setSpeed(40);
         ut1.setHitPoints(55);
-        ut1.setCost(2);
 
         ut2.setName("Knight");
         ut2.setBaseAttack(9);
@@ -43,7 +41,6 @@ public class UnitType implements Serializable
         ut2.setVisibility(7);
         ut2.setSpeed(25);
         ut2.setHitPoints(110);
-        ut2.setCost(3);
 
         ObjectOutputStream str = new ObjectOutputStream(new FileOutputStream("types.ser"));
 
@@ -64,7 +61,6 @@ public class UnitType implements Serializable
     private float range = 0f;
     private int visibility = 0;
     private int speed = 0;
-    private int cost = 0;
     private int[] healthLimit = null;
 
     UnitType()
@@ -83,7 +79,6 @@ public class UnitType implements Serializable
         setVisibility(ut.getVisibility());
         setSpeed(ut.getSpeed());
         setHitPoints(ut.getHitPoints());
-        setCost(ut.getCost());
     }
 
     public int getAttackSpeed()
@@ -140,11 +135,6 @@ public class UnitType implements Serializable
         return name;
     }
 
-    private int getCost()
-    {
-        return cost;
-    }
-
     void setAttackSpeed(int value)
     {
         attackSpeed = value;
@@ -153,11 +143,6 @@ public class UnitType implements Serializable
     private void setBaseAttack(int value)
     {
         baseAttack = value;
-    }
-
-    private void setCost(int value)
-    {
-        cost = value;
     }
 
     void setHitPoints(int value)
