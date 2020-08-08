@@ -40,15 +40,6 @@ public final class UnitDatabase
         return indexOf(type.getName());
     }
 
-    public String nameOf(int index)
-    {
-        if ((index >= 0) && (index < unitTypes.size()))
-        {
-            return unitTypes.get(index).getName();
-        }
-        return null;
-    }
-
     public int size()
     {
         return unitTypes.size();
@@ -61,10 +52,5 @@ public final class UnitDatabase
             return new UnitTypeImpl(unitTypes.get(index));
         }
         return null;
-    }
-
-    public UnitType typeOf(String name)
-    {
-        return typeOf(indexOf(name));
     }
 }

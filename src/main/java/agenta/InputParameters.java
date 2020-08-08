@@ -43,12 +43,6 @@ public final class InputParameters
         commanderCounter++;
     }
 
-    public void addUnit(UnitType unit, int player0, int player1)
-    {
-        UnitDatabase ud = UnitDatabase.get();
-        addUnit(ud.indexOf(unit), player0, player1);
-    }
-
     public void addUnit(int index, int player0, int player1)
     {
         try
