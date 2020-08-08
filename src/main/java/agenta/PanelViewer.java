@@ -113,7 +113,7 @@ class PanelViewerFrame extends JFrame
         final UnitDatabase unitDatabase = UnitDatabase.get();
         CommandLineInitiator cli = new CommandLineInitiator(unitDatabase, "placement.txt", mc0, mc1);
         cli.load();
-        Engine e = new Engine(cli.getParameters(), SingleRandom.get());
+        Engine e = new Engine(cli.getParameters(), unitDatabase, SingleRandom.get());
         e.init();
         e.addViewer(p);
         PanelViewerFrame f = new PanelViewerFrame("Agenta test", p);

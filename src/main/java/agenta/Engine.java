@@ -22,11 +22,13 @@ public final class Engine
     private final List<Viewer> viewers = new ArrayList<>();
     private final SingleRandom generator;
     private int winner = -1;
+    private final UnitDatabase unitDatabase;
 
-    public Engine(InputParameters ip, SingleRandom generator)
+    public Engine(InputParameters ip, UnitDatabase unitDatabase, SingleRandom generator)
     {
         this.ip = ip;
         this.generator = generator;
+        this.unitDatabase = unitDatabase;
         map = new Map(generator);
     }
 
@@ -55,14 +57,13 @@ public final class Engine
         commanders[0] = ip.getCommander(0);
         commanders[1] = ip.getCommander(1);
 
-        UnitDatabase ud = UnitDatabase.get();
-        for (int i = 0; i < ud.size(); i++)
+        for (int i = 0; i < unitDatabase.size(); i++)
         {
             for (int player = 0; player < 2; player++)
             {
                 for (int j = 0; j < ip.getUnit(i, player); j++)
                 {
-                    unit = new Unit(ud.typeOf(i), player, map, generator);
+                    unit = new Unit(unitDatabase.typeOf(i), player, map, generator);
                     unitCounter[player]++;
                     int x, y;
                     do
