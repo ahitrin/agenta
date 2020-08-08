@@ -105,21 +105,7 @@ class PanelViewer extends JPanel implements Viewer
 
 class PanelViewerFrame extends JFrame
 {
-    public static void main(String[] args)
-    {
-        PanelViewer p = new PanelViewer();
-        Commander mc0 = new BaseCommander();
-        Commander mc1 = new BaseCommander();
-        CommandLineInitiator cli = new CommandLineInitiator("placement.txt", mc0, mc1);
-        cli.load();
-        Engine e = new Engine(cli.getParameters(), SingleRandom.get());
-        e.init();
-        e.addViewer(p);
-        PanelViewerFrame f = new PanelViewerFrame("Agenta test", p);
-        PanelViewerFrame.doRun(e, f, p);
-    }
-
-    private PanelViewerFrame(String caption, PanelViewer p)
+    public PanelViewerFrame(String caption, PanelViewer p)
     {
         super(caption);
 
@@ -131,16 +117,9 @@ class PanelViewerFrame extends JFrame
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    private static void doRun(Engine e, PanelViewerFrame parentComponent, PanelViewer p)
+    public void showEndMessage(PanelViewer p, String message)
     {
-        while (e.getWinner() == -1)
-        {
-            e.step();
-            /*try{
-                Thread.sleep(5);
-            }catch(InterruptedException ex){}*/
-        }
-        JOptionPane.showMessageDialog(parentComponent, "Player " + e.getWinner() + " has won!",
+        JOptionPane.showMessageDialog(this, message,
                 "End of game", JOptionPane.INFORMATION_MESSAGE);
         p.repaint();
     }
