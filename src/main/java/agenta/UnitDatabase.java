@@ -4,24 +4,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- Загружает и хранит список используемых в игре типов юнитов. В классе реализован шаблон
- "одиночка", так как, во-первых, нет необходимости хранить типы юнитов в нескольких
- местах одновременно, а во-вторых, доступ к типам юнитов требуется в целом ряде классов,
- а так они могут его легко получить через вызов метода get().
+ * Загружает и хранит список используемых в игре типов юнитов.
  */
 public final class UnitDatabase
 {
-    private static final UnitDatabase instance = new UnitDatabase();
-
-    public static UnitDatabase get()
-    {
-        return instance;
-    }
-
     private final List<UnitType> unitTypes;
     private final List<String> unitNames;
 
-    private UnitDatabase()
+    public UnitDatabase()
     {
         unitTypes = DefaultUnits.build();
         unitNames = unitTypes.stream()

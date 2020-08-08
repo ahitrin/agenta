@@ -110,7 +110,7 @@ class PanelViewerFrame extends JFrame
         PanelViewer p = new PanelViewer();
         Commander mc0 = new BaseCommander();
         Commander mc1 = new BaseCommander();
-        final UnitDatabase unitDatabase = UnitDatabase.get();
+        final UnitDatabase unitDatabase = new UnitDatabase();
         CommandLineInitiator cli = new CommandLineInitiator(unitDatabase, "placement.txt", mc0, mc1);
         cli.load();
         Engine e = new Engine(cli.getParameters(), unitDatabase, SingleRandom.get());
