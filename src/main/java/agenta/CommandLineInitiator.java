@@ -16,13 +16,15 @@ public class CommandLineInitiator
     private final String initFile;
     private final Commander com1;
     private final Commander com2;
+    private final UnitDatabase unitDatabase;
 
-    public CommandLineInitiator(String initFile, Commander com1, Commander com2)
+    public CommandLineInitiator(UnitDatabase unitDatabase, String initFile, Commander com1, Commander com2)
     {
         this.initFile = initFile;
         this.com1 = com1;
         this.com2 = com2;
-        inputParameters = new InputParameters(UnitDatabase.get().size());
+        this.unitDatabase = unitDatabase;
+        inputParameters = new InputParameters(this.unitDatabase.size());
     }
 
     public void load()
@@ -61,7 +63,6 @@ public class CommandLineInitiator
         }
 
         // here read & setup units - not done yet
-        UnitDatabase ud = UnitDatabase.get();
         int player0, player1;
         while (st.hasMoreTokens())
         {
@@ -76,7 +77,7 @@ public class CommandLineInitiator
                 player1 = Integer.parseInt(s2);
 
                 // добавляем юнит в параметры
-                inputParameters.addUnit(ud.indexOf(s1), player0, player1);
+                inputParameters.addUnit(unitDatabase.indexOf(s1), player0, player1);
 
             }
             catch (Exception e)
