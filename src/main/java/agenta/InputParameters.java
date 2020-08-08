@@ -20,11 +20,8 @@ public final class InputParameters
     private final Commander[] commanders = new Commander[2];
     private int commanderCounter = 0;
 
-    public InputParameters()
+    public InputParameters(int size)
     {
-        UnitDatabase ud = UnitDatabase.get();
-        int size = ud.size();
-
         initialized = new boolean[size];
         player0 = new int[size];
         player1 = new int[size];

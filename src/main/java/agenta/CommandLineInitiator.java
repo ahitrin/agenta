@@ -12,7 +12,7 @@ import java.util.StringTokenizer;
 
 public class CommandLineInitiator
 {
-    private final InputParameters inputParameters = new InputParameters();
+    private final InputParameters inputParameters;
     private final String initFile;
     private final Commander com1;
     private final Commander com2;
@@ -22,6 +22,7 @@ public class CommandLineInitiator
         this.initFile = initFile;
         this.com1 = com1;
         this.com2 = com2;
+        inputParameters = new InputParameters(UnitDatabase.get().size());
     }
 
     public void load()
