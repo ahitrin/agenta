@@ -55,8 +55,6 @@ class PanelViewer extends JPanel implements Viewer
         enabled = false;
         int size = Map.SIZE;
 
-        Unit u = null;
-        char c = ' ';
         Image ima = null;
         current = (BufferedImage)createImage(450, 450);
         Graphics2D currentGraph = current.createGraphics();
@@ -64,12 +62,12 @@ class PanelViewer extends JPanel implements Viewer
         {
             for (int j = 0; j < size; j++)
             {
-                u = (Unit)(map.getGroundObject(i, j));
+                Unit u = (Unit)(map.getGroundObject(i, j));
 
                 if (u != null)
                 {
                     String s = u.getType().getName().toLowerCase();
-                    c = s.charAt(0);
+                    char c = s.charAt(0);
                     switch (c)
                     {
                     case 'f':
