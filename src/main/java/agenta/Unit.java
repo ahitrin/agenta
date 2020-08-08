@@ -2,7 +2,6 @@ package agenta;
 
 import java.text.MessageFormat;
 import java.util.List;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -37,7 +36,7 @@ public class Unit extends MapObject implements Commander
     private String name;
     private final SingleRandom random;
 
-    private final Function<List<Unit>, Unit> selectTargetPerk = new Function<>()
+    private final Selector<Unit> selectTargetPerk = new Selector<>()
     {
         private Unit target = null;
 
