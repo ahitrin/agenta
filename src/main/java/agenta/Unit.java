@@ -169,29 +169,6 @@ public class Unit extends MapObject implements Commander
         }
     }
 
-    /**
-     * Фильтрует список юнитов, оставляя только дружественных
-     * @param units Входящий список юнитов
-     * @return Дружественные из входящего списка
-     */
-    public List<Unit> filterFriends(List<Unit> units)
-    {
-        return units.stream().filter(u -> u.getPlayer() == player).collect(Collectors.toList());
-    }
-
-    /**
-     * Фильтрует список объектов, отбрасывая из него те, что слишком далеки для атаки
-     * @param objs Входящий список объектов
-     * @return Только доступные для атаки объекты
-     */
-    public List<MapObject> filterInAttackRadius(List<MapObject> objs)
-    {
-        float limit = type.getRange() * type.getRange();
-        return objs.stream()
-                .filter(obj -> obj.x * obj.x + obj.y * obj.y - x * x - y * y <= limit)
-                .collect(Collectors.toList());
-    }
-
     public int getPlayer()
     {
         return player;
