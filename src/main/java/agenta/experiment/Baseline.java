@@ -59,7 +59,7 @@ public class Baseline
         }
         if (wins0 + wins1 > 0) {
             p0 = 100 * wins0 / (wins0 + wins1);
-            p1 = 100 * wins1 / (wins0 + wins1);
+            p1 = 100 - p0;
         }
         System.out.printf("Player 0 won %d times (%d%%), in %d steps average%n", wins0, p0, steps0);
         System.out.printf("Player 1 won %d times (%d%%), in %d steps average%n", wins1, p1, steps1);
