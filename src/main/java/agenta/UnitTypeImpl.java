@@ -12,7 +12,7 @@ public class UnitTypeImpl implements Serializable
     private float range = 0f;
     private int visibility = 0;
     private int speed = 0;
-    private int[] healthLimit = new int[MAX_PRIORITY];
+    private final int[] healthLimit = new int[UnitType.MAX_PRIORITY];
 
     UnitTypeImpl()
     {
