@@ -86,7 +86,7 @@ public class Baseline
         InputParameters params = new InputParameters();
         params.addCommander(new BaseCommander());
         params.addCommander(new BaseCommander());
-        unitTypes.forEach(ut -> params.addUnit(ut.getName().toLowerCase(), 30, 30));
+        unitTypes.forEach(ut -> params.addUnit(ut.getName().toLowerCase(), 10, 10));
         return params;
     }
 
