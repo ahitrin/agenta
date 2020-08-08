@@ -35,36 +35,7 @@ public class Unit extends MapObject implements Commander
     private int kills = 0;
     private String name;
     private final SingleRandom random;
-
-    private final Selector<Unit> selectTargetPerk = new Selector<>()
-    {
-        private Unit target = null;
-
-        @Override
-        public Unit apply(List<Unit> units)
-        {
-            if (target != null)
-            {
-                if (!target.isAlive())
-                {
-                    target = null;
-                }
-            }
-            if ((target != null) && units.contains(target))
-            {
-                return target;
-            }
-            if (!units.isEmpty())
-            {
-                target = units.get(random.nextInt(units.size()));
-            }
-            else
-            {
-                target = null;
-            }
-            return target;
-        }
-    };
+    private final Selector<Unit> selectTargetPerk;
 
     public Unit(UnitType type, int player, Map map, SingleRandom random)
     {
@@ -79,6 +50,7 @@ public class Unit extends MapObject implements Commander
         currentCommand = new UnitCommand(state, UnitType.MIN_PRIORITY);
         name = new Faker().name().firstName();
         healthCounter = this.random.nextInt(100) + 1;
+        selectTargetPerk = new SelectRandomWithMemory(random);
     }
 
     /**
