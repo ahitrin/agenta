@@ -48,17 +48,17 @@ public final class Engine
     {
         map.renderTrees();
         // Расставляем юнитов на карте
-        Unit unit;
         commanders[0] = ip.getCommander(0);
         commanders[1] = ip.getCommander(1);
 
-        for (int i = 0; i < unitDatabase.size(); i++)
+        for (UnitType unitType: DefaultUnits.build())
         {
             for (int player = 0; player < 2; player++)
             {
-                for (int j = 0; j < ip.getUnit(i, player); j++)
+                final int count = ip.getUnit(player, unitType.getName().toLowerCase());
+                for (int u = 0; u < count; u++)
                 {
-                    unit = new Unit(unitDatabase.typeOf(i), player, map, generator);
+                    Unit unit = new Unit(unitType, player, map, generator);
                     unitCounter[player]++;
                     int x, y;
                     do
