@@ -2,6 +2,7 @@ package agenta;
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,6 @@ public class Unit extends MapObject implements Commander
     private final UnitType type;
     private UnitState state;
     private final Map map;
-    private Unit target;
     private final int player;
     private int speedCounter, attackCounter, healthCounter;
     private int currentHitPoints;
@@ -36,6 +36,36 @@ public class Unit extends MapObject implements Commander
     private int kills = 0;
     private String name;
     private final SingleRandom random;
+
+    private final Function<List<Unit>, Unit> selectTargetPerk = new Function<>()
+    {
+        private Unit target = null;
+
+        @Override
+        public Unit apply(List<Unit> units)
+        {
+            if (target != null)
+            {
+                if (!target.isAlive())
+                {
+                    target = null;
+                }
+            }
+            if ((target != null) && units.contains(target))
+            {
+                return target;
+            }
+            if (!units.isEmpty())
+            {
+                target = units.get(random.nextInt(units.size()));
+            }
+            else
+            {
+                target = null;
+            }
+            return target;
+        }
+    };
 
     public Unit(UnitType type, int player, Map map, SingleRandom random)
     {
@@ -104,7 +134,7 @@ public class Unit extends MapObject implements Commander
             if (!neighbours.isEmpty())
             {
                 // пока что атакуем случайно выбранного противника
-                performAttack(selectTarget(neighbours));
+                performAttack(selectTargetPerk.apply(neighbours));
             }
             break;
         case ATTACK:
@@ -117,7 +147,7 @@ public class Unit extends MapObject implements Commander
                     map.getObjectsInRadius(x, y, type.getRange())));
             if (!neighbours.isEmpty())
             {
-                performAttack(selectTarget(neighbours));
+                performAttack(selectTargetPerk.apply(neighbours));
             }
             else
             {
@@ -125,7 +155,7 @@ public class Unit extends MapObject implements Commander
                         map.getObjectsInRadius(x, y, type.getVisibility())));
                 if (!neighbours.isEmpty())
                 {
-                    Unit target = selectTarget(neighbours);
+                    Unit target = selectTargetPerk.apply(neighbours);
                     int dx = target.x - x, dy = target.y - y;
                     dx = Integer.compare(dx, 0);
                     dy = Integer.compare(dy, 0);
@@ -268,35 +298,6 @@ public class Unit extends MapObject implements Commander
         {
             kills += 1;
         }
-    }
-
-    /**
-     * Выбирает случайного юнита из списка
-     * @param units Список юнитов
-     * @return Случайный юнит
-     */
-    private Unit selectTarget(List<Unit> units)
-    {
-        if (target != null)
-        {
-            if (!target.isAlive())
-            {
-                target = null;
-            }
-        }
-        if ((target != null) && units.contains(target))
-        {
-            return target;
-        }
-        if (!units.isEmpty())
-        {
-            target = units.get(random.nextInt(units.size()));
-        }
-        else
-        {
-            target = null;
-        }
-        return target;
     }
 
     /**
