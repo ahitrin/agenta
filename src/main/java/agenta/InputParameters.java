@@ -42,22 +42,11 @@ public final class InputParameters
 
     public void addUnit(int index, int player0, int player1)
     {
-        try
+        if (!initialized[index])
         {
-            if ((player0 < 0) || (player1 < 0) || (player0 > MAX_UNITS_PER_TYPE) ||
-                    (player1 > MAX_UNITS_PER_TYPE))
-            {
-                throw new ArrayIndexOutOfBoundsException();
-            }
-            if (!initialized[index])
-            {
-                this.player0[index] = player0;
-                this.player1[index] = player1;
-                initialized[index] = true;
-            }
-        }
-        catch (ArrayIndexOutOfBoundsException e)
-        {
+            this.player0[index] = player0;
+            this.player1[index] = player1;
+            initialized[index] = true;
         }
     }
 
