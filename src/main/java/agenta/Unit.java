@@ -91,13 +91,6 @@ public class Unit extends MapObject implements Commander
             return;
         }
 
-        if (target != null)
-        {
-            if (!target.isAlive())
-            {
-                target = null;
-            }
-        }
         List<Unit> neighbours;
         switch (state)
         {
@@ -132,7 +125,7 @@ public class Unit extends MapObject implements Commander
                         map.getObjectsInRadius(x, y, type.getVisibility())));
                 if (!neighbours.isEmpty())
                 {
-                    selectTarget(neighbours);
+                    Unit target = selectTarget(neighbours);
                     int dx = target.x - x, dy = target.y - y;
                     dx = Integer.compare(dx, 0);
                     dy = Integer.compare(dy, 0);
@@ -284,6 +277,13 @@ public class Unit extends MapObject implements Commander
      */
     private Unit selectTarget(List<Unit> units)
     {
+        if (target != null)
+        {
+            if (!target.isAlive())
+            {
+                target = null;
+            }
+        }
         if ((target != null) && units.contains(target))
         {
             return target;
