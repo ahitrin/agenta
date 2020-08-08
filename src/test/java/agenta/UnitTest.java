@@ -21,7 +21,7 @@ class UnitTest
         int player = 13;
         SingleRandom random = SingleRandom.get();
         Map map = new Map(random);
-        Unit unit = new Unit(type, player, map, random);
+        Unit unit = new Unit(type, player, map, random, new SelectRandomWithMemory(random));
         assertTrue(unit.isAlive());
     }
 }
