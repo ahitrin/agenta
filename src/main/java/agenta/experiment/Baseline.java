@@ -72,7 +72,7 @@ public class Baseline
         Engine e = new Engine(params, SingleRandom.get());
         e.init(unitTypes);
         int steps = 0;
-        while (e.getWinner() == -1 && steps < 1000)
+        while (e.getWinner() == -1 && steps < 2000)
         {
             e.step();
             steps++;
