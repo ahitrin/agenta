@@ -14,7 +14,7 @@ public class Application
         CommandLineInitiator cli = new CommandLineInitiator("placement.txt", mc0, mc1);
         cli.load();
         Engine e = new Engine(cli.getParameters(), SingleRandom.get());
-        e.init();
+        e.init(DefaultUnits.build());
         e.addViewer(p);
         PanelViewerFrame f = new PanelViewerFrame("Agenta test", p);
         doRun(e, f, p);

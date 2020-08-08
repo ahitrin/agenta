@@ -42,14 +42,14 @@ public final class Engine
         return winner;
     }
 
-    public void init()
+    public void init(List<UnitType> unitTypes)
     {
         map.renderTrees();
         // Расставляем юнитов на карте
         commanders[0] = ip.getCommander(0);
         commanders[1] = ip.getCommander(1);
 
-        for (UnitType unitType: DefaultUnits.build())
+        for (UnitType unitType: unitTypes)
         {
             for (int player = 0; player < 2; player++)
             {
