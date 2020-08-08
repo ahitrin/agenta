@@ -22,13 +22,11 @@ public final class Engine
     private final List<Viewer> viewers = new ArrayList<>();
     private final SingleRandom generator;
     private int winner = -1;
-    private final UnitDatabase unitDatabase;
 
-    public Engine(InputParameters ip, UnitDatabase unitDatabase, SingleRandom generator)
+    public Engine(InputParameters ip, SingleRandom generator)
     {
         this.ip = ip;
         this.generator = generator;
-        this.unitDatabase = unitDatabase;
         map = new Map(generator);
     }
 

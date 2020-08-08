@@ -79,21 +79,4 @@ public final class InputParameters
         }
         throw new IllegalArgumentException("Player must be equal 0 or 1, not " + player);
     }
-
-    public int getUnit(int index, int player)
-    {
-        if ((index >= 0) && (index < initialized.length))
-        {
-            switch (player)
-            {
-            case 0:
-                return player0[index];
-            case 1:
-                return player1[index];
-            default:
-                return 0;
-            }
-        }
-        return 0;
-    }
 }
