@@ -6,10 +6,9 @@ import java.io.FileReader;
 import java.util.StringTokenizer;
 
 /**
- Инициализатор из командной строки. Считывает файл с описанием расположения и
- количества юнитов. Также получает и передаёт в <code>inputParameters</code> командиров.
+ * Инициализатор из командной строки. Считывает файл с описанием расположения и
+ * количества юнитов. Также получает и передаёт в <code>inputParameters</code> командиров.
  */
-
 public class CommandLineInitiator
 {
     private final InputParameters inputParameters;

@@ -25,11 +25,6 @@ public final class UnitDatabase
         return unitNames.indexOf(name.toLowerCase());
     }
 
-    public int indexOf(UnitType type)
-    {
-        return indexOf(type.getName());
-    }
-
     public int size()
     {
         return unitTypes.size();
