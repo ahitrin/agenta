@@ -12,9 +12,9 @@ public final class DefaultUnits
     {
     }
 
-    public static List<UnitTypeImpl> build()
+    public static List<UnitType> build()
     {
-        UnitTypeImpl footman = new UnitTypeBuilder()
+        UnitType footman = new UnitTypeBuilder()
                 .setName("Footman")
                 .setBaseAttack(5)
                 .setRandAttack(6)
@@ -25,7 +25,7 @@ public final class DefaultUnits
                 .setHitPoints(70)
                 .build();
 
-        UnitTypeImpl archer = new UnitTypeBuilder()
+        UnitType archer = new UnitTypeBuilder()
                 .setName("Archer")
                 .setBaseAttack(3)
                 .setRandAttack(5)
@@ -36,7 +36,7 @@ public final class DefaultUnits
                 .setHitPoints(55)
                 .build();
 
-        UnitTypeImpl knight = new UnitTypeBuilder()
+        UnitType knight = new UnitTypeBuilder()
                 .setName("Knight")
                 .setBaseAttack(9)
                 .setRandAttack(7)

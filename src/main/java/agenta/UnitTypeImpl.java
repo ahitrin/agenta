@@ -1,8 +1,6 @@
 package agenta;
 
-import java.io.Serializable;
-
-public class UnitTypeImpl implements Serializable
+public class UnitTypeImpl implements UnitType
 {
     private String name = "";
     private int hitPoints = 0;
@@ -18,7 +16,7 @@ public class UnitTypeImpl implements Serializable
     {
     }
 
-    public UnitTypeImpl(UnitTypeImpl ut)
+    public UnitTypeImpl(UnitType ut)
     {
         this();
         setName(ut.getName());
@@ -31,16 +29,19 @@ public class UnitTypeImpl implements Serializable
         setHitPoints(ut.getHitPoints());
     }
 
+    @Override
     public int getAttackSpeed()
     {
         return attackSpeed;
     }
 
+    @Override
     public int getBaseAttack()
     {
         return baseAttack;
     }
 
+    @Override
     public int getHealthLimit(int index)
     {
         if ((index < healthLimit.length) && (index >= 0))
@@ -50,31 +51,37 @@ public class UnitTypeImpl implements Serializable
         return -1;
     }
 
+    @Override
     public int getHitPoints()
     {
         return hitPoints;
     }
 
+    @Override
     public String getName()
     {
         return name;
     }
 
+    @Override
     public int getRandAttack()
     {
         return randAttack;
     }
 
+    @Override
     public float getRange()
     {
         return range;
     }
 
+    @Override
     public int getSpeed()
     {
         return speed;
     }
 
+    @Override
     public int getVisibility()
     {
         return visibility;

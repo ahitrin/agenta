@@ -48,6 +48,7 @@ class PanelViewer extends JPanel implements Viewer
         }
     }
 
+    @Override
     public void update(Map map)
     {
         old = current;

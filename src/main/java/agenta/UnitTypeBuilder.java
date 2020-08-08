@@ -52,7 +52,7 @@ public class UnitTypeBuilder
         return this;
     }
 
-    public UnitTypeImpl build() {
+    public UnitType build() {
         return new UnitTypeImpl(type);
     }
 }

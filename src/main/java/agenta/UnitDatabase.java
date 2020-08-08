@@ -1,9 +1,7 @@
 package agenta;
 
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  Загружает и хранит список используемых в игре типов юнитов. В классе реализован шаблон
@@ -20,27 +18,16 @@ public final class UnitDatabase
         return instance;
     }
 
-    private final List<UnitType> unitTypes = new ArrayList<>();
-    private final List<String> unitNames = new ArrayList<>();
+    private final List<UnitType> unitTypes;
+    private final List<String> unitNames;
 
     private UnitDatabase()
     {
-        try
-        {
-            ObjectInputStream ois = new ObjectInputStream(new FileInputStream("types.ser"));
-            for (int i = 0; i < 3; i++)
-            {
-                unitTypes.add((UnitType)ois.readObject());
-                unitNames.add(unitTypes.get(i).getName().toLowerCase());
-            }
-            ois.close();
-
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            System.exit(0);
-        }
+        unitTypes = DefaultUnits.build();
+        unitNames = unitTypes.stream()
+                .map(UnitType::getName)
+                .map(String::toLowerCase)
+                .collect(Collectors.toList());
     }
 
     public int indexOf(String name)
@@ -71,7 +58,7 @@ public final class UnitDatabase
     {    // возвращаем не сам тип, а его копию
         if ((index >= 0) && (index < unitTypes.size()))
         {
-            return new UnitType(unitTypes.get(index));
+            return new UnitTypeImpl(unitTypes.get(index));
         }
         return null;
     }

@@ -1,6 +1,6 @@
 package agenta;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -8,13 +8,16 @@ import org.junit.jupiter.api.Test;
  * @author Andrey Hitrin
  * @since 01.08.2020
  */
-class UnitTest {
+class UnitTest
+{
     @Test
-    void unitIsAliveByDefault() {
-        UnitType type = new UnitType();
-        type.setSpeed(3);
-        type.setAttackSpeed(3);
-        type.setHitPoints(10);
+    void unitIsAliveByDefault()
+    {
+        UnitType type = new UnitTypeBuilder()
+                .setSpeed(3)
+                .setAttackSpeed(3)
+                .setHitPoints(10)
+                .build();
         int player = 13;
         SingleRandom random = SingleRandom.get();
         Map map = new Map(random);
