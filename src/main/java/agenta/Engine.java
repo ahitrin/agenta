@@ -56,7 +56,7 @@ public final class Engine
                 final int count = ip.getUnit(player, unitType.getName().toLowerCase());
                 for (int u = 0; u < count; u++)
                 {
-                    Unit unit = new Unit(unitType, player, map, generator, new SelectRandomWithMemory(generator));
+                    Unit unit = new Unit(unitType, player, map, generator);
                     unitCounter[player]++;
                     int x, y;
                     do
