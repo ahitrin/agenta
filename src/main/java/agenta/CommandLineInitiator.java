@@ -77,7 +77,7 @@ public class CommandLineInitiator
 
                 // добавляем юнит в параметры
                 inputParameters.addUnit(unitDatabase.indexOf(s1), player0, player1);
-
+                inputParameters.addUnit(s1, player0, player1);
             }
             catch (Exception e)
             {

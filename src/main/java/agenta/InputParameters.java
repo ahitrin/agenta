@@ -10,6 +10,7 @@ package agenta;
 */
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 public final class InputParameters
 {
@@ -19,6 +20,8 @@ public final class InputParameters
     private final int[] player1;
     private final Commander[] commanders = new Commander[2];
     private int commanderCounter = 0;
+    private java.util.Map<String, Integer> player0Units = new HashMap<>();
+    private java.util.Map<String, Integer> player1Units = new HashMap<>();
 
     public InputParameters(int size)
     {
@@ -50,6 +53,12 @@ public final class InputParameters
         }
     }
 
+    public void addUnit(String name, int player0, int player1)
+    {
+        player0Units.put(name, player0);
+        player1Units.put(name, player1);
+    }
+
     public Commander getCommander(int index)
     {
         if ((index >= 0) && (index < commanderCounter))
@@ -57,6 +66,18 @@ public final class InputParameters
             return commanders[index];
         }
         return null;
+    }
+
+    public int getUnit(int player, String name) {
+        if (player == 0)
+        {
+            return player0Units.getOrDefault(name, 0);
+        }
+        else if (player == 1)
+        {
+            return player1Units.getOrDefault(name, 0);
+        }
+        throw new IllegalArgumentException("Player must be equal 0 or 1, not " + player);
     }
 
     public int getUnit(int index, int player)
