@@ -21,7 +21,7 @@ public class CommandLineInitiator
         this.initFile = initFile;
         this.com1 = com1;
         this.com2 = com2;
-        inputParameters = new InputParameters(DefaultUnits.build().size());
+        inputParameters = new InputParameters();
     }
 
     public void load()
