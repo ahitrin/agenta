@@ -102,15 +102,9 @@ public class Map
 
     public void removeObject(MapObject obj, int x, int y)
     {
-        try
+        if (cells[x][y].getObject() == obj)
         {
-            if (cells[x][y].getObject() == obj)
-            {
-                cells[x][y].setObject(null);
-            }
-        }
-        catch (Exception e)
-        {
+            cells[x][y].setObject(null);
         }
     }
 
