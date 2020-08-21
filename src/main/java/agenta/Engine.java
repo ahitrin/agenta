@@ -76,26 +76,44 @@ public final class Engine
 
     public void step()
     {
-        ActionListener emptyListener = a -> {};
+        removeDeadUnits();
+        checkForWinner();
         updateViewers();
+        if (winner != -1) {
+            return;
+        }
+        runUnitActions();
+        runCommanderActions();
+    }
 
-        // Remove dead units
+    private void removeDeadUnits()
+    {
         new ArrayList<>(units).stream()
                 .filter(not(Unit::isAlive))
                 .forEach(units::remove);
+    }
 
-        // Check for winner
+    private void checkForWinner()
+    {
         java.util.Map<Integer, Long> unitsPerPlayer = units.stream()
                 .collect(Collectors.groupingBy(Unit::getPlayer, Collectors.counting()));
         if (unitsPerPlayer.getOrDefault(0, 0L) == 0L) {
             winner = 1;
-            return;
         } else if (unitsPerPlayer.getOrDefault(1, 0L) == 0L) {
             winner = 0;
-            return;
         }
+    }
 
-        // Run actions of alive units
+    private void updateViewers()
+    {
+        for (Viewer viewer : viewers)
+        {
+            viewer.update(map);
+        }
+    }
+
+    private void runUnitActions()
+    {
         for (Unit unit : units)
         {
             List<Action> actions = new ArrayList<>();
@@ -107,16 +125,13 @@ public final class Engine
                         .ifPresent(Action::act);
             }
         }
-        commanders[0].act(emptyListener);
-        commanders[1].act(emptyListener);
     }
 
-    private void updateViewers()
+    private void runCommanderActions()
     {
-        for (Viewer viewer : viewers)
-        {
-            viewer.update(map);
-        }
+        ActionListener emptyListener = a -> {};
+        commanders[0].act(emptyListener);
+        commanders[1].act(emptyListener);
     }
 
 }
