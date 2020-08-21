@@ -34,7 +34,7 @@ public class Unit extends MapObject implements Commander
     private int currentHitPoints;
     private UnitCommand currentCommand;
     private int kills = 0;
-    private String name;
+    private final String name;
     private final SingleRandom random;
     private final Selector<Unit> selectTargetPerk;
 
@@ -49,7 +49,7 @@ public class Unit extends MapObject implements Commander
         currentHitPoints = type.getHitPoints();
         state = UnitState.ATTACK;
         currentCommand = new UnitCommand(state, UnitType.MIN_PRIORITY);
-        name = new Faker().name().firstName();
+        name = String.format("%s %s%d", new Faker().name().firstName(), type.toString(), player);
         healthCounter = this.random.nextInt(100) + 1;
         selectTargetPerk = new SelectRandomWithMemory(random);
     }
@@ -211,7 +211,7 @@ public class Unit extends MapObject implements Commander
 
     public String toString()
     {
-        return MessageFormat.format("{0} {1}{2} ({3} ks) at [{4}, {5}]", name, type.toString(), player, kills, x, y);
+        return String.format("%s (%d ks) at [%d, %d]", name, kills, x, y);
     }
 
     /**
