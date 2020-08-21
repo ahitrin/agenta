@@ -1,6 +1,7 @@
 package agenta;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -53,10 +54,7 @@ public class Unit extends MapObject implements Commander
         selectTargetPerk = new SelectRandomWithMemory(random);
     }
 
-    /**
-     * Метод действия юнита
-     * @param actionListener
-     */
+    @Override
     public void act(ActionListener actionListener)
     {
         if (healthCounter > 0)
@@ -106,7 +104,8 @@ public class Unit extends MapObject implements Commander
             if (!neighbours.isEmpty())
             {
                 // пока что атакуем случайно выбранного противника
-                performAttack(selectTargetPerk.apply(neighbours));
+                List<Unit> currentNeighbours = new ArrayList<>(neighbours);
+                actionListener.submit(() -> performAttack(selectTargetPerk.apply(currentNeighbours)));
             }
             break;
         case ATTACK:
@@ -119,7 +118,8 @@ public class Unit extends MapObject implements Commander
                     map.getObjectsInRadius(x, y, type.getRange())));
             if (!neighbours.isEmpty())
             {
-                performAttack(selectTargetPerk.apply(neighbours));
+                List<Unit> currentNeighbours = new ArrayList<>(neighbours);
+                actionListener.submit(() -> performAttack(selectTargetPerk.apply(currentNeighbours)));
             }
             else
             {
@@ -128,16 +128,15 @@ public class Unit extends MapObject implements Commander
                 if (!neighbours.isEmpty())
                 {
                     Unit target = selectTargetPerk.apply(neighbours);
-                    int dx = target.x - x, dy = target.y - y;
-                    dx = Integer.compare(dx, 0);
-                    dy = Integer.compare(dy, 0);
-                    doMove(dx, dy);
+                    int dx = Integer.compare(target.x - x, 0);
+                    int dy = Integer.compare(target.y - y, 0);
+                    actionListener.submit(() -> doMove(dx, dy));
                 }
                 else
                 {
                     int dx = random.nextInt(3) - 1;
                     int dy = random.nextInt(3) - 1;
-                    doMove(dx, dy);
+                    actionListener.submit(() -> doMove(dx, dy));
                 }
             }
             break;
@@ -158,7 +157,7 @@ public class Unit extends MapObject implements Commander
                 }
                 int idx = (dx > 0) ? 1 : (dx < 0) ? -1 : 0;
                 int idy = (dy > 0) ? 1 : (dy < 0) ? -1 : 0;
-                doMove(idx, idy);
+                actionListener.submit(() -> doMove(idx, idy));
             }
             break;
         }
