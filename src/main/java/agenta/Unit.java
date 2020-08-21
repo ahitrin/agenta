@@ -235,6 +235,9 @@ public class Unit extends MapObject implements Commander
      */
     private void doMove(int dx, int dy)
     {
+        if (!isAlive()) {
+            return;
+        }
         if (speedCounter > 0)
         {
             return;
@@ -259,6 +262,9 @@ public class Unit extends MapObject implements Commander
 
     private void performAttack(Unit other)
     {
+        if (!isAlive()) {
+            return;
+        }
         int damage = doAttack();
         if (damage > 0)
         {
