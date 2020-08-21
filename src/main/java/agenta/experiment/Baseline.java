@@ -29,6 +29,8 @@ public class Baseline
         }
     }
 
+    public static final long MAX_TICKS = 5000L;
+
     public static void main(String[] args)
     {
         final List<UnitType> unitTypes = buildUnitTypes();
@@ -71,7 +73,7 @@ public class Baseline
     {
         Engine e = new Engine(params, SingleRandom.get());
         e.init(unitTypes);
-        while (e.getWinner() == -1 && e.getTicks() < 2000L)
+        while (e.getWinner() == -1 && e.getTicks() < MAX_TICKS)
         {
             e.step();
         }
