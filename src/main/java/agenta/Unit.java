@@ -211,7 +211,7 @@ public class Unit extends MapObject implements Commander
 
     public String toString()
     {
-        return String.format("%s (%d ks) at [%d, %d]", name, kills, x, y);
+        return String.format("%s (%d HP; %d ks) at [%d, %d]", name, currentHitPoints, kills, x, y);
     }
 
     /**
@@ -291,10 +291,6 @@ public class Unit extends MapObject implements Commander
         if (healthCounter == -1)
         {
             healthCounter = 100;
-        }
-        if (value > 0)
-        {
-            System.out.println(MessageFormat.format("{0} has {1} HP", toString(), currentHitPoints));
         }
         // Проверка на приоритет приказа над самосохранением
         if (currentHitPoints < type.getHealthLimit(currentCommand.getPriority()))
