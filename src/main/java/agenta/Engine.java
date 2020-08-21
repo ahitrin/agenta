@@ -86,10 +86,14 @@ public final class Engine
 
         for (int i = 0; i < units.size(); i++)
         {
+            List<Action> actions = new ArrayList<>();
             Unit u = units.get(i);
             if (u.isAlive())
             {
-                u.act(emptyListener);
+                u.act(actions::add);
+                actions.stream()
+                        .findAny()
+                        .ifPresent(Action::act);
             }
             else
             {
