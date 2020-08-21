@@ -3,6 +3,7 @@ package agenta;
 import static java.util.function.Predicate.not;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -114,17 +115,19 @@ public final class Engine
 
     private void runUnitActions()
     {
+        List<Action> allActions = new ArrayList<>();
         for (Unit unit : units)
         {
-            List<Action> actions = new ArrayList<>();
+            List<Action> unitActions = new ArrayList<>();
             if (unit.isAlive())
             {
-                unit.act(actions::add);
-                actions.stream()
+                unit.act(unitActions::add);
+                unitActions.stream()
                         .findAny()
-                        .ifPresent(Action::act);
+                        .ifPresent(allActions::add);
             }
         }
+        new HashSet<>(allActions).forEach(Action::act);
     }
 
     private void runCommanderActions()
