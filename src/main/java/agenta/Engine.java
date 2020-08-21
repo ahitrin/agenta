@@ -1,7 +1,10 @@
 package agenta;
 
+import static java.util.function.Predicate.not;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Здесь идёт процесс обработки. Движку при создании передаются входные параметры
@@ -17,7 +20,6 @@ public final class Engine
     private final InputParameters ip;
     private final Map map;
     private final List<Unit> units = new ArrayList<>();
-    private final int[] unitCounter = new int[2];
     private final Commander[] commanders = new Commander[2];
     private final List<Viewer> viewers = new ArrayList<>();
     private final SingleRandom generator;
@@ -57,7 +59,6 @@ public final class Engine
                 for (int u = 0; u < count; u++)
                 {
                     Unit unit = new Unit(unitType, player, map, generator);
-                    unitCounter[player]++;
                     int x, y;
                     do
                     {
@@ -73,37 +74,37 @@ public final class Engine
         }
     }
 
-    // Один шаг работы
     public void step()
     {
         ActionListener emptyListener = a -> {};
-        // Если хотя бы один из игроков не имеет юнитов, финиш
-        if ((unitCounter[0] * unitCounter[1]) == 0)
-        {
-            return;
-        }
         updateViewers();
 
-        for (int i = 0; i < units.size(); i++)
+        // Remove dead units
+        new ArrayList<>(units).stream()
+                .filter(not(Unit::isAlive))
+                .forEach(units::remove);
+
+        // Check for winner
+        java.util.Map<Integer, Long> unitsPerPlayer = units.stream()
+                .collect(Collectors.groupingBy(Unit::getPlayer, Collectors.counting()));
+        if (unitsPerPlayer.getOrDefault(0, 0L) == 0L) {
+            winner = 1;
+            return;
+        } else if (unitsPerPlayer.getOrDefault(1, 0L) == 0L) {
+            winner = 0;
+            return;
+        }
+
+        // Run actions of alive units
+        for (Unit unit : units)
         {
             List<Action> actions = new ArrayList<>();
-            Unit u = units.get(i);
-            if (u.isAlive())
+            if (unit.isAlive())
             {
-                u.act(actions::add);
+                unit.act(actions::add);
                 actions.stream()
                         .findAny()
                         .ifPresent(Action::act);
-            }
-            else
-            {
-                unitCounter[u.getPlayer()]--;
-                if (unitCounter[u.getPlayer()] == 0)
-                {
-                    winner = 1 - u.getPlayer();
-                }
-                units.remove(i);
-                i--;
             }
         }
         commanders[0].act(emptyListener);
