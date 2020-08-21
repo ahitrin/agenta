@@ -71,14 +71,12 @@ public class Baseline
     {
         Engine e = new Engine(params, SingleRandom.get());
         e.init(unitTypes);
-        int steps = 0;
-        while (e.getWinner() == -1 && steps < 2000)
+        while (e.getWinner() == -1 && e.getTicks() < 2000L)
         {
             e.step();
-            steps++;
         }
-        System.out.printf("Player %d has won after %d steps%n", e.getWinner(), steps);
-        return new RunResult(e.getWinner(), steps);
+        System.out.printf("Player %d has won after %d ticks%n", e.getWinner(), e.getTicks());
+        return new RunResult(e.getWinner(), e.getTicks());
     }
 
     private static InputParameters buildParams(List<UnitType> unitTypes)

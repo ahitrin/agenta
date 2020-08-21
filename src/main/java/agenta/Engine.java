@@ -16,6 +16,7 @@ public final class Engine
     private final List<Viewer> viewers = new ArrayList<>();
     private final SingleRandom generator;
     private int winner = -1;
+    private long ticks = 0;
 
     public Engine(InputParameters ip, SingleRandom generator)
     {
@@ -33,6 +34,10 @@ public final class Engine
     public int getWinner()
     {
         return winner;
+    }
+
+    public long getTicks() {
+        return ticks;
     }
 
     public void init(List<UnitType> unitTypes)
@@ -66,6 +71,7 @@ public final class Engine
 
     public void step()
     {
+        ticks++;
         removeDeadUnits();
         checkForWinner();
         updateViewers();

@@ -29,7 +29,9 @@ public class Application
                 Thread.sleep(5);
             }catch(InterruptedException ex){}*/
         }
-        final String message = "Player " + e.getWinner() + " has won!";
+        final String message = String.format("Player %d has won after %d ticks!",
+                e.getWinner(),
+                e.getTicks());
         parentComponent.showEndMessage(p, message);
     }
 }
