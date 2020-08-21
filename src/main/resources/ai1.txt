@@ -1,3 +1,0 @@
-knight		attack			4
-footman		attack	footman		3
-archer		escape
