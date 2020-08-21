@@ -7,15 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Здесь идёт процесс обработки. Движку при создании передаются входные параметры
- * с помощью объекта InputParameters. Далее к нему присоединяются необходимые
- * Viewer'ы. На каждом шаге работы приложения вызывается метод движка step(), в котором
- * обрабатывается движение юнитов. При наличии изменений движок уведомляет об этом
- * Viewer'ов, а те запрашивают необходимую информацию с помощью get-методов и отображаются
- * в нужном для себя виде.
-*/
-
 public final class Engine
 {
     private final InputParameters ip;
@@ -33,7 +24,6 @@ public final class Engine
         map = new GameMap(generator);
     }
 
-    // Позволяет подключить к движку вид. Возвращается идентификатор вида
     public int addViewer(Viewer viewer)
     {
         viewers.add(viewer);
@@ -48,7 +38,6 @@ public final class Engine
     public void init(List<UnitType> unitTypes)
     {
         map.renderTrees();
-        // Расставляем юнитов на карте
         commanders[0] = ip.getCommander(0);
         commanders[1] = ip.getCommander(1);
 

@@ -3,23 +3,12 @@ package agenta;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Базовый класс для командиров.
- * @author Ahitrin
- *
- */
+
 public class BaseCommander implements Commander
 {
-    /**
-     * Список подчинённых
-     */
-    protected List<Commander> subordinates = new ArrayList<>();
-    /**
-     * Очередь входящих сообщений/приказов
-     */
-    private List<Command> queue = new ArrayList<>();
+    private final List<Commander> subordinates = new ArrayList<>();
+    private final List<Command> queue = new ArrayList<>();
 
-    // Не делаем ничего
     public void act(ActionListener actionListener)
     {
         while (!queue.isEmpty())
@@ -28,13 +17,11 @@ public class BaseCommander implements Commander
         }
     }
 
-    // Не делаем ничего
     public void obtain(Command com)
     {
         queue.add(com);
     }
 
-    // Стандартный алгоритм регистрации связи с другим командиром
     public void submit(Commander comm, boolean subordinate)
     {
         if (subordinate)

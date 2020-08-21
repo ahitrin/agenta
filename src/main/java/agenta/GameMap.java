@@ -22,12 +22,6 @@ public class GameMap
         }
     }
 
-    /**
-     * Проверяет, можно ли поставить данный объект в даную точку на карте.
-     * @param x
-     * @param y
-     * @return
-     */
     public boolean canPlaceObject(int x, int y)
     {
         if ((x < 0) || (y < 0) ||
@@ -59,14 +53,6 @@ public class GameMap
         return cells[x][y].getObject();
     }
 
-    /**
-     * Возвращает список всех объектов на карте, находящихся в пределах указанного расстояния
-     * от указанной точки
-     * @param x Координата х
-     * @param y Координата у
-     * @param r Радиус
-     * @return Список объектов
-     */
     public List<MapObject> getObjectsInRadius(int x, int y, float r)
     {
         List<MapObject> objects = new ArrayList<>();

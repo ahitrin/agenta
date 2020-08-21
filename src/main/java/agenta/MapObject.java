@@ -1,8 +1,5 @@
 package agenta;
 
-/**
- * Интерфейс для всех объектов на карте.
- */
 public abstract class MapObject
 {
     protected int x, y;

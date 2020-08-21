@@ -8,19 +8,10 @@ import java.util.stream.Collectors;
 
 import com.github.javafaker.Faker;
 
-/**
- * Юнит. Ходит по карте, слушается приказов и бъёт врагов
- * @author Ahitrin
- */
 public class Unit extends MapObject implements Commander
 {
     private static final Predicate<MapObject> IS_UNIT = o -> o instanceof Unit;
 
-    /**
-     * Фильтрует список объектов, отбрасывая из него всех не-юнитов
-     * @param objs Входящий список объектов
-     * @return Только объекты-юниты из входящего списка
-     */
     private static List<Unit> filterUnits(List<MapObject> objs)
     {
         return objs.stream().filter(IS_UNIT).map(o -> (Unit)o).collect(Collectors.toList());
@@ -95,10 +86,6 @@ public class Unit extends MapObject implements Commander
         switch (state)
         {
         case STAND:
-            /*
-             * Находясь в этом состоянии, юнит не двигается с места. Противник
-             * атакуется только в том случае, когда он находится на расстоянии атаки
-             */
             neighbours = filterEnemies(filterUnits(
                     map.getObjectsInRadius(x, y, type.getRange())));
             if (!neighbours.isEmpty())
@@ -109,11 +96,6 @@ public class Unit extends MapObject implements Commander
             }
             break;
         case ATTACK:
-            /*
-             * Юнит ищет цель заданного типа в пределах расстояния своей атаки. Если цели
-             * нет, юнит пытается найти противника в радиусе своей зоны видимости. Если же
-             * и там нет врага, то юнит движется случайным образом
-             */
             neighbours = filterEnemies(filterUnits(
                     map.getObjectsInRadius(x, y, type.getRange())));
             if (!neighbours.isEmpty())
@@ -141,9 +123,6 @@ public class Unit extends MapObject implements Commander
             }
             break;
         case ESCAPE:
-            /*
-             * Юнит пытается убежать от врагов
-             */
             neighbours = filterEnemies(filterUnits(
                     map.getObjectsInRadius(x, y, type.getVisibility())));
             if (!neighbours.isEmpty())
@@ -173,17 +152,11 @@ public class Unit extends MapObject implements Commander
         return type;
     }
 
-    /**
-     * Возвращает true, если юнит жив.
-     */
     public boolean isAlive()
     {
         return (currentHitPoints > 0);
     }
 
-    /**
-     * Реализация подчинения команде
-     */
     public void obtain(Command com)
     {
         if (!(com instanceof UnitCommand))
@@ -202,9 +175,6 @@ public class Unit extends MapObject implements Commander
         }
     }
 
-    /**
-     * Пока что реализуем только регистрацию командующего
-     */
     public void submit(Commander comm, boolean subordinate)
     {
     }
@@ -214,10 +184,6 @@ public class Unit extends MapObject implements Commander
         return String.format("%s (%d HP; %d ks) at [%d, %d]", name, currentHitPoints, kills, x, y);
     }
 
-    /**
-     * Нанесение удара юнитом
-     * @return Величина наносимого повреждения
-     */
     private int doAttack()
     {
         if (attackCounter > 0)
@@ -228,11 +194,6 @@ public class Unit extends MapObject implements Commander
         return random.nextInt(type.getRandAttack()) + type.getBaseAttack();
     }
 
-    /**
-     * Перемещает юнит по карте.
-     * @param dx Смещение по x
-     * @param dy Смещение по y
-     */
     private void doMove(int dx, int dy)
     {
         if (!isAlive()) {
@@ -250,11 +211,6 @@ public class Unit extends MapObject implements Commander
         }
     }
 
-    /**
-     * Фильтрует список юнитов, оставляя только врагов
-     * @param units Входящий список юнитов
-     * @return Враги из входящего списка
-     */
     private List<Unit> filterEnemies(List<Unit> units)
     {
         return units.stream().filter(u -> u.getPlayer() != player).collect(Collectors.toList());
@@ -277,10 +233,6 @@ public class Unit extends MapObject implements Commander
         }
     }
 
-    /**
-     * Обработка повреждения юнита.
-     * @param value Величина повреждений.
-     */
     private void sufferDamage(int value)
     {
         if (!isAlive())
@@ -292,7 +244,6 @@ public class Unit extends MapObject implements Commander
         {
             healthCounter = 100;
         }
-        // Проверка на приоритет приказа над самосохранением
         if (currentHitPoints < type.getHealthLimit(currentCommand.getPriority()))
         {
             obtain(new UnitCommand(UnitState.ESCAPE, currentCommand.getPriority() + 1));

@@ -5,10 +5,6 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.*;
 
-/**
- * Выводим изображение не на саму форму, а на панель на этой форме.
- * Соответственно, часть функциональности уходит в эту панель.
- */
 class PanelViewer extends JPanel implements Viewer
 {
     private final Image iGrass;

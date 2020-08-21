@@ -2,10 +2,6 @@ package agenta;
 
 import java.util.Random;
 
-/**
- * Служебный класс, хранящий генератор случайных чисел.
- * @author Андрей Хитрин
- */
 public final class SingleRandom
 {
     private static final Random rand = new Random();
