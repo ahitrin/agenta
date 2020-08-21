@@ -8,8 +8,9 @@ public interface Commander
 {
     /**
      * Один шаг размышлений
+     * @param actionListener
      */
-    void act();
+    void act(ActionListener actionListener);
 
     /**
      * Получение команды или сообщения от подчинённого

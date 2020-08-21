@@ -76,6 +76,7 @@ public final class Engine
     // Один шаг работы
     public void step()
     {
+        ActionListener emptyListener = a -> {};
         // Если хотя бы один из игроков не имеет юнитов, финиш
         if ((unitCounter[0] * unitCounter[1]) == 0)
         {
@@ -88,7 +89,7 @@ public final class Engine
             Unit u = units.get(i);
             if (u.isAlive())
             {
-                u.act();
+                u.act(emptyListener);
             }
             else
             {
@@ -101,8 +102,8 @@ public final class Engine
                 i--;
             }
         }
-        commanders[0].act();
-        commanders[1].act();
+        commanders[0].act(emptyListener);
+        commanders[1].act(emptyListener);
     }
 
     private void updateViewers()

@@ -20,7 +20,7 @@ public class BaseCommander implements Commander
     private List<Command> queue = new ArrayList<>();
 
     // Не делаем ничего
-    public void act()
+    public void act(ActionListener actionListener)
     {
         while (!queue.isEmpty())
         {

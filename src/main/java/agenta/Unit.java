@@ -55,8 +55,9 @@ public class Unit extends MapObject implements Commander
 
     /**
      * Метод действия юнита
+     * @param actionListener
      */
-    public void act()
+    public void act(ActionListener actionListener)
     {
         if (healthCounter > 0)
         {
