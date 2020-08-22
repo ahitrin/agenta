@@ -7,5 +7,5 @@ package agenta;
 @FunctionalInterface
 public interface Viewer
 {
-    void update(Map map);
+    void update(GameMap map);
 }

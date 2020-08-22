@@ -3,13 +3,13 @@ package agenta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Map
+public class GameMap
 {
     public static final int SIZE = 18;
     private final SingleRandom generator;
     private final MapCell[][] cells;
 
-    public Map(SingleRandom generator)
+    public GameMap(SingleRandom generator)
     {
         this.generator = generator;
         cells = new MapCell[SIZE][SIZE];

@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public final class Engine
 {
     private final InputParameters ip;
-    private final Map map;
+    private final GameMap map;
     private final List<Unit> units = new ArrayList<>();
     private final Commander[] commanders = new Commander[2];
     private final List<Viewer> viewers = new ArrayList<>();
@@ -30,7 +30,7 @@ public final class Engine
     {
         this.ip = ip;
         this.generator = generator;
-        map = new Map(generator);
+        map = new GameMap(generator);
     }
 
     // Позволяет подключить к движку вид. Возвращается идентификатор вида
@@ -63,8 +63,8 @@ public final class Engine
                     int x, y;
                     do
                     {
-                        x = generator.nextInt(Map.SIZE);
-                        y = generator.nextInt(Map.SIZE);
+                        x = generator.nextInt(GameMap.SIZE);
+                        y = generator.nextInt(GameMap.SIZE);
                     }
                     while (!map.canPlaceObject(x, y));
                     map.placeObject(unit, x, y);

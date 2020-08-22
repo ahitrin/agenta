@@ -28,7 +28,7 @@ public class Unit extends MapObject implements Commander
 
     private final UnitType type;
     private UnitState state;
-    private final Map map;
+    private final GameMap map;
     private final int player;
     private int speedCounter, attackCounter, healthCounter;
     private int currentHitPoints;
@@ -38,7 +38,7 @@ public class Unit extends MapObject implements Commander
     private final SingleRandom random;
     private final Selector<Unit> selectTargetPerk;
 
-    public Unit(UnitType type, int player, Map map, SingleRandom random)
+    public Unit(UnitType type, int player, GameMap map, SingleRandom random)
     {
         this.type = type;
         this.player = player;

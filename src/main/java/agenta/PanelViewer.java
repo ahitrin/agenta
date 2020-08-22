@@ -49,11 +49,11 @@ class PanelViewer extends JPanel implements Viewer
     }
 
     @Override
-    public void update(Map map)
+    public void update(GameMap map)
     {
         old = current;
         enabled = false;
-        int size = Map.SIZE;
+        int size = GameMap.SIZE;
 
         Image ima = null;
         current = (BufferedImage)createImage(450, 450);
