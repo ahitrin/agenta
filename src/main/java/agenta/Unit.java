@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import com.github.javafaker.Faker;
 
-public class Unit extends MapObject implements Commander
+public class Unit extends MapObject
 {
     private static final Predicate<MapObject> IS_UNIT = o -> o instanceof Unit;
 
@@ -45,7 +45,6 @@ public class Unit extends MapObject implements Commander
         selectTargetPerk = new SelectRandomWithMemory(random);
     }
 
-    @Override
     public void act(ActionListener actionListener)
     {
         if (healthCounter > 0)
