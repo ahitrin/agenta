@@ -8,10 +8,6 @@ public final class InputParameters
     private final Map<String, Integer> player0Units = new HashMap<>();
     private final Map<String, Integer> player1Units = new HashMap<>();
 
-    public void addCommander(Commander commander)
-    {
-    }
-
     public void addUnit(String name, int player0, int player1)
     {
         player0Units.put(name, player0);

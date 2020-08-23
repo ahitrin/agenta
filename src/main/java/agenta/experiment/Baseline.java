@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import agenta.BaseCommander;
 import agenta.Engine;
 import agenta.InputParameters;
 import agenta.SingleRandom;
@@ -84,8 +83,6 @@ public class Baseline
     private static InputParameters buildParams(List<UnitType> unitTypes)
     {
         InputParameters params = new InputParameters();
-        params.addCommander(new BaseCommander());
-        params.addCommander(new BaseCommander());
         unitTypes.forEach(ut -> params.addUnit(ut.getName().toLowerCase(), 10, 10));
         return params;
     }

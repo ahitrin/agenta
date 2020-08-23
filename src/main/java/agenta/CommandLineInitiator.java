@@ -78,9 +78,6 @@ public class CommandLineInitiator
                 System.err.println("agenta.CommandLineInitiator - Error in file " + initFile);
             }
         }
-
-        inputParameters.addCommander(com1);
-        inputParameters.addCommander(com2);
     }
 
     public InputParameters getParameters()
