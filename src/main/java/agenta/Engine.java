@@ -12,7 +12,6 @@ public final class Engine
     private final InputParameters ip;
     private final GameMap map;
     private final List<Unit> units = new ArrayList<>();
-    private final Commander[] commanders = new Commander[2];
     private final List<Viewer> viewers = new ArrayList<>();
     private final SingleRandom generator;
     private int winner = -1;
@@ -43,8 +42,6 @@ public final class Engine
     public void init(List<UnitType> unitTypes)
     {
         map.renderTrees();
-        commanders[0] = ip.getCommander(0);
-        commanders[1] = ip.getCommander(1);
 
         for (UnitType unitType: unitTypes)
         {
@@ -78,7 +75,6 @@ public final class Engine
             return;
         }
         runUnitActions();
-        runCommanderActions();
     }
 
     private void removeDeadUnits()
@@ -123,12 +119,4 @@ public final class Engine
         }
         new HashSet<>(allActions).forEach(Action::act);
     }
-
-    private void runCommanderActions()
-    {
-        ActionListener emptyListener = a -> {};
-        commanders[0].act(emptyListener);
-        commanders[1].act(emptyListener);
-    }
-
 }
