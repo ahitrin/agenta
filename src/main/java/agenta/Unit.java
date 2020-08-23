@@ -89,7 +89,6 @@ public class Unit extends MapObject
                     map.getObjectsInRadius(x, y, type.getRange())));
             if (!neighbours.isEmpty())
             {
-                // пока что атакуем случайно выбранного противника
                 List<Unit> currentNeighbours = new ArrayList<>(neighbours);
                 actionListener.submit(() -> performAttack(selectTargetPerk.apply(currentNeighbours)));
             }
