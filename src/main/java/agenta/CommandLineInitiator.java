@@ -13,14 +13,10 @@ public class CommandLineInitiator
 {
     private final InputParameters inputParameters;
     private final String initFile;
-    private final Commander com1;
-    private final Commander com2;
 
     public CommandLineInitiator(String initFile, Commander com1, Commander com2)
     {
         this.initFile = initFile;
-        this.com1 = com1;
-        this.com2 = com2;
         inputParameters = new InputParameters();
     }
 
