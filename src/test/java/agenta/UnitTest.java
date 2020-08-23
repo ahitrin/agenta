@@ -20,7 +20,7 @@ class UnitTest
                 .build();
         int player = 13;
         SingleRandom random = SingleRandom.get();
-        Map map = new Map(random);
+        GameMap map = new GameMap(random);
         Unit unit = new Unit(type, player, map, random);
         assertTrue(unit.isAlive());
     }
