@@ -175,10 +175,6 @@ public class Unit extends MapObject implements Commander
         }
     }
 
-    public void submit(Commander comm, boolean subordinate)
-    {
-    }
-
     public String toString()
     {
         return String.format("%s (%d HP; %d ks) at [%d, %d]", name, currentHitPoints, kills, x, y);

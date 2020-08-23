@@ -22,13 +22,4 @@ public class BaseCommander implements Commander
         queue.add(com);
     }
 
-    public void submit(Commander comm, boolean subordinate)
-    {
-        if (subordinate)
-        {
-            subordinates.add(comm);
-            comm.submit(this, false);
-        }
-    }
-
 }

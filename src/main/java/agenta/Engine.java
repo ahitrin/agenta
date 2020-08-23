@@ -63,7 +63,6 @@ public final class Engine
                     while (!map.canPlaceObject(x, y));
                     map.placeObject(unit, x, y);
                     units.add(unit);
-                    commanders[player].submit(unit, true);
                 }
             }
         }
