@@ -14,7 +14,7 @@ public class CommandLineInitiator
     private final InputParameters inputParameters;
     private final String initFile;
 
-    public CommandLineInitiator(String initFile, Commander com1, Commander com2)
+    public CommandLineInitiator(String initFile)
     {
         this.initFile = initFile;
         inputParameters = new InputParameters();

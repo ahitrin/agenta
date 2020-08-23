@@ -9,9 +9,7 @@ public class Application
     public static void main(String[] args)
     {
         PanelViewer p = new PanelViewer();
-        Commander mc0 = new BaseCommander();
-        Commander mc1 = new BaseCommander();
-        CommandLineInitiator cli = new CommandLineInitiator("placement.txt", mc0, mc1);
+        CommandLineInitiator cli = new CommandLineInitiator("placement.txt");
         cli.load();
         Engine e = new Engine(cli.getParameters(), SingleRandom.get());
         e.init(DefaultUnits.build());
