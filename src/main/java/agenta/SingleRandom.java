@@ -4,25 +4,24 @@ import java.util.Random;
 
 public final class SingleRandom
 {
-    private static final Random rand = new Random();
-    private static final SingleRandom instance = new SingleRandom();
+    private static final Random root = new Random();
 
     public static SingleRandom get()
     {
-        return instance;
+        final long seed = root.nextLong();
+        System.out.println(String.format("Seed: %s", seed));
+        return new SingleRandom(new Random(seed));
     }
 
-    private SingleRandom()
-    {
-    }
+    private final Random random;
 
-    public int nextInt()
+    public SingleRandom(Random random)
     {
-        return rand.nextInt();
+        this.random = random;
     }
 
     public int nextInt(int n)
     {
-        return rand.nextInt(n);
+        return random.nextInt(n);
     }
 }
