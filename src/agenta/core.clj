@@ -12,5 +12,5 @@
       (while (== (.getWinner e) -1)
           (.step e))
       (.showEndMessage f p (String/format "Player %d has won after %d ticks!"
-                                          (.getWinner e)
-                                          (.getTicks e))))))
+                                          (object-array [(.getWinner e)
+                                                         (.getTicks e)]))))))
