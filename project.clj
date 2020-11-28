@@ -9,4 +9,5 @@
                  [org.apache.logging.log4j/log4j-core "2.13.3"]]
   :java-source-paths ["src/main/java"
                       "src/test/java"]
+  :main agenta.core
   :repl-options {:init-ns agenta.core})
