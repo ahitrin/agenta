@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.*;
 
-class PanelViewer extends JPanel implements Viewer
+public class PanelViewer extends JPanel implements Viewer
 {
     private final Image iGrass;
     private final Image iTree;
@@ -97,24 +97,3 @@ class PanelViewer extends JPanel implements Viewer
     }
 }
 
-class PanelViewerFrame extends JFrame
-{
-    public PanelViewerFrame(String caption, PanelViewer p)
-    {
-        super(caption);
-
-        setSize(550, 480);
-
-        Container c = getContentPane();
-        c.add(p, BorderLayout.CENTER);
-        setVisible(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
-
-    public void showEndMessage(PanelViewer p, String message)
-    {
-        JOptionPane.showMessageDialog(this, message,
-                "End of game", JOptionPane.INFORMATION_MESSAGE);
-        p.repaint();
-    }
-}

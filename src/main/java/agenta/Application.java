@@ -15,11 +15,6 @@ public class Application
         e.init(DefaultUnits.build());
         e.addViewer(p);
         PanelViewerFrame f = new PanelViewerFrame("Agenta test", p);
-        doRun(e, f, p);
-    }
-
-    private static void doRun(Engine e, PanelViewerFrame parentComponent, PanelViewer p)
-    {
         while (e.getWinner() == -1)
         {
             e.step();
@@ -30,6 +25,7 @@ public class Application
         final String message = String.format("Player %d has won after %d ticks!",
                 e.getWinner(),
                 e.getTicks());
-        parentComponent.showEndMessage(p, message);
+        f.showEndMessage(p, message);
     }
+
 }
