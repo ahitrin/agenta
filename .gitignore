@@ -6,3 +6,15 @@ out
 # Ignore Gradle build output directory
 build
 .idea
+/target
+/classes
+/checkouts
+profiles.clj
+pom.xml
+pom.xml.asc
+*.jar
+*.class
+/.lein-*
+/.nrepl-port
+.hgignore
+.hg/
