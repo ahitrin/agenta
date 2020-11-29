@@ -11,3 +11,17 @@ image::agenta.png[]
 
 I try to introduce new behaviors and looking after their impact.
 That's the essence of my "game".
+
+== Usage
+
+Run demo:
+
+----
+$ lein run
+----
+
+Run experiment(s):
+
+----
+$ lein run -m agenta.baseline
+----
