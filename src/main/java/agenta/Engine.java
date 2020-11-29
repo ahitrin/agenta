@@ -5,11 +5,13 @@ import static java.util.function.Predicate.not;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public final class Engine
 {
-    private final InputParameters ip;
+    private final Map<String, Long> player0Units;
+    private final Map<String, Long> player1Units;
     private final GameMap map;
     private final List<Unit> units = new ArrayList<>();
     private final List<Viewer> viewers = new ArrayList<>();
@@ -17,9 +19,9 @@ public final class Engine
     private int winner = -1;
     private long ticks = 0;
 
-    public Engine(InputParameters ip, SingleRandom generator)
-    {
-        this.ip = ip;
+    public Engine(SingleRandom generator, Map<String, Long> player0Units, Map<String, Long> player1Units) {
+        this.player0Units = player0Units;
+        this.player1Units = player1Units;
         this.generator = generator;
         map = new GameMap(generator);
     }
@@ -47,7 +49,8 @@ public final class Engine
         {
             for (int player = 0; player < 2; player++)
             {
-                final int count = ip.getUnit(player, unitType.getName().toLowerCase());
+                Map<String, Long> playerUnits = player == 0 ? player0Units : player1Units;
+                final long count = playerUnits.getOrDefault(unitType.getName().toLowerCase(), 0L);
                 for (int u = 0; u < count; u++)
                 {
                     Unit unit = new Unit(unitType, player, map, generator);

@@ -1,0 +1,12 @@
+{
+    :player0 {
+        "footman" 10,
+        "archer" 10,
+        "knight" 4
+    },
+    :player1 {
+        "footman" 10,
+        "archer" 10,
+        "knight" 4
+    }
+}

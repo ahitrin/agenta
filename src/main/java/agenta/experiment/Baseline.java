@@ -70,7 +70,7 @@ public class Baseline
 
     private static RunResult singleRun(List<UnitType> unitTypes, InputParameters params)
     {
-        Engine e = new Engine(params, SingleRandom.get());
+        Engine e = new Engine(SingleRandom.get(), params.player0Units, params.player1Units);
         e.init(unitTypes);
         while (e.getWinner() == -1 && e.getTicks() < MAX_TICKS)
         {
@@ -89,7 +89,7 @@ public class Baseline
 
     private static List<UnitType> buildUnitTypes()
     {
-        UnitType warrior = new UnitTypeBuilder()
+        return List.of(new UnitTypeBuilder()
                 .setName("Warrior")
                 .setAttackSpeed(3)
                 .setBaseAttack(1)
@@ -98,8 +98,6 @@ public class Baseline
                 .setSpeed(3)
                 .setVisibility(10)
                 .setRange(1.45f)
-                .build();
-        final List<UnitType> unitTypes = List.of(warrior);
-        return unitTypes;
+                .build());
     }
 }
