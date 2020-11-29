@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 import agenta.Engine;
 import agenta.SingleRandom;
@@ -17,19 +17,6 @@ import agenta.UnitTypeBuilder;
  */
 public class Baseline
 {
-    private static final class RunResult
-    {
-        public final long winner;
-        public final long steps;
-
-        private RunResult(long winner, long steps)
-        {
-            this.winner = winner;
-            this.steps = steps;
-        }
-    }
-
-    public static final long MAX_TICKS = 5000L;
 
     public static void main(String[] args)
     {
@@ -39,9 +26,24 @@ public class Baseline
                 .map(UnitType::getName)
                 .map(String::toLowerCase)
                 .collect(Collectors.toMap(Function.identity(), (s) -> 10L));
-        List<RunResult> results = IntStream.range(0, 100)
-                .mapToObj(i -> singleRun(unitTypes, playerUnits, playerUnits))
+        List<RunResult> results = runExperiment(100, 5000L, unitTypes, playerUnits, playerUnits);
+        calculateStatistics(results);
+    }
+
+    private static List<RunResult> runExperiment(
+            long totalExperiments,
+            long maxTicks,
+            List<UnitType> unitTypes,
+            Map<String, Long> player0Units,
+            Map<String, Long> player1Units)
+    {
+        return LongStream.range(0, totalExperiments)
+                .mapToObj(i -> singleRun(maxTicks, unitTypes, player0Units, player1Units))
                 .collect(Collectors.toList());
+    }
+
+    private static void calculateStatistics(List<RunResult> results)
+    {
         long wins0 = 0, wins1 = 0, p0 = 0, p1 = 0, draws = 0, steps0 = 0, steps1 = 0;
         for (RunResult r : results) {
             if (r.winner == 0) {
@@ -72,12 +74,12 @@ public class Baseline
         System.out.printf("Total runs: %d%n", wins0 + wins1 + draws);
     }
 
-    private static RunResult singleRun(List<UnitType> unitTypes, Map<String, Long> player0Units,
+    private static RunResult singleRun(long maxTicks, List<UnitType> unitTypes, Map<String, Long> player0Units,
             Map<String, Long> player1Units)
     {
         Engine e = new Engine(SingleRandom.get(), player0Units, player1Units);
         e.init(unitTypes);
-        while (e.getWinner() == -1 && e.getTicks() < MAX_TICKS)
+        while (e.getWinner() == -1 && e.getTicks() < maxTicks)
         {
             e.step();
         }
