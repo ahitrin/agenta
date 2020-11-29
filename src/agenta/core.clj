@@ -43,6 +43,6 @@
     (.addViewer e p)
     (while (== (.getWinner e) -1)
         (.step e))
-    (.showEndMessage f (String/format "Player %d has won after %d ticks!"
-                                      (object-array [(.getWinner e)
-                                                     (.getTicks e)])))))
+    (.showEndMessage f p (String/format "Player %d has won after %d ticks!"
+                                        (object-array [(.getWinner e)
+                                                       (.getTicks e)])))))

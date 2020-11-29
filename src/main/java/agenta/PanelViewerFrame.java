@@ -10,12 +10,9 @@ import javax.swing.*;
  */
 public class PanelViewerFrame extends JFrame
 {
-    private final PanelViewer p;
-
     public PanelViewerFrame(String caption, PanelViewer p)
     {
         super(caption);
-        this.p = p;
 
         setSize(550, 480);
 
@@ -25,7 +22,7 @@ public class PanelViewerFrame extends JFrame
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    public void showEndMessage(String message)
+    public void showEndMessage(PanelViewer p, String message)
     {
         JOptionPane.showMessageDialog(this, message,
                 "End of game", JOptionPane.INFORMATION_MESSAGE);
