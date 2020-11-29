@@ -1,11 +1,12 @@
 package agenta.experiment;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import agenta.Engine;
-import agenta.InputParameters;
 import agenta.SingleRandom;
 import agenta.UnitType;
 import agenta.UnitTypeBuilder;
@@ -33,10 +34,13 @@ public class Baseline
     public static void main(String[] args)
     {
         final List<UnitType> unitTypes = buildUnitTypes();
-        InputParameters params = buildParams(unitTypes);
 
+        Map<String, Long> playerUnits = unitTypes.stream()
+                .map(UnitType::getName)
+                .map(String::toLowerCase)
+                .collect(Collectors.toMap(Function.identity(), (s) -> 10L));
         List<RunResult> results = IntStream.range(0, 100)
-                .mapToObj(i -> singleRun(unitTypes, params))
+                .mapToObj(i -> singleRun(unitTypes, playerUnits, playerUnits))
                 .collect(Collectors.toList());
         long wins0 = 0, wins1 = 0, p0 = 0, p1 = 0, draws = 0, steps0 = 0, steps1 = 0;
         for (RunResult r : results) {
@@ -68,9 +72,10 @@ public class Baseline
         System.out.printf("Total runs: %d%n", wins0 + wins1 + draws);
     }
 
-    private static RunResult singleRun(List<UnitType> unitTypes, InputParameters params)
+    private static RunResult singleRun(List<UnitType> unitTypes, Map<String, Long> player0Units,
+            Map<String, Long> player1Units)
     {
-        Engine e = new Engine(SingleRandom.get(), params.player0Units, params.player1Units);
+        Engine e = new Engine(SingleRandom.get(), player0Units, player1Units);
         e.init(unitTypes);
         while (e.getWinner() == -1 && e.getTicks() < MAX_TICKS)
         {
@@ -78,13 +83,6 @@ public class Baseline
         }
         System.out.printf("Player %d has won after %d ticks%n", e.getWinner(), e.getTicks());
         return new RunResult(e.getWinner(), e.getTicks());
-    }
-
-    private static InputParameters buildParams(List<UnitType> unitTypes)
-    {
-        InputParameters params = new InputParameters();
-        unitTypes.forEach(ut -> params.addUnit(ut.getName().toLowerCase(), 10, 10));
-        return params;
     }
 
     private static List<UnitType> buildUnitTypes()
