@@ -1,4 +1,5 @@
 (ns agenta.core
+  (:require agenta.ui)
   (:import (agenta Engine PanelViewer PanelViewerFrame SingleRandom UnitTypeBuilder)))
 
 (def default-units
