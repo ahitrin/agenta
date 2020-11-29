@@ -3,6 +3,10 @@ package agenta;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @deprecated Will be removed soon
+ */
+@Deprecated
 public final class InputParameters
 {
     public final Map<String, Long> player0Units = new HashMap<>();
