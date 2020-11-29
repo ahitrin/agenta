@@ -1,3 +1,0 @@
-footman		10	10
-archer		10	10
-knight		4	4
