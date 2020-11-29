@@ -1,4 +1,5 @@
 (ns agenta.baseline
+  (:require agenta.experiment)
   (:import (agenta UnitTypeImpl)
            (agenta.experiment Experiment)))
 
@@ -18,5 +19,5 @@
 
 (defn -main [& args]
   (let [player-units {"warrior" 10}
-        results (Experiment/runExperiment 100 5000 unit-types player-units player-units)]
+        results (agenta.experiment/run-experiment 100 5000 unit-types player-units player-units)]
     (Experiment/calculateStatistics results)))

@@ -1,13 +1,6 @@
 package agenta.experiment;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.LongStream;
-
-import agenta.Engine;
-import agenta.SingleRandom;
-import agenta.UnitType;
 
 /**
  * @author Andrey Hitrin
@@ -47,28 +40,4 @@ public class Experiment
         System.out.printf("Total runs: %d%n", wins0 + wins1 + draws);
     }
 
-    public static List<RunResult> runExperiment(
-            long totalExperiments,
-            long maxTicks,
-            List<UnitType> unitTypes,
-            Map<String, Long> player0Units,
-            Map<String, Long> player1Units)
-    {
-        return LongStream.range(0, totalExperiments)
-                .mapToObj(i -> singleRun(maxTicks, unitTypes, player0Units, player1Units))
-                .collect(Collectors.toList());
-    }
-
-    private static RunResult singleRun(long maxTicks, List<UnitType> unitTypes, Map<String, Long> player0Units,
-            Map<String, Long> player1Units)
-    {
-        Engine e = new Engine(SingleRandom.get(), player0Units, player1Units);
-        e.init(unitTypes);
-        while (e.getWinner() == -1 && e.getTicks() < maxTicks)
-        {
-            e.step();
-        }
-        System.out.printf("Player %d has won after %d ticks%n", e.getWinner(), e.getTicks());
-        return new RunResult(e.getWinner(), e.getTicks());
-    }
 }
