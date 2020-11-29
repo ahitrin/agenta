@@ -12,7 +12,7 @@ public class UnitTypeImpl implements UnitType
     private int speed = 0;
     private final int[] healthLimit = new int[UnitType.MAX_PRIORITY];
 
-    UnitTypeImpl()
+    public UnitTypeImpl()
     {
     }
 
