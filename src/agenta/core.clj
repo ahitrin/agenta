@@ -1,6 +1,6 @@
 (ns agenta.core
   (:require agenta.ui)
-  (:import (agenta Engine PanelViewer PanelViewerFrame SingleRandom UnitTypeBuilder)))
+  (:import (agenta Engine PanelViewer SingleRandom UnitTypeBuilder)))
 
 (def default-units
   "This piece of data is a good candidate for extraction into edn file"
@@ -39,11 +39,11 @@
   (let [p (new PanelViewer)
         u (clojure.edn/read-string (slurp "placement.edn"))
         e (new Engine (SingleRandom/get) (:player0 u) (:player1 u))
-        f (new PanelViewerFrame "Agenta example" p)]
+        f (agenta.ui/wrap-into-frame "Agenta demo" p)]
     (.init e default-units)
     (.addViewer e p)
     (while (== (.getWinner e) -1)
         (.step e))
-    (.showEndMessage f p (String/format "Player %d has won after %d ticks!"
+    (agenta.ui/show-end-message f p (String/format "Player %d has won after %d ticks!"
                                         (object-array [(.getWinner e)
                                                        (.getTicks e)])))))
