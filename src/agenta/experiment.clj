@@ -28,11 +28,7 @@
         steps1 (if (zero? wins1) 0 (double (/ (reduce + (map #(.-winner %) (wins-per-player 1))) wins1)))
         p0 (if (zero? (+ wins0 wins1)) 0 (double (/ (* 100 wins0) (+ wins0 wins1))))
         p1 (if (zero? (+ wins0 wins1)) 0 (- 100 p0))]
-    (println (String/format "Player 0 won %d times (%f%%), in %f steps average"
-                            (object-array [wins0 p0 steps0])))
-    (println (String/format "Player 1 won %d times (%f%%), in %f steps average"
-                            (object-array [wins1 p1 steps1])))
-    (println (String/format "Total %d draws (battle runs for too long)"
-                            (object-array [draws])))
-    (println (String/format "Total runs: %d"
-                            (object-array [(+ wins0 wins1 draws)])))))
+    (println (format "Player 0 won %d times (%f%%), in %f steps average" wins0 p0 steps0))
+    (println (format "Player 1 won %d times (%f%%), in %f steps average" wins1 p1 steps1))
+    (println (format "Total %d draws (battle runs for too long)" draws))
+    (println (format "Total runs: %d" (+ wins0 wins1 draws)))))
