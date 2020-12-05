@@ -33,6 +33,18 @@ public class GameMap
                 (cells[x][y].getObject() == null);
     }
 
+    public void placeWherePossible(Unit unit)
+    {
+        int x, y;
+        do
+        {
+            x = this.generator.nextInt(SIZE);
+            y = this.generator.nextInt(SIZE);
+        }
+        while (!canPlaceObject(x, y));
+        placeObject(unit, x, y);
+    }
+
     public MapCellType getCellType(int x, int y)
     {
         if ((x < 0) || (y < 0) ||

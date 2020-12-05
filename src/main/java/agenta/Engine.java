@@ -49,14 +49,7 @@ public final class Engine
                 for (int u = 0; u < count; u++)
                 {
                     Unit unit = new Unit(unitType, player, gameMap, generator);
-                    int x, y;
-                    do
-                    {
-                        x = generator.nextInt(GameMap.SIZE);
-                        y = generator.nextInt(GameMap.SIZE);
-                    }
-                    while (!gameMap.canPlaceObject(x, y));
-                    gameMap.placeObject(unit, x, y);
+                    gameMap.placeWherePossible(unit);
                     createdUnits.add(unit);
                 }
             }
