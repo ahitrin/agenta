@@ -11,13 +11,14 @@ import java.util.stream.Collectors;
 public final class Engine
 {
     private final GameMap map;
-    private final List<Unit> units = new ArrayList<>();
+    private final List<Unit> units;
     private final List<Viewer> viewers = new ArrayList<>();
     private int winner = -1;
     private long ticks = 0;
 
-    public Engine(GameMap gameMap) {
-        map = gameMap;
+    public Engine(GameMap gameMap, List<Unit> units) {
+        this.map = gameMap;
+        this.units = units;
     }
 
     public int addViewer(Viewer viewer)
@@ -35,9 +36,10 @@ public final class Engine
         return ticks;
     }
 
-    public void init(SingleRandom generator, GameMap gameMap, Map<String, Long> player0Units,
+    public static List<Unit> init(SingleRandom generator, GameMap gameMap, Map<String, Long> player0Units,
             Map<String, Long> player1Units, List<UnitType> unitTypes)
     {
+        List<Unit> createdUnits = new ArrayList<>();
         for (UnitType unitType: unitTypes)
         {
             for (int player = 0; player < 2; player++)
@@ -55,10 +57,11 @@ public final class Engine
                     }
                     while (!gameMap.canPlaceObject(x, y));
                     gameMap.placeObject(unit, x, y);
-                    units.add(unit);
+                    createdUnits.add(unit);
                 }
             }
         }
+        return createdUnits;
     }
 
     public void step()

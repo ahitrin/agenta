@@ -5,8 +5,8 @@
   [max-ticks unit-types player0-units player1-units]
   (let [g (SingleRandom/get)
         m (GameMap. g)
-        e (Engine. m)]
-    (.init e g m player0-units player1-units unit-types)
+        u (Engine/init g m player0-units player1-units unit-types)
+        e (Engine. m u)]
     (while (and (= -1 (.getWinner e))
                 (< (.getTicks e) max-ticks))
       (.step e))
