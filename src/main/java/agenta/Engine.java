@@ -37,8 +37,6 @@ public final class Engine
 
     public void init(SingleRandom generator, Map<String, Long> player0Units, Map<String, Long> player1Units, List<UnitType> unitTypes)
     {
-        map.renderTrees();
-
         for (UnitType unitType: unitTypes)
         {
             for (int player = 0; player < 2; player++)
