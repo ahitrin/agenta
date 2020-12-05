@@ -19,11 +19,12 @@ public final class Engine
     private int winner = -1;
     private long ticks = 0;
 
-    public Engine(SingleRandom generator, Map<String, Long> player0Units, Map<String, Long> player1Units) {
+    public Engine(SingleRandom generator, GameMap gameMap, Map<String, Long> player0Units,
+            Map<String, Long> player1Units) {
         this.player0Units = player0Units;
         this.player1Units = player1Units;
         this.generator = generator;
-        map = new GameMap(generator);
+        map = gameMap;
     }
 
     public int addViewer(Viewer viewer)
