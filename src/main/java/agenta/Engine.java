@@ -1,7 +1,5 @@
 package agenta;
 
-import static java.util.function.Predicate.not;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -11,7 +9,7 @@ import java.util.stream.Collectors;
 public final class Engine
 {
     private final GameMap map;
-    private final List<Unit> units;
+    private List<Unit> units;
     private final List<Viewer> viewers = new ArrayList<>();
     private int winner = -1;
     private long ticks = 0;
@@ -71,9 +69,9 @@ public final class Engine
 
     private void removeDeadUnits()
     {
-        new ArrayList<>(units).stream()
-                .filter(not(Unit::isAlive))
-                .forEach(units::remove);
+        units = units.stream()
+                .filter(Unit::isAlive)
+                .collect(Collectors.toList());
     }
 
     private void checkForWinner()

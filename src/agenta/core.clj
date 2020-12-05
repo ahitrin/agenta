@@ -1,6 +1,6 @@
 (ns agenta.core
   (:require agenta.ui)
-  (:import (agenta Engine PanelViewer SingleRandom UnitTypeImpl GameMap)))
+  (:import (agenta Engine PanelViewer SingleRandom UnitTypeImpl GameMap Unit)))
 
 (def default-units
   "This piece of data is a good candidate for extraction into edn file"
@@ -35,12 +35,25 @@
      (.setSpeed 25)
      (.setHitPoints 110))])
 
+(defn init-units [^SingleRandom r ^GameMap m player0-units player1-units unit-types]
+  (let [player-units {0 player0-units 1 player1-units}
+        new-units (for [ut unit-types
+                        p (range 2)
+                        c (range 100)
+                        :let [max-num (get (get player-units p)
+                                           (.toLowerCase (.getName ut)) 0)]
+                        :when (< c max-num)]
+                    (Unit. ut p m r))]
+    (doseq [unit new-units]
+      (.placeWherePossible m unit))
+    new-units))
+
 (defn -main [& args]
   (let [p (new PanelViewer)
         u (clojure.edn/read-string (slurp "placement.edn"))
         r (SingleRandom/get)
         m (GameMap. r)
-        u (Engine/init r m (:player0 u) (:player1 u) default-units)
+        u (init-units r m (:player0 u) (:player1 u) default-units)
         e (Engine. m u)
         f (agenta.ui/wrap-into-frame "Agenta demo" p)]
     (.renderTrees m)
