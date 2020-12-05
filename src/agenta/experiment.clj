@@ -28,7 +28,7 @@
         steps1 (if (zero? wins1) 0 (double (/ (reduce + (map #(.-winner %) (wins-per-player 1))) wins1)))
         p0 (if (zero? (+ wins0 wins1)) 0 (double (/ (* 100 wins0) (+ wins0 wins1))))
         p1 (if (zero? (+ wins0 wins1)) 0 (- 100 p0))]
-    (println (format "Player 0 won %d times (%f%%), in %f steps average" wins0 p0 steps0))
-    (println (format "Player 1 won %d times (%f%%), in %f steps average" wins1 p1 steps1))
-    (println (format "Total %d draws (battle runs for too long)" draws))
-    (println (format "Total runs: %d" (+ wins0 wins1 draws)))))
+    (printf "Player 0 won %d times (%f%%), in %f steps average%n" wins0 p0 steps0)
+    (printf "Player 1 won %d times (%f%%), in %f steps average%n" wins1 p1 steps1)
+    (printf "Total %d draws (battle runs for too long)%n" draws)
+    (printf "Total runs: %d%n" (+ wins0 wins1 draws))))
