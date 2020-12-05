@@ -40,9 +40,9 @@
         u (clojure.edn/read-string (slurp "placement.edn"))
         r (SingleRandom/get)
         m (GameMap. r)
-        e (Engine. r m (:player0 u) (:player1 u))
+        e (Engine. m)
         f (agenta.ui/wrap-into-frame "Agenta demo" p)]
-    (.init e default-units)
+    (.init e r  (:player0 u) (:player1 u) default-units)
     (.addViewer e p)
     (while (== (.getWinner e) -1)
         (.step e))

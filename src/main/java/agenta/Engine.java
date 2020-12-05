@@ -10,20 +10,13 @@ import java.util.stream.Collectors;
 
 public final class Engine
 {
-    private final Map<String, Long> player0Units;
-    private final Map<String, Long> player1Units;
     private final GameMap map;
     private final List<Unit> units = new ArrayList<>();
     private final List<Viewer> viewers = new ArrayList<>();
-    private final SingleRandom generator;
     private int winner = -1;
     private long ticks = 0;
 
-    public Engine(SingleRandom generator, GameMap gameMap, Map<String, Long> player0Units,
-            Map<String, Long> player1Units) {
-        this.player0Units = player0Units;
-        this.player1Units = player1Units;
-        this.generator = generator;
+    public Engine(GameMap gameMap) {
         map = gameMap;
     }
 
@@ -42,7 +35,7 @@ public final class Engine
         return ticks;
     }
 
-    public void init(List<UnitType> unitTypes)
+    public void init(SingleRandom generator, Map<String, Long> player0Units, Map<String, Long> player1Units, List<UnitType> unitTypes)
     {
         map.renderTrees();
 
