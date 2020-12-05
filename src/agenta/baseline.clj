@@ -1,7 +1,6 @@
 (ns agenta.baseline
   (:require agenta.experiment)
-  (:import (agenta UnitTypeImpl)
-           (agenta.experiment Experiment)))
+  (:import (agenta UnitTypeImpl)))
 
 ; Baseline experiment: each of two players with same forces should have ~50% chance to win
 
@@ -20,4 +19,4 @@
 (defn -main [& args]
   (let [player-units {"warrior" 10}
         results (agenta.experiment/run-experiment 100 5000 unit-types player-units player-units)]
-    (Experiment/calculateStatistics results)))
+    (agenta.experiment/calc-statistics results)))
