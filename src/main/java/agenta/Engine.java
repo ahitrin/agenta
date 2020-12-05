@@ -35,7 +35,8 @@ public final class Engine
         return ticks;
     }
 
-    public void init(SingleRandom generator, Map<String, Long> player0Units, Map<String, Long> player1Units, List<UnitType> unitTypes)
+    public void init(SingleRandom generator, GameMap gameMap, Map<String, Long> player0Units,
+            Map<String, Long> player1Units, List<UnitType> unitTypes)
     {
         for (UnitType unitType: unitTypes)
         {
@@ -45,15 +46,15 @@ public final class Engine
                 final long count = playerUnits.getOrDefault(unitType.getName().toLowerCase(), 0L);
                 for (int u = 0; u < count; u++)
                 {
-                    Unit unit = new Unit(unitType, player, map, generator);
+                    Unit unit = new Unit(unitType, player, gameMap, generator);
                     int x, y;
                     do
                     {
                         x = generator.nextInt(GameMap.SIZE);
                         y = generator.nextInt(GameMap.SIZE);
                     }
-                    while (!map.canPlaceObject(x, y));
-                    map.placeObject(unit, x, y);
+                    while (!gameMap.canPlaceObject(x, y));
+                    gameMap.placeObject(unit, x, y);
                     units.add(unit);
                 }
             }

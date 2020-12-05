@@ -43,7 +43,7 @@
         e (Engine. m)
         f (agenta.ui/wrap-into-frame "Agenta demo" p)]
     (.renderTrees m)
-    (.init e r  (:player0 u) (:player1 u) default-units)
+    (.init e r m (:player0 u) (:player1 u) default-units)
     (.addViewer e p)
     (while (== (.getWinner e) -1)
         (.step e))
