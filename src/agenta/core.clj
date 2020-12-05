@@ -46,6 +46,6 @@
     (.addViewer e p)
     (while (== (.getWinner e) -1)
         (.step e))
-    (agenta.ui/show-end-message f p (String/format "Player %d has won after %d ticks!"
-                                        (object-array [(.getWinner e)
-                                                       (.getTicks e)])))))
+    (agenta.ui/show-end-message f p (format "Player %d has won after %d ticks!"
+                                            (.getWinner e)
+                                            (.getTicks e)))))
