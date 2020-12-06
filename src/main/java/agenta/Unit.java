@@ -21,7 +21,9 @@ public class Unit extends MapObject
     private UnitState state;
     private final GameMap map;
     private final int player;
-    private int speedCounter, attackCounter, healthCounter;
+    int speedCounter;
+    private int attackCounter;
+    private int healthCounter;
     private int currentHitPoints;
     private UnitCommand currentCommand;
     int kills = 0;
@@ -110,13 +112,13 @@ public class Unit extends MapObject
                     Unit target = selectTargetPerk.apply(neighbours);
                     int dx = Integer.compare(target.x - x, 0);
                     int dy = Integer.compare(target.y - y, 0);
-                    actionListener.submit(() -> doMove(dx, dy));
+                    actionListener.submit(new Move(this, map, dx, dy));
                 }
                 else
                 {
                     int dx = random.nextInt(3) - 1;
                     int dy = random.nextInt(3) - 1;
-                    actionListener.submit(() -> doMove(dx, dy));
+                    actionListener.submit(new Move(this, map, dx, dy));
                 }
             }
             break;
@@ -134,7 +136,7 @@ public class Unit extends MapObject
                 }
                 int idx = (dx > 0) ? 1 : (dx < 0) ? -1 : 0;
                 int idy = (dy > 0) ? 1 : (dy < 0) ? -1 : 0;
-                actionListener.submit(() -> doMove(idx, idy));
+                actionListener.submit(new Move(this, map, idx, idy));
             }
             break;
         }
@@ -186,23 +188,6 @@ public class Unit extends MapObject
         }
         attackCounter = type.getAttackSpeed();
         return random.nextInt(type.getRandAttack()) + type.getBaseAttack();
-    }
-
-    private void doMove(int dx, int dy)
-    {
-        if (!isAlive()) {
-            return;
-        }
-        if (speedCounter > 0)
-        {
-            return;
-        }
-        if (map.canPlaceObject(x + dx, y + dy))
-        {
-            map.removeObject(this, x, y);
-            map.placeObject(this, x + dx, y + dy);
-            speedCounter = type.getSpeed();
-        }
     }
 
     private List<Unit> filterEnemies(List<Unit> units)
