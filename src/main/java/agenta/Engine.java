@@ -85,6 +85,12 @@ public final class Engine
                         .ifPresent(allActions::add);
             }
         }
-        new HashSet<>(allActions).forEach(Action::act);
+        new HashSet<>(allActions).forEach(this::performAction);
+    }
+
+    private void performAction(Action a) {
+        if (a.getActor().isAlive()) {
+            a.act();
+        }
     }
 }

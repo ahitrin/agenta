@@ -20,12 +20,14 @@ public class Move implements Action
     }
 
     @Override
+    public Unit getActor()
+    {
+        return self;
+    }
+
+    @Override
     public void act()
     {
-        if (!self.isAlive())
-        {
-            return;
-        }
         if (self.speedCounter > 0)
         {
             return;
