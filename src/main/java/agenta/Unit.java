@@ -1,6 +1,5 @@
 package agenta;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -209,11 +208,6 @@ public class Unit extends MapObject
         if (currentHitPoints < type.getHealthLimit(currentCommand.getPriority()))
         {
             obtain(new UnitCommand(UnitState.ESCAPE, currentCommand.getPriority() + 1));
-        }
-        if (!isAlive())
-        {
-            System.out.println(MessageFormat.format("{0} is dead", toString()));
-            map.removeObject(this, x, y);
         }
     }
 }

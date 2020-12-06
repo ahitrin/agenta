@@ -118,6 +118,8 @@ public final class Engine
         if (!target.isAlive())
         {
             actor.kills += 1;
+            System.out.println(MessageFormat.format("{0} is dead", target.toString()));
+            map.removeObject(target, target.x, target.y);
         }
     }
 
