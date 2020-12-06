@@ -1,6 +1,6 @@
 package agenta;
 
-import java.text.MessageFormat;
+import java.util.Map;
 
 /**
  * @author Andrey Hitrin
@@ -8,27 +8,8 @@ import java.text.MessageFormat;
  */
 public class Attack extends Action
 {
-    private final Unit other;
-
     public Attack(Unit self, Unit other)
     {
-        super(self);
-        this.other = other;
-    }
-
-    @Override
-    public void act()
-    {
-        int damage = self.doAttack();
-        if (damage > 0)
-        {
-            System.out.println(MessageFormat.format("{0} strikes {1} with {2}", self.toString(), other.toString(),
-                    damage));
-        }
-        other.sufferDamage(damage);
-        if (!other.isAlive())
-        {
-            self.kills += 1;
-        }
+        super(self, Map.of("type", "attack", "target", other));
     }
 }

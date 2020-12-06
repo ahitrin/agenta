@@ -1,5 +1,6 @@
 package agenta;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -90,7 +91,50 @@ public final class Engine
 
     private void performAction(Action a) {
         if (a.getActor().isAlive()) {
-            a.act();
+            switch ((String) a.getData().get("type")) {
+            case "attack":
+                performAttack(a);
+                break;
+            case "move":
+                performMove(a);
+                break;
+            default:
+                break;
+            }
+        }
+    }
+
+    private void performAttack(Action a)
+    {
+        var actor = a.getActor();
+        var target = (Unit) a.getData().get("target");
+        int damage = actor.doAttack();
+        if (damage > 0)
+        {
+            System.out.println(MessageFormat.format("{0} strikes {1} with {2}", actor.toString(), target.toString(),
+                    damage));
+        }
+        target.sufferDamage(damage);
+        if (!target.isAlive())
+        {
+            actor.kills += 1;
+        }
+    }
+
+    private void performMove(Action a)
+    {
+        var actor = a.getActor();
+        var dx = (int) a.data.get("dx");
+        var dy = (int) a.data.get("dy");
+        if (actor.speedCounter > 0)
+        {
+            return;
+        }
+        if (map.canPlaceObject(actor.x + dx, actor.y + dy))
+        {
+            map.removeObject(actor, actor.x, actor.y);
+            map.placeObject(actor, actor.x + dx, actor.y + dy);
+            actor.speedCounter = actor.getType().getSpeed();
         }
     }
 }
