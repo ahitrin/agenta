@@ -134,9 +134,9 @@ public final class Engine
         }
         if (map.canPlaceObject(actor.x + dx, actor.y + dy))
         {
-            map.removeObject(actor, actor.x, actor.y);
-            map.placeObject(actor, actor.x + dx, actor.y + dy);
+            map.move(actor, dx, dy);
             actor.speedCounter = actor.getType().getSpeed();
         }
     }
+
 }

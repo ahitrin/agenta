@@ -45,6 +45,12 @@ public class GameMap
         placeObject(unit, x, y);
     }
 
+    public void move(Unit actor, int dx, int dy)
+    {
+        cells[actor.x][actor.y].setObject(null);
+        placeObject(actor, actor.x + dx, actor.y + dy);
+    }
+
     public MapCellType getCellType(int x, int y)
     {
         if ((x < 0) || (y < 0) ||
