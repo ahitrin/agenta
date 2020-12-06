@@ -8,6 +8,7 @@
         m (GameMap. g)
         u (agenta.core/init-units g m player0-units player1-units unit-types)
         e (Engine. m u)]
+    (doseq [unit u] (.placeWherePossible m unit))
     (while (and (= -1 (.getWinner e))
                 (< (.getTicks e) max-ticks))
       (.step e))

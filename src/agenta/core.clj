@@ -44,8 +44,6 @@
                                            (.toLowerCase (.getName ut)) 0)]
                         :when (< c max-num)]
                     (Unit. ut p m r))]
-    (doseq [unit new-units]
-      (.placeWherePossible m unit))
     new-units))
 
 (defn -main [& args]
@@ -57,6 +55,7 @@
         e (Engine. m u)
         f (agenta.ui/wrap-into-frame "Agenta demo" p)]
     (.renderTrees m)
+    (doseq [unit u] (.placeWherePossible m unit))
     (.addViewer e p)
     (while (== (.getWinner e) -1)
         (.step e))
