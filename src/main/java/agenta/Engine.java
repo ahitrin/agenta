@@ -80,7 +80,7 @@ public final class Engine
             List<Action> unitActions = new ArrayList<>();
             if (unit.isAlive())
             {
-                List<MapObject> visibleObjects = map.getObjectsInRadius(unit.x, unit.y, unit.getType().getVisibility());
+                List<MapObject> visibleObjects = map.getObjectsInRadius(unit, unit.getType().getVisibility());
                 unit.act(visibleObjects, unitActions::add);
                 unitActions.stream()
                         .findAny()
@@ -133,9 +133,8 @@ public final class Engine
         {
             return;
         }
-        if (map.canPlaceObject(actor.x + dx, actor.y + dy))
+        if (map.tryMove(actor, dx, dy))
         {
-            map.move(actor, dx, dy);
             actor.speedCounter = actor.getType().getSpeed();
         }
     }

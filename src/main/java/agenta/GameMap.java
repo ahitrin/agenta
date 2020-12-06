@@ -49,10 +49,15 @@ public class GameMap
         placeObject(unit, x, y);
     }
 
-    public void move(Unit actor, int dx, int dy)
+    boolean tryMove(MapObject actor, int dx, int dy)
     {
-        cells[actor.x][actor.y].setObject(null);
-        placeObject(actor, actor.x + dx, actor.y + dy);
+        boolean moved = canPlaceObject(actor.x + dx, actor.y + dy);
+        if (moved)
+        {
+            cells[actor.x][actor.y].setObject(null);
+            placeObject(actor, actor.x + dx, actor.y + dy);
+        }
+        return moved;
     }
 
     public MapCellType getCellType(int x, int y)
@@ -75,10 +80,10 @@ public class GameMap
         return cells[x][y].getObject();
     }
 
-    public List<MapObject> getObjectsInRadius(int x, int y, float r)
+    public List<MapObject> getObjectsInRadius(MapObject o, float r)
     {
-        List<MapObject> objects = new ArrayList<>();
-        MapObject o;
+        List<MapObject> objects1 = new ArrayList<>();
+        MapObject o1;
 
         int limit = Math.round(r);
         for (int i = -limit; i <= limit; i++)
@@ -90,13 +95,13 @@ public class GameMap
                 {
                     continue;
                 }
-                if ((o = getGroundObject(x + i, y + j)) != null)
+                if ((o1 = getGroundObject(o.x + i, o.y + j)) != null)
                 {
-                    objects.add(o);
+                    objects1.add(o1);
                 }
             }
         }
-        return objects;
+        return objects1;
     }
 
     private void placeObject(MapObject obj, int x, int y)
