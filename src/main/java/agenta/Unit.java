@@ -112,13 +112,13 @@ public class Unit extends MapObject
                     Unit target = selectTargetPerk.apply(neighbours);
                     int dx = Integer.compare(target.x - x, 0);
                     int dy = Integer.compare(target.y - y, 0);
-                    actionListener.submit(new Move(this, map, dx, dy));
+                    actionListener.submit(new Move(this, dx, dy));
                 }
                 else
                 {
                     int dx = random.nextInt(3) - 1;
                     int dy = random.nextInt(3) - 1;
-                    actionListener.submit(new Move(this, map, dx, dy));
+                    actionListener.submit(new Move(this, dx, dy));
                 }
             }
             break;
@@ -136,7 +136,7 @@ public class Unit extends MapObject
                 }
                 int idx = (dx > 0) ? 1 : (dx < 0) ? -1 : 0;
                 int idy = (dy > 0) ? 1 : (dy < 0) ? -1 : 0;
-                actionListener.submit(new Move(this, map, idx, idy));
+                actionListener.submit(new Move(this, idx, idy));
             }
             break;
         }

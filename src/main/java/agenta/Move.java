@@ -8,7 +8,7 @@ import java.util.Map;
  */
 public class Move extends Action
 {
-    public Move(Unit self, GameMap gameMap, int dx, int dy)
+    public Move(Unit self, int dx, int dy)
     {
         super(self, Map.of("type", "move", "dx", dx, "dy", dy));
     }
