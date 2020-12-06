@@ -25,3 +25,6 @@ Run experiment(s):
 ----
 $ lein run -m agenta.baseline
 ----
+
+Please note: currently this project is under **heavy** refactoring, and everything inside it may be changed.
+Except for the given demo/experiment use cases.
