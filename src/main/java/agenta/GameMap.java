@@ -1,13 +1,16 @@
 package agenta;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class GameMap
 {
     public static final int SIZE = 18;
     private final SingleRandom generator;
     private final MapCell[][] cells;
+    private final Set<MapObject> objects = new HashSet<>();
 
     public GameMap(SingleRandom generator)
     {
@@ -42,6 +45,7 @@ public class GameMap
             y = this.generator.nextInt(SIZE);
         }
         while (!canPlaceObject(x, y));
+        objects.add(unit);
         placeObject(unit, x, y);
     }
 
@@ -95,7 +99,7 @@ public class GameMap
         return objects;
     }
 
-    public void placeObject(MapObject obj, int x, int y)
+    private void placeObject(MapObject obj, int x, int y)
     {
         if (canPlaceObject(x, y))
         {
@@ -104,12 +108,10 @@ public class GameMap
         }
     }
 
-    public void removeObject(MapObject obj, int x, int y)
+    public void removeObject(MapObject obj)
     {
-        if (cells[x][y].getObject() == obj)
-        {
-            cells[x][y].setObject(null);
-        }
+        objects.remove(obj);
+        cells[obj.x][obj.y].setObject(null);
     }
 
     public void renderTrees()
