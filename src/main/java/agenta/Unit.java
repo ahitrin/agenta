@@ -46,7 +46,7 @@ public class Unit extends MapObject
         selectTargetPerk = new SelectRandomWithMemory(random);
     }
 
-    public void act(ActionListener actionListener)
+    public void act(List<MapObject> visibleObjects, ActionListener actionListener)
     {
         if (healthCounter > 0)
         {
@@ -87,7 +87,7 @@ public class Unit extends MapObject
         {
         case STAND:
             neighbours = filterEnemies(filterUnits(
-                    map.getObjectsInRadius(x, y, type.getRange())));
+                    filterInAttackRadius(visibleObjects)));
             if (!neighbours.isEmpty())
             {
                 List<Unit> currentNeighbours = new ArrayList<>(neighbours);
@@ -96,7 +96,7 @@ public class Unit extends MapObject
             break;
         case ATTACK:
             neighbours = filterEnemies(filterUnits(
-                    map.getObjectsInRadius(x, y, type.getRange())));
+                    filterInAttackRadius(visibleObjects)));
             if (!neighbours.isEmpty())
             {
                 List<Unit> currentNeighbours = new ArrayList<>(neighbours);
@@ -104,8 +104,7 @@ public class Unit extends MapObject
             }
             else
             {
-                neighbours = filterEnemies(filterUnits(
-                        map.getObjectsInRadius(x, y, type.getVisibility())));
+                neighbours = filterEnemies(filterUnits(visibleObjects));
                 if (!neighbours.isEmpty())
                 {
                     Unit target = selectTargetPerk.apply(neighbours);
@@ -122,8 +121,7 @@ public class Unit extends MapObject
             }
             break;
         case ESCAPE:
-            neighbours = filterEnemies(filterUnits(
-                    map.getObjectsInRadius(x, y, type.getVisibility())));
+            neighbours = filterEnemies(filterUnits(visibleObjects));
             if (!neighbours.isEmpty())
             {
                 double dx = 0, dy = 0, r;
@@ -192,6 +190,14 @@ public class Unit extends MapObject
     private List<Unit> filterEnemies(List<Unit> units)
     {
         return units.stream().filter(u -> u.getPlayer() != player).collect(Collectors.toList());
+    }
+
+    private List<MapObject> filterInAttackRadius(List<MapObject> objs)
+    {
+        float limit = type.getRange() * type.getRange();
+        return objs.stream()
+                .filter(o -> (o.x - x) * (o.x - x) + (o.y - y) * (o.y - y) <= limit)
+                .collect(Collectors.toList());
     }
 
     public void sufferDamage(int value)

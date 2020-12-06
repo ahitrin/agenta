@@ -80,7 +80,8 @@ public final class Engine
             List<Action> unitActions = new ArrayList<>();
             if (unit.isAlive())
             {
-                unit.act(unitActions::add);
+                List<MapObject> visibleObjects = map.getObjectsInRadius(unit.x, unit.y, unit.getType().getVisibility());
+                unit.act(visibleObjects, unitActions::add);
                 unitActions.stream()
                         .findAny()
                         .ifPresent(allActions::add);
