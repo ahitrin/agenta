@@ -3,7 +3,6 @@ package agenta;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public final class Engine
@@ -32,27 +31,6 @@ public final class Engine
 
     public long getTicks() {
         return ticks;
-    }
-
-    public static List<Unit> init(SingleRandom generator, GameMap gameMap, Map<String, Long> player0Units,
-            Map<String, Long> player1Units, List<UnitType> unitTypes)
-    {
-        List<Unit> createdUnits = new ArrayList<>();
-        for (UnitType unitType: unitTypes)
-        {
-            for (int player = 0; player < 2; player++)
-            {
-                Map<String, Long> playerUnits = player == 0 ? player0Units : player1Units;
-                final long count = playerUnits.getOrDefault(unitType.getName().toLowerCase(), 0L);
-                for (int u = 0; u < count; u++)
-                {
-                    Unit unit = new Unit(unitType, player, gameMap, generator);
-                    gameMap.placeWherePossible(unit);
-                    createdUnits.add(unit);
-                }
-            }
-        }
-        return createdUnits;
     }
 
     public void step()

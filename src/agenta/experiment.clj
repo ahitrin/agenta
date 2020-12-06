@@ -1,11 +1,12 @@
 (ns agenta.experiment
+  (:require agenta.core)
   (:import (agenta Engine GameMap SingleRandom)))
 
 (defn single-run
   [max-ticks unit-types player0-units player1-units]
   (let [g (SingleRandom/get)
         m (GameMap. g)
-        u (Engine/init g m player0-units player1-units unit-types)
+        u (agenta.core/init-units g m player0-units player1-units unit-types)
         e (Engine. m u)]
     (while (and (= -1 (.getWinner e))
                 (< (.getTicks e) max-ticks))
