@@ -18,7 +18,6 @@ public class Unit extends MapObject
 
     private final UnitType type;
     private UnitState state;
-    private final GameMap map;
     private final int player;
     int speedCounter;
     private int attackCounter;
@@ -30,11 +29,10 @@ public class Unit extends MapObject
     private final SingleRandom random;
     private final Selector<Unit> selectTargetPerk;
 
-    public Unit(UnitType type, int player, GameMap map, SingleRandom random)
+    public Unit(UnitType type, int player, SingleRandom random)
     {
         this.type = type;
         this.player = player;
-        this.map = map;
         this.random = random;
         speedCounter = this.random.nextInt(type.getSpeed()) + 1;
         attackCounter = this.random.nextInt(type.getAttackSpeed()) + 1;

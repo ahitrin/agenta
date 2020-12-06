@@ -35,7 +35,7 @@
      (.setSpeed 25)
      (.setHitPoints 110))])
 
-(defn init-units [^SingleRandom r ^GameMap m player0-units player1-units unit-types]
+(defn init-units [^SingleRandom r player0-units player1-units unit-types]
   (let [player-units {0 player0-units 1 player1-units}
         new-units (for [ut unit-types
                         p (range 2)
@@ -43,7 +43,7 @@
                         :let [max-num (get (get player-units p)
                                            (.toLowerCase (.getName ut)) 0)]
                         :when (< c max-num)]
-                    (Unit. ut p m r))]
+                    (Unit. ut p r))]
     new-units))
 
 (defn -main [& args]
@@ -51,7 +51,7 @@
         u (clojure.edn/read-string (slurp "placement.edn"))
         r (SingleRandom/get)
         m (GameMap. r)
-        u (init-units r m (:player0 u) (:player1 u) default-units)
+        u (init-units r (:player0 u) (:player1 u) default-units)
         e (Engine. m u)
         f (agenta.ui/wrap-into-frame "Agenta demo" p)]
     (.renderTrees m)

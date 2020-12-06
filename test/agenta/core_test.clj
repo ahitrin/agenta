@@ -1,7 +1,7 @@
 (ns agenta.core-test
   (:require [clojure.test :refer :all]
             [agenta.core :refer :all])
-  (:import (agenta GameMap SingleRandom Unit UnitTypeImpl)))
+  (:import (agenta SingleRandom Unit UnitTypeImpl)))
 
 
 (deftest unit-is-alive-by-default
@@ -12,6 +12,5 @@
                                (.setAttackSpeed 3)
                                (.setHitPoints 10))
                         random (SingleRandom/get)
-                        map (new GameMap random)
-                        unit (new Unit type 13 map random)]
+                        unit (Unit. type 13 random)]
                        (is (.isAlive unit)))))

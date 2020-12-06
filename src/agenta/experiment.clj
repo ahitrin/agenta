@@ -6,7 +6,7 @@
   [max-ticks unit-types player0-units player1-units]
   (let [g (SingleRandom/get)
         m (GameMap. g)
-        u (agenta.core/init-units g m player0-units player1-units unit-types)
+        u (agenta.core/init-units g player0-units player1-units unit-types)
         e (Engine. m u)]
     (doseq [unit u] (.placeWherePossible m unit))
     (while (and (= -1 (.getWinner e))
