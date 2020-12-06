@@ -6,21 +6,14 @@ import java.text.MessageFormat;
  * @author Andrey Hitrin
  * @since 06.12.2020
  */
-public class Attack implements Action
+public class Attack extends Action
 {
-    private final Unit self;
     private final Unit other;
 
     public Attack(Unit self, Unit other)
     {
-        this.self = self;
+        super(self);
         this.other = other;
-    }
-
-    @Override
-    public Unit getActor()
-    {
-        return self;
     }
 
     @Override
