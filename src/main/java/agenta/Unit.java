@@ -24,7 +24,7 @@ public class Unit extends MapObject
     private int speedCounter, attackCounter, healthCounter;
     private int currentHitPoints;
     private UnitCommand currentCommand;
-    private int kills = 0;
+    int kills = 0;
     private final String name;
     private final SingleRandom random;
     private final Selector<Unit> selectTargetPerk;
@@ -90,7 +90,7 @@ public class Unit extends MapObject
             if (!neighbours.isEmpty())
             {
                 List<Unit> currentNeighbours = new ArrayList<>(neighbours);
-                actionListener.submit(() -> performAttack(selectTargetPerk.apply(currentNeighbours)));
+                actionListener.submit(new Attack(this, selectTargetPerk.apply(currentNeighbours)));
             }
             break;
         case ATTACK:
@@ -99,7 +99,7 @@ public class Unit extends MapObject
             if (!neighbours.isEmpty())
             {
                 List<Unit> currentNeighbours = new ArrayList<>(neighbours);
-                actionListener.submit(() -> performAttack(selectTargetPerk.apply(currentNeighbours)));
+                actionListener.submit(new Attack(this, selectTargetPerk.apply(currentNeighbours)));
             }
             else
             {
@@ -178,7 +178,7 @@ public class Unit extends MapObject
         return String.format("%s (%d HP; %d ks) at [%d, %d]", name, currentHitPoints, kills, x, y);
     }
 
-    private int doAttack()
+    public int doAttack()
     {
         if (attackCounter > 0)
         {
@@ -210,24 +210,7 @@ public class Unit extends MapObject
         return units.stream().filter(u -> u.getPlayer() != player).collect(Collectors.toList());
     }
 
-    private void performAttack(Unit other)
-    {
-        if (!isAlive()) {
-            return;
-        }
-        int damage = doAttack();
-        if (damage > 0)
-        {
-            System.out.println(MessageFormat.format("{0} strikes {1} with {2}", toString(), other.toString(), damage));
-        }
-        other.sufferDamage(damage);
-        if (!other.isAlive())
-        {
-            kills += 1;
-        }
-    }
-
-    private void sufferDamage(int value)
+    public void sufferDamage(int value)
     {
         if (!isAlive())
         {
