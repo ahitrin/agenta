@@ -1,0 +1,23 @@
+= Wow, what I've found!
+
+Sometimes it's funny to walk among old projects taken from my abandoned HDD.
+Here is the most interesting one.
+
+.Project card
+|===
+| Name | Agenta
+| Description | Two crowds of units fight each other with minimal interaction with human.
+| Years | About 2006
+| Language | Java 2
+| Why is it fun? | Demo app!
+|===
+
+I was quite impressed by the fact that it was possible to build and run it without any significant change.
+The only actual improvement needed was an addition of `build.gradle` and project layout modernization.
+And then - magic! - units started to move and fight each other.
+Java stands strong for compatibility with old code, and this is really cool!
+
+A view of fighting units (despite they're just colored letters) is so pleasant!
+I want to play more with its code.
+
+NOTE: A retrospective record.
