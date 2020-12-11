@@ -35,3 +35,13 @@
     (printf "Player 1 won %d times (%f%%), in %f steps average%n" wins1 p1 steps1)
     (printf "Total %d draws (battle runs for too long)%n" draws)
     (printf "Total runs: %d%n" (+ wins0 wins1 draws))))
+
+(defn -main [& args]
+  (if (seq args)
+    (let [f (first args)
+          s (clojure.edn/read-string (slurp (format "setting/%s.edn" f)))
+          results (run-experiment 100 5000 s)]
+      (calc-statistics results))
+    (println "Please name current setting (e.g. baseline)."
+             "Look for setting files in the \"setting\" dir."
+             "\n**I cannot run without an argument**")))

@@ -23,8 +23,10 @@ $ lein run
 Run experiment(s):
 
 ----
-$ lein run -m agenta.baseline
+$ lein run -m agenta.experiment baseline
 ----
+
+Setting files for experiments can be found in the `setting` directory.
 
 Please note: currently this project is under **heavy** refactoring, and everything inside it may be changed.
 Except for the given demo/experiment use cases.
