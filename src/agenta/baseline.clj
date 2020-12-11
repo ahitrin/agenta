@@ -19,6 +19,5 @@
 
 (defn -main [& args]
   (let [s (clojure.edn/read-string (slurp "setting/baseline.edn"))
-        p (:placement s)
-        results (agenta.experiment/run-experiment 100 5000 unit-types (:player0 p) (:player1 p))]
+        results (agenta.experiment/run-experiment 100 5000 s unit-types)]
     (agenta.experiment/calc-statistics results)))

@@ -3,10 +3,10 @@
   (:import (agenta Engine GameMap SingleRandom)))
 
 (defn single-run
-  [max-ticks unit-types player0-units player1-units]
+  [max-ticks setting unit-types]
   (let [g (SingleRandom/get)
         m (GameMap. g)
-        u (agenta.core/init-units g player0-units player1-units unit-types)
+        u (agenta.core/init-units g setting unit-types)
         e (Engine. m u)]
     (doseq [unit u] (.placeWherePossible m unit))
     (while (and (= -1 (.getWinner e))
@@ -18,8 +18,8 @@
     {:winner (.getWinner e) :steps (.getTicks e)}))
 
 (defn run-experiment
-  [total-experiments max-ticks unit-types player0-units player1-units]
-  (repeatedly total-experiments #(single-run max-ticks unit-types player0-units player1-units)))
+  [total-experiments max-ticks setting unit-types]
+  (repeatedly total-experiments #(single-run max-ticks setting unit-types)))
 
 (defn calc-statistics
   [results]

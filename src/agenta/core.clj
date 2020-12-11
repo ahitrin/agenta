@@ -38,8 +38,9 @@
      (.setHitPoints 110)
      (.setImage "knight"))])
 
-(defn init-units [^SingleRandom r player0-units player1-units unit-types]
-  (let [player-units {0 player0-units 1 player1-units}
+(defn init-units [^SingleRandom r setting unit-types]
+  (let [player-units {0 (:player0 (:placement setting))
+                      1 (:player1 (:placement setting))}
         new-units (for [ut unit-types
                         p (range 2)
                         c (range 100)
@@ -52,10 +53,9 @@
 (defn -main [& args]
   (let [s (clojure.edn/read-string (slurp "setting/demo.edn"))
         p (new PanelViewer)
-        u (:placement s)
         r (SingleRandom/get)
         m (GameMap. r)
-        u (init-units r (:player0 u) (:player1 u) default-units)
+        u (init-units r s default-units)
         e (Engine. m u)
         f (agenta.ui/wrap-into-frame "Agenta demo" p)]
     (.renderTrees m)
