@@ -1,7 +1,7 @@
 {
  :description "Baseline experiment: each of two players with same forces should have ~50% chance to win"
- :placement {
-             0 {"warrior" 10}
-             1 {"warrior" 10}
-             }
+ :placement   {
+               0 {"warrior" 10}
+               1 {"warrior" 10}
+               }
  }

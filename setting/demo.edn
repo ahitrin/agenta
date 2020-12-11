@@ -1,15 +1,15 @@
 {
  :description "Visual demo of the project"
- :placement {
-             0 {
-                       "footman" 10
-                       "archer" 10
-                       "knight" 4
-                       }
-             1 {
-                       "footman" 10
-                       "archer" 10
-                       "knight" 4
-                       }
-           }
+ :placement   {
+               0 {
+                  "footman" 10
+                  "archer"  10
+                  "knight"  4
+                  }
+               1 {
+                  "footman" 10
+                  "archer"  10
+                  "knight"  4
+                  }
+               }
  }
