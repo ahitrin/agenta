@@ -14,7 +14,8 @@
      (.setHitPoints 10)
      (.setSpeed 3)
      (.setVisibility 10)
-     (.setRange 1.45))])
+     (.setRange 1.45)
+     (.setImage "footman"))])
 
 (defn -main [& args]
   (let [player-units {"warrior" 10}

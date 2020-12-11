@@ -11,6 +11,7 @@ public class UnitTypeImpl implements UnitType
     private int visibility = 0;
     private int speed = 0;
     private final int[] healthLimit = new int[UnitType.MAX_PRIORITY];
+    private String image;
 
     public UnitTypeImpl()
     {
@@ -27,6 +28,7 @@ public class UnitTypeImpl implements UnitType
         setVisibility(ut.getVisibility());
         setSpeed(ut.getSpeed());
         setHitPoints(ut.getHitPoints());
+        setImage(ut.getImage());
     }
 
     @Override
@@ -87,6 +89,12 @@ public class UnitTypeImpl implements UnitType
         return visibility;
     }
 
+    @Override
+    public String getImage()
+    {
+        return image;
+    }
+
     public String toString()
     {
         return name;
@@ -134,5 +142,10 @@ public class UnitTypeImpl implements UnitType
     public void setVisibility(int value)
     {
         visibility = value;
+    }
+
+    public void setImage(String image)
+    {
+        this.image = image;
     }
 }

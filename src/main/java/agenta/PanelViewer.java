@@ -2,16 +2,14 @@ package agenta;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.*;
 
 public class PanelViewer extends JPanel implements Viewer
 {
-    private final Image iGrass;
-    private final Image iTree;
-    private final Image[] iFootman = new Image[2];
-    private final Image[] iArcher = new Image[2];
-    private final Image[] iKnight = new Image[2];
+    private final Map<String, Image> imagesCache = new HashMap<>();
     private BufferedImage current, old;
     private boolean enabled;
 
@@ -19,16 +17,6 @@ public class PanelViewer extends JPanel implements Viewer
     {
         super();
         setSize(450, 450);
-
-        iGrass = getToolkit().getImage("Pictures/grass0.gif");
-        iTree = getToolkit().getImage("Pictures/tree0.gif");
-        iFootman[0] = getToolkit().getImage("Pictures/footman0.gif");
-        iFootman[1] = getToolkit().getImage("Pictures/footman1.gif");
-        iArcher[0] = getToolkit().getImage("Pictures/archer0.gif");
-        iArcher[1] = getToolkit().getImage("Pictures/archer1.gif");
-        iKnight[0] = getToolkit().getImage("Pictures/knight0.gif");
-        iKnight[1] = getToolkit().getImage("Pictures/knight1.gif");
-
         setVisible(true);
     }
 
@@ -62,30 +50,18 @@ public class PanelViewer extends JPanel implements Viewer
 
                 if (u != null)
                 {
-                    String s = u.getType().getName().toLowerCase();
-                    char c = s.charAt(0);
-                    switch (c)
-                    {
-                    case 'f':
-                        ima = iFootman[u.getPlayer()];
-                        break;
-                    case 'a':
-                        ima = iArcher[u.getPlayer()];
-                        break;
-                    case 'k':
-                        ima = iKnight[u.getPlayer()];
-                        break;
-                    }
+                    String imageKey = u.getType().getImage() + u.getPlayer();
+                    ima = getImage(imageKey);
                 }
                 else
                 {
                     switch (map.getCellType(i, j))
                     {
                     case GRASS:
-                        ima = iGrass;
+                        ima = getImage("grass0");
                         break;
                     case TREE:
-                        ima = iTree;
+                        ima = getImage("tree0");
                         break;
                     }
                 }
@@ -94,6 +70,16 @@ public class PanelViewer extends JPanel implements Viewer
         }
         enabled = true;
         repaint();
+    }
+
+    private Image getImage(String imageKey)
+    {
+        if (!imagesCache.containsKey(imageKey))
+        {
+            String fullPath = "Pictures/" + imageKey + ".gif";
+            imagesCache.put(imageKey, getToolkit().getImage(fullPath));
+        }
+        return imagesCache.get(imageKey);
     }
 }
 

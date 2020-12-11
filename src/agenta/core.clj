@@ -13,7 +13,8 @@
      (.setAttackSpeed 25)
      (.setVisibility 7)
      (.setSpeed 40)
-     (.setHitPoints 70))
+     (.setHitPoints 70)
+     (.setImage "footman"))
    (doto
      (UnitTypeImpl.)
      (.setName "Archer")
@@ -23,7 +24,8 @@
      (.setAttackSpeed 40)
      (.setVisibility 7)
      (.setSpeed 40)
-     (.setHitPoints 55))
+     (.setHitPoints 55)
+     (.setImage "archer"))
    (doto
      (UnitTypeImpl.)
      (.setName "Knight")
@@ -33,7 +35,8 @@
      (.setAttackSpeed 40)
      (.setVisibility 7)
      (.setSpeed 25)
-     (.setHitPoints 110))])
+     (.setHitPoints 110)
+     (.setImage "knight"))])
 
 (defn init-units [^SingleRandom r player0-units player1-units unit-types]
   (let [player-units {0 player0-units 1 player1-units}

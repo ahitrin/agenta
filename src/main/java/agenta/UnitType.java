@@ -23,5 +23,7 @@ public interface UnitType
 
     int getVisibility();
 
+    String getImage();
+
     String toString();
 }
