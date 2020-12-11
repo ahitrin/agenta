@@ -2,6 +2,7 @@ package agenta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -44,7 +45,7 @@ public class Unit extends MapObject
         selectTargetPerk = new SelectRandomWithMemory(random);
     }
 
-    public void act(List<MapObject> visibleObjects, ActionListener actionListener)
+    public void act(List<MapObject> visibleObjects, Consumer<Action> actionListener)
     {
         if (healthCounter > 0)
         {
@@ -89,7 +90,7 @@ public class Unit extends MapObject
             if (!neighbours.isEmpty())
             {
                 List<Unit> currentNeighbours = new ArrayList<>(neighbours);
-                actionListener.submit(Action.attack(this, selectTargetPerk.apply(currentNeighbours)));
+                actionListener.accept(Action.attack(this, selectTargetPerk.apply(currentNeighbours)));
             }
             break;
         case ATTACK:
@@ -98,7 +99,7 @@ public class Unit extends MapObject
             if (!neighbours.isEmpty())
             {
                 List<Unit> currentNeighbours = new ArrayList<>(neighbours);
-                actionListener.submit(Action.attack(this, selectTargetPerk.apply(currentNeighbours)));
+                actionListener.accept(Action.attack(this, selectTargetPerk.apply(currentNeighbours)));
             }
             else
             {
@@ -108,13 +109,13 @@ public class Unit extends MapObject
                     Unit target = selectTargetPerk.apply(neighbours);
                     int dx = Integer.compare(target.x - x, 0);
                     int dy = Integer.compare(target.y - y, 0);
-                    actionListener.submit(Action.move(this, dx, dy));
+                    actionListener.accept(Action.move(this, dx, dy));
                 }
                 else
                 {
                     int dx = random.nextInt(3) - 1;
                     int dy = random.nextInt(3) - 1;
-                    actionListener.submit(Action.move(this, dx, dy));
+                    actionListener.accept(Action.move(this, dx, dy));
                 }
             }
             break;
@@ -131,7 +132,7 @@ public class Unit extends MapObject
                 }
                 int idx = (dx > 0) ? 1 : (dx < 0) ? -1 : 0;
                 int idy = (dy > 0) ? 1 : (dy < 0) ? -1 : 0;
-                actionListener.submit(Action.move(this, idx, idy));
+                actionListener.accept(Action.move(this, idx, idy));
             }
             break;
         }
