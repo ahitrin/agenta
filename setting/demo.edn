@@ -1,12 +1,12 @@
 {
  :description "Visual demo of the project"
  :placement {
-             :player0 {
+             0 {
                        "footman" 10
                        "archer" 10
                        "knight" 4
                        }
-             :player1 {
+             1 {
                        "footman" 10
                        "archer" 10
                        "knight" 4

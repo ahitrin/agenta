@@ -39,16 +39,13 @@
      (.setImage "knight"))])
 
 (defn init-units [^SingleRandom r setting unit-types]
-  (let [player-units {0 (:player0 (:placement setting))
-                      1 (:player1 (:placement setting))}
-        new-units (for [ut unit-types
-                        p (range 2)
-                        c (range 100)
-                        :let [max-num (get (get player-units p)
-                                           (.toLowerCase (.getName ut)) 0)]
-                        :when (< c max-num)]
-                    (Unit. ut p r))]
-    new-units))
+  (for [ut unit-types
+        p (range 2)
+        c (range 100)
+        :let [max-num (get (get (:placement setting) p)
+                           (.toLowerCase (.getName ut)) 0)]
+        :when (< c max-num)]
+    (Unit. ut p r)))
 
 (defn -main [& args]
   (let [s (clojure.edn/read-string (slurp "setting/demo.edn"))
