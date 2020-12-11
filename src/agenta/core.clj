@@ -50,8 +50,9 @@
     new-units))
 
 (defn -main [& args]
-  (let [p (new PanelViewer)
-        u (clojure.edn/read-string (slurp "placement.edn"))
+  (let [s (clojure.edn/read-string (slurp "setting/demo.edn"))
+        p (new PanelViewer)
+        u (:placement s)
         r (SingleRandom/get)
         m (GameMap. r)
         u (init-units r (:player0 u) (:player1 u) default-units)

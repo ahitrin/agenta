@@ -18,6 +18,7 @@
      (.setImage "footman"))])
 
 (defn -main [& args]
-  (let [player-units {"warrior" 10}
-        results (agenta.experiment/run-experiment 100 5000 unit-types player-units player-units)]
+  (let [s (clojure.edn/read-string (slurp "setting/baseline.edn"))
+        p (:placement s)
+        results (agenta.experiment/run-experiment 100 5000 unit-types (:player0 p) (:player1 p))]
     (agenta.experiment/calc-statistics results)))
