@@ -15,4 +15,8 @@
                0 {"warrior" 10}
                1 {"warrior" 10}
                }
+ :experiment  {
+               :max-ticks 5000
+               :total     100
+               }
  }

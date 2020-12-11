@@ -41,4 +41,8 @@
                   "knight"  4
                   }
                }
+ :experiment  {
+               :max-ticks 10000
+               :total     1
+               }
  }

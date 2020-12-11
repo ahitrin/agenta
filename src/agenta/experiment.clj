@@ -2,24 +2,24 @@
   (:require agenta.core)
   (:import (agenta Engine GameMap SingleRandom)))
 
-(defn single-run
-  [max-ticks setting]
+(defn single-run [setting]
   (let [g (SingleRandom/get)
         m (GameMap. g)
         u (agenta.core/init-units g setting)
-        e (Engine. m u)]
+        e (Engine. m u)
+        limit (:max-ticks (:experiment setting))]
     (doseq [unit u] (.placeWherePossible m unit))
     (while (and (= -1 (.getWinner e))
-                (< (.getTicks e) max-ticks))
+                (< (.getTicks e) limit))
       (.step e))
     (println (String/format "Player %d has won after %d ticks"
                             (object-array [(.getWinner e)
                                            (.getTicks e)])))
     {:winner (.getWinner e) :steps (.getTicks e)}))
 
-(defn run-experiment
-  [total-experiments max-ticks setting]
-  (repeatedly total-experiments #(single-run max-ticks setting)))
+(defn run-experiment [setting]
+  (let [total (:total (:experiment setting))]
+    (repeatedly total #(single-run setting))))
 
 (defn calc-statistics
   [results]
@@ -40,7 +40,7 @@
   (if (seq args)
     (let [f (first args)
           s (clojure.edn/read-string (slurp (format "setting/%s.edn" f)))
-          results (run-experiment 100 5000 s)]
+          results (run-experiment s)]
       (calc-statistics results))
     (println "Please name current setting (e.g. baseline)."
              "Look for setting files in the \"setting\" dir."
