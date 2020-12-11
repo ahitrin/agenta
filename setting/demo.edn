@@ -1,5 +1,34 @@
 {
  :description "Visual demo of the project"
+ :unit-types  [
+               {:name        "Footman"
+                :baseAttack  5
+                :randAttack  6
+                :range       1.45
+                :attackSpeed 25
+                :visibility  7
+                :speed       40
+                :hitPoints   70
+                :image       "footman"}
+               {:name        "Archer"
+                :baseAttack  3
+                :randAttack  5
+                :range       5.5
+                :attackSpeed 40
+                :visibility  7
+                :speed       40
+                :hitPoints   55
+                :image       "archer"}
+               {:name        "Knight"
+                :baseAttack  9
+                :randAttack  7
+                :range       1.45
+                :attackSpeed 40
+                :visibility  7
+                :speed       25
+                :hitPoints   110
+                :image       "knight"}
+               ]
  :placement   {
                0 {
                   "footman" 10

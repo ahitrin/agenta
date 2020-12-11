@@ -1,5 +1,16 @@
 {
  :description "Baseline experiment: each of two players with same forces should have ~50% chance to win"
+ :unit-types  [
+               {:name        "Warrior"
+                :attackSpeed 3
+                :baseAttack  1
+                :randAttack  4
+                :hitPoints   10
+                :speed       3
+                :visibility  10
+                :range       1.45
+                :image       "footman"}
+               ]
  :placement   {
                0 {"warrior" 10}
                1 {"warrior" 10}
