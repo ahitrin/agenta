@@ -1,10 +1,11 @@
 (ns agenta.perk
-  (:import (agenta SingleRandom Selector)))
+  (:import (agenta SingleRandom)
+           (java.util.function Function)))
 
 (defn select-random
   "Given several units select one of them absolutely randomly"
   [^SingleRandom r]
-  (proxy [Selector] []
+  (proxy [Function] []
     (apply [units]
       (.get units (.nextInt r (count units))))))
 
@@ -17,14 +18,14 @@
                    (and (some? cur) (.isAlive cur) (.contains new-units cur)) cur
                    (false? (.isEmpty new-units)) (.get new-units (.nextInt r (count new-units)))
                    :else nil))]
-    (proxy [Selector] []
+    (proxy [Function] []
       (apply [units]
         (swap! target choose units)))))
 
 (defn select-weakest
   "Given several units select the one who has fewer hit points"
   [^SingleRandom r]
-  (proxy [Selector] []
+  (proxy [Function] []
     (apply [units]
       (first (sort-by #(.getHitPoints %) units)))))
 

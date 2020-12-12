@@ -3,6 +3,7 @@ package agenta;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -28,9 +29,9 @@ public class Unit extends MapObject
     int kills = 0;
     private final String name;
     private final SingleRandom random;
-    private final Selector<Unit> selectTargetPerk;
+    private final Function<List<Unit>, Unit> selectTargetPerk;
 
-    public Unit(UnitType type, int player, SingleRandom random, Selector<Unit> selectTargetPerk)
+    public Unit(UnitType type, int player, SingleRandom random, Function<List<Unit>, Unit> selectTargetPerk)
     {
         this.type = type;
         this.player = player;
