@@ -1,6 +1,6 @@
 (ns agenta.core
   (:require agenta.ui)
-  (:import (agenta Engine PanelViewer SingleRandom UnitTypeImpl GameMap Unit)))
+  (:import (agenta Engine PanelViewer SingleRandom UnitTypeImpl GameMap Unit SelectRandomWithMemory)))
 
 (defn make-unit [spec]
   (doto (UnitTypeImpl.)
@@ -21,7 +21,7 @@
         :let [max-num (get (get (:placement setting) p)
                            (.toLowerCase (.getName ut)) 0)]
         :when (< c max-num)]
-    (Unit. ut p r)))
+    (Unit. ut p r (SelectRandomWithMemory. r))))
 
 (defn -main [& args]
   (let [s (clojure.edn/read-string (slurp "setting/demo.edn"))

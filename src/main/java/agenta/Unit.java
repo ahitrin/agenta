@@ -30,11 +30,12 @@ public class Unit extends MapObject
     private final SingleRandom random;
     private final Selector<Unit> selectTargetPerk;
 
-    public Unit(UnitType type, int player, SingleRandom random)
+    public Unit(UnitType type, int player, SingleRandom random, Selector<Unit> selectTargetPerk)
     {
         this.type = type;
         this.player = player;
         this.random = random;
+        this.selectTargetPerk = selectTargetPerk;
         speedCounter = this.random.nextInt(type.getSpeed()) + 1;
         attackCounter = this.random.nextInt(type.getAttackSpeed()) + 1;
         currentHitPoints = type.getHitPoints();
@@ -42,7 +43,6 @@ public class Unit extends MapObject
         currentCommand = new UnitCommand(state, UnitType.MIN_PRIORITY);
         name = String.format("%s %s%d", new Faker().name().firstName(), type.toString(), player);
         healthCounter = this.random.nextInt(100) + 1;
-        selectTargetPerk = new SelectRandomWithMemory(random);
     }
 
     public void act(List<MapObject> visibleObjects, Consumer<Action> actionListener)
