@@ -16,8 +16,8 @@ public class GameMap
     public GameMap(SingleRandom generator, int sizeX, int sizeY)
     {
         this.generator = generator;
-        this.sizeX = 18;
-        this.sizeY = 18;
+        this.sizeX = sizeX;
+        this.sizeY = sizeY;
         cells = new MapCell[this.sizeX][this.sizeY];
         for (int x = 0; x < this.sizeX; x++)
         {
