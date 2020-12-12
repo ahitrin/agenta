@@ -1,5 +1,10 @@
 {
  :description "Baseline experiment: each of two players with same forces should have ~50% chance to win"
+ :map         {
+               :size-x 18
+               :size-y 18
+               :type   :plane
+               }
  :unit-types  [
                {:name        "Warrior"
                 :attackSpeed 3

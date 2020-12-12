@@ -1,5 +1,10 @@
 {
  :description "Select-memo experiment: units that remember previous target have more chances to win"
+ :map         {
+               :size-x 18
+               :size-y 18
+               :type   :plane
+               }
  :unit-types  [
                {:name        "Warrior"
                 :attackSpeed 3

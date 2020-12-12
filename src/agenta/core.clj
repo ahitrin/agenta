@@ -2,7 +2,7 @@
   (:require [agenta.game-map :as gm]
             [agenta.perk :as perk]
             [agenta.ui :as ui])
-  (:import (agenta Engine PanelViewer SingleRandom UnitTypeImpl GameMap Unit)))
+  (:import (agenta Engine PanelViewer SingleRandom UnitTypeImpl Unit)))
 
 (defn make-unit [spec]
   (doto (UnitTypeImpl.)
@@ -29,7 +29,7 @@
   (let [s (clojure.edn/read-string (slurp "setting/demo.edn"))
         p (new PanelViewer)
         r (SingleRandom/get)
-        m (GameMap. r (gm/forest r 18 18))
+        m (gm/make-map r (:map s))
         u (init-units r s)
         e (Engine. m u)
         f (ui/wrap-into-frame "Agenta demo" p)]

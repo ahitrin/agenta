@@ -1,5 +1,10 @@
 {
  :description "Visual demo of the project"
+ :map         {
+               :size-x 18
+               :size-y 18
+               :type   :forest
+               }
  :unit-types  [
                {:name        "Footman"
                 :baseAttack  5

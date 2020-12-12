@@ -1,5 +1,10 @@
 {
  :description "Select-weakest experiment: units that hits the weakest target have more chances to win"
+ :map         {
+               :size-x 18
+               :size-y 18
+               :type   :plane
+               }
  :unit-types  [
                {:name        "Assassin"
                 :attackSpeed 3

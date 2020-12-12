@@ -1,5 +1,5 @@
 (ns agenta.game-map
-  (:import (agenta MapCell MapCellType SingleRandom)))
+  (:import (agenta GameMap MapCell MapCellType SingleRandom)))
 
 (defn rnd-xy
   "Makes a random pair of coordinates within given boundaries"
@@ -23,3 +23,16 @@
         trees (take n (distinct (repeatedly #(rnd-xy r size-x size-y))))]
     (doseq [[x y] trees] (aset a x y (MapCell. MapCellType/TREE)))
     a))
+
+(def types {
+            :plane plane
+            :forest forest
+            })
+
+(defn make-map
+  "Build game map with given map spec"
+  [^SingleRandom r map-spec]
+  (let [size-x (:size-x map-spec)
+        size-y (:size-y map-spec)
+        type (types (:type map-spec))]
+    (GameMap. r (apply type [r size-x size-y]))))
