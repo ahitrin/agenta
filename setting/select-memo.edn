@@ -1,0 +1,37 @@
+{
+ :description "Select-memo experiment: units that remember previous target have more chances to win"
+ :unit-types  [
+               {:name        "Warrior"
+                :attackSpeed 3
+                :baseAttack  1
+                :randAttack  4
+                :hitPoints   10
+                :speed       3
+                :visibility  10
+                :range       1.45
+                :image       "footman"
+                :perk        {
+                              "select" :select-random-unit-memo
+                              }}
+               {:name        "Recruit"
+                :attackSpeed 3
+                :baseAttack  1
+                :randAttack  4
+                :hitPoints   10
+                :speed       3
+                :visibility  10
+                :range       1.45
+                :image       "footman"
+                :perk        {
+                              "select" :select-random-unit
+                              }}
+               ]
+ :placement   {
+               0 {"recruit" 10}
+               1 {"warrior" 10}
+               }
+ :experiment  {
+               :max-ticks 500
+               :total     100
+               }
+ }

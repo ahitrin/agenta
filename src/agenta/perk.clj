@@ -1,6 +1,12 @@
 (ns agenta.perk
   (:import (agenta SingleRandom Selector)))
 
+(defn select-random
+  [^SingleRandom r]
+  (proxy [Selector] []
+    (apply [units]
+      (.get units (.nextInt r (count units))))))
+
 (defn select-random-memoized
   [^SingleRandom r]
   (let [target (atom nil)
@@ -15,5 +21,6 @@
 
 
 (def perks {
+            :select-random-unit      select-random
             :select-random-unit-memo select-random-memoized
             })
