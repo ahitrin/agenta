@@ -5,7 +5,7 @@
 
 (defn single-run [setting]
   (let [g (SingleRandom/get)
-        m (GameMap. g (gm/plain g 18 18))
+        m (GameMap. g (gm/plane g 18 18))
         u (agenta.core/init-units g setting)
         e (Engine. m u)
         limit (:max-ticks (:experiment setting))]
