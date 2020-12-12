@@ -37,14 +37,13 @@ public class PanelViewer extends JPanel implements Viewer
     {
         old = current;
         enabled = false;
-        int size = GameMap.SIZE;
 
         Image ima = null;
         current = (BufferedImage)createImage(450, 450);
         Graphics2D currentGraph = current.createGraphics();
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < map.getSizeX(); i++)
         {
-            for (int j = 0; j < size; j++)
+            for (int j = 0; j < map.getSizeY(); j++)
             {
                 Unit u = (Unit)(map.getGroundObject(i, j));
 

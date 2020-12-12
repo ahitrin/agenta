@@ -28,7 +28,7 @@
   (let [s (clojure.edn/read-string (slurp "setting/demo.edn"))
         p (new PanelViewer)
         r (SingleRandom/get)
-        m (GameMap. r)
+        m (GameMap. r 18 18)
         u (init-units r s)
         e (Engine. m u)
         f (ui/wrap-into-frame "Agenta demo" p)]

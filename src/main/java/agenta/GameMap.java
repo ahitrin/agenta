@@ -7,28 +7,41 @@ import java.util.Set;
 
 public class GameMap
 {
-    public static final int SIZE = 18;
+    private final int sizeX;
+    private final int sizeY;
     private final SingleRandom generator;
     private final MapCell[][] cells;
     private final Set<MapObject> objects = new HashSet<>();
 
-    public GameMap(SingleRandom generator)
+    public GameMap(SingleRandom generator, int sizeX, int sizeY)
     {
         this.generator = generator;
-        cells = new MapCell[SIZE][SIZE];
-        for (int x = 0; x < SIZE; x++)
+        this.sizeX = 18;
+        this.sizeY = 18;
+        cells = new MapCell[this.sizeX][this.sizeY];
+        for (int x = 0; x < this.sizeX; x++)
         {
-            for (int y = 0; y < SIZE; y++)
+            for (int y = 0; y < this.sizeY; y++)
             {
                 cells[x][y] = new MapCell();
             }
         }
     }
 
-    public boolean canPlaceObject(int x, int y)
+    public int getSizeX()
+    {
+        return sizeX;
+    }
+
+    public int getSizeY()
+    {
+        return sizeY;
+    }
+
+    private boolean canPlaceObject(int x, int y)
     {
         if ((x < 0) || (y < 0) ||
-                (x >= SIZE) || (y >= SIZE))
+                (x >= sizeX) || (y >= sizeY))
         {
             return false;
         }
@@ -41,8 +54,8 @@ public class GameMap
         int x, y;
         do
         {
-            x = this.generator.nextInt(SIZE);
-            y = this.generator.nextInt(SIZE);
+            x = this.generator.nextInt(sizeX);
+            y = this.generator.nextInt(sizeY);
         }
         while (!canPlaceObject(x, y));
         objects.add(unit);
@@ -63,7 +76,7 @@ public class GameMap
     public MapCellType getCellType(int x, int y)
     {
         if ((x < 0) || (y < 0) ||
-                (x >= SIZE) || (y >= SIZE))
+                (x >= sizeX) || (y >= sizeY))
         {
             return MapCellType.TREE;
         }
@@ -73,7 +86,7 @@ public class GameMap
     public MapObject getGroundObject(int x, int y)
     {
         if ((x < 0) || (y < 0) ||
-                (x >= SIZE) || (y >= SIZE))
+                (x >= sizeX) || (y >= sizeY))
         {
             return null;
         }
@@ -125,8 +138,8 @@ public class GameMap
         int x, y;
         while (i > 0)
         {
-            x = generator.nextInt(SIZE);
-            y = generator.nextInt(SIZE);
+            x = generator.nextInt(sizeX);
+            y = generator.nextInt(sizeY);
             if (cells[x][y].getType() == MapCellType.GRASS)
             {
                 cells[x][y].setType(MapCellType.TREE);
@@ -139,9 +152,9 @@ public class GameMap
     {
         StringBuilder s = new StringBuilder();
 
-        for (int i = 0; i < SIZE; i++)
+        for (int i = 0; i < sizeX; i++)
         {
-            for (int j = 0; j < SIZE; j++)
+            for (int j = 0; j < sizeY; j++)
             {
                 switch (cells[i][j].getType())
                 {
