@@ -1,0 +1,37 @@
+{
+ :description "Select-memo-vs-weakest experiment. What is more effective: beat previous target or the weakest one?"
+ :unit-types  [
+               {:name        "Assassin"
+                :attackSpeed 3
+                :baseAttack  1
+                :randAttack  4
+                :hitPoints   10
+                :speed       3
+                :visibility  10
+                :range       1.45
+                :image       "footman"
+                :perk        {
+                              "select" :select-weakest-unit
+                              }}
+               {:name        "Warrior"
+                :attackSpeed 3
+                :baseAttack  1
+                :randAttack  4
+                :hitPoints   10
+                :speed       3
+                :visibility  10
+                :range       1.45
+                :image       "footman"
+                :perk        {
+                              "select" :select-random-unit-memo
+                              }}
+               ]
+ :placement   {
+               0 {"warrior" 10}
+               1 {"assassin" 10}
+               }
+ :experiment  {
+               :max-ticks 500
+               :total     100
+               }
+ }
