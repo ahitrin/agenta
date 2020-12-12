@@ -1,6 +1,6 @@
 (ns agenta.core
   (:require agenta.ui)
-  (:import (agenta Engine PanelViewer SingleRandom UnitTypeImpl GameMap Unit SelectRandomWithMemory)))
+  (:import (agenta Engine PanelViewer SingleRandom UnitTypeImpl GameMap Unit Selector)))
 
 (defn make-unit [spec]
   (doto (UnitTypeImpl.)
@@ -14,6 +14,18 @@
     (.setHitPoints (:hitPoints spec))
     (.setImage (:image spec))))
 
+(defn select-random-memoized
+  [^SingleRandom r]
+  (let [target (atom nil)
+        choose (fn [cur new-units]
+                 (cond
+                   (and (some? cur) (.isAlive cur) (.contains new-units cur)) cur
+                   (false? (.isEmpty new-units)) (.get new-units (.nextInt r (count new-units)))
+                   :else nil))]
+    (proxy [Selector] []
+      (apply [units]
+        (swap! target choose units)))))
+
 (defn init-units [^SingleRandom r setting]
   (for [ut (map make-unit (:unit-types setting))
         p (range 2)
@@ -21,7 +33,7 @@
         :let [max-num (get (get (:placement setting) p)
                            (.toLowerCase (.getName ut)) 0)]
         :when (< c max-num)]
-    (Unit. ut p r (SelectRandomWithMemory. r))))
+    (Unit. ut p r (select-random-memoized r))))
 
 (defn -main [& args]
   (let [s (clojure.edn/read-string (slurp "setting/demo.edn"))
