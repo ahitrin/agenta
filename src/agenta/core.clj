@@ -1,5 +1,6 @@
 (ns agenta.core
-  (:require [agenta.perk :as perk]
+  (:require [agenta.game-map :as gm]
+            [agenta.perk :as perk]
             [agenta.ui :as ui])
   (:import (agenta Engine PanelViewer SingleRandom UnitTypeImpl GameMap Unit)))
 
@@ -28,11 +29,10 @@
   (let [s (clojure.edn/read-string (slurp "setting/demo.edn"))
         p (new PanelViewer)
         r (SingleRandom/get)
-        m (GameMap. r 18 18)
+        m (GameMap. r (gm/forest r 18 18))
         u (init-units r s)
         e (Engine. m u)
         f (ui/wrap-into-frame "Agenta demo" p)]
-    (.renderTrees m)
     (doseq [unit u] (.placeWherePossible m unit))
     (.addViewer e p)
     (while (== (.getWinner e) -1)

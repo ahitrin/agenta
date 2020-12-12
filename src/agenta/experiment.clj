@@ -1,10 +1,11 @@
 (ns agenta.experiment
-  (:require agenta.core)
+  (:require [agenta.core]
+            [agenta.game-map :as gm])
   (:import (agenta Engine GameMap SingleRandom)))
 
 (defn single-run [setting]
   (let [g (SingleRandom/get)
-        m (GameMap. g 18 18)
+        m (GameMap. g (gm/plain g 18 18))
         u (agenta.core/init-units g setting)
         e (Engine. m u)
         limit (:max-ticks (:experiment setting))]

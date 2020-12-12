@@ -13,19 +13,12 @@ public class GameMap
     private final MapCell[][] cells;
     private final Set<MapObject> objects = new HashSet<>();
 
-    public GameMap(SingleRandom generator, int sizeX, int sizeY)
+    public GameMap(SingleRandom generator, MapCell[][] cells)
     {
         this.generator = generator;
-        this.sizeX = sizeX;
-        this.sizeY = sizeY;
-        cells = new MapCell[this.sizeX][this.sizeY];
-        for (int x = 0; x < this.sizeX; x++)
-        {
-            for (int y = 0; y < this.sizeY; y++)
-            {
-                cells[x][y] = new MapCell();
-            }
-        }
+        this.sizeX = cells.length;
+        this.sizeY = cells[0].length;
+        this.cells = cells;
     }
 
     public int getSizeX()
@@ -130,22 +123,6 @@ public class GameMap
     {
         objects.remove(obj);
         cells[obj.x][obj.y].setObject(null);
-    }
-
-    public void renderTrees()
-    {
-        int i = 20;
-        int x, y;
-        while (i > 0)
-        {
-            x = generator.nextInt(sizeX);
-            y = generator.nextInt(sizeY);
-            if (cells[x][y].getType() == MapCellType.GRASS)
-            {
-                cells[x][y].setType(MapCellType.TREE);
-                i--;
-            }
-        }
     }
 
     public String toString()

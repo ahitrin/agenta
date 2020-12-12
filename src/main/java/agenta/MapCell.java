@@ -1,9 +1,19 @@
 package agenta;
 
-class MapCell
+public class MapCell
 {
-    private MapCellType type = MapCellType.GRASS;
+    private final MapCellType type;
     private MapObject object = null;
+
+    public MapCell()
+    {
+        this(MapCellType.GRASS);
+    }
+
+    public MapCell(MapCellType type)
+    {
+        this.type = type;
+    }
 
     public MapObject getObject()
     {
@@ -18,10 +28,5 @@ class MapCell
     public void setObject(MapObject obj)
     {
         object = obj;
-    }
-
-    public void setType(MapCellType type)
-    {
-        this.type = type;
     }
 }
