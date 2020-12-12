@@ -9,7 +9,10 @@
                 :visibility  7
                 :speed       40
                 :hitPoints   70
-                :image       "footman"}
+                :image       "footman"
+                :perk        {
+                              "select" :select-random-unit-memo
+                              }}
                {:name        "Archer"
                 :baseAttack  3
                 :randAttack  5
@@ -18,7 +21,10 @@
                 :visibility  7
                 :speed       40
                 :hitPoints   55
-                :image       "archer"}
+                :image       "archer"
+                :perk        {
+                              "select" :select-random-unit-memo
+                              }}
                {:name        "Knight"
                 :baseAttack  9
                 :randAttack  7
@@ -27,7 +33,10 @@
                 :visibility  7
                 :speed       25
                 :hitPoints   110
-                :image       "knight"}
+                :image       "knight"
+                :perk        {
+                              "select" :select-random-unit-memo
+                              }}
                ]
  :placement   {
                0 {

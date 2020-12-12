@@ -9,7 +9,10 @@
                 :speed       3
                 :visibility  10
                 :range       1.45
-                :image       "footman"}
+                :image       "footman"
+                :perk        {
+                              "select" :select-random-unit-memo
+                              }}
                ]
  :placement   {
                0 {"warrior" 10}
