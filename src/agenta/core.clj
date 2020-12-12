@@ -16,13 +16,13 @@
     (.setImage (:image spec))))
 
 (defn init-units [^SingleRandom r setting]
-  (for [ut (map make-unit (:unit-types setting))
+  (for [ut (:unit-types setting)
         p (range 2)
         c (range 100)
         :let [max-num (get (get (:placement setting) p)
-                           (.toLowerCase (.getName ut)) 0)]
+                           (.toLowerCase (:name ut)) 0)]
         :when (< c max-num)]
-    (Unit. ut p r (perk/select-random-memoized r))))
+    (Unit. (make-unit ut) p r ((perk/perks (.get (:perk ut) "select")) r))))
 
 (defn -main [& args]
   (let [s (clojure.edn/read-string (slurp "setting/demo.edn"))

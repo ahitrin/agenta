@@ -12,3 +12,8 @@
     (proxy [Selector] []
       (apply [units]
         (swap! target choose units)))))
+
+
+(def perks {
+            :select-random-unit-memo select-random-memoized
+            })
