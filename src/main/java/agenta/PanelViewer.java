@@ -22,14 +22,8 @@ public class PanelViewer extends JPanel implements Viewer
 
     public void paint(Graphics g)
     {
-        if (enabled)
-        {
-            g.drawImage(current, 0, 0, this);
-        }
-        else
-        {
-            g.drawImage(old, 0, 0, this);
-        }
+        BufferedImage img = enabled ? current : old;
+        g.drawImage(img, 0, 0, this);
     }
 
     @Override
