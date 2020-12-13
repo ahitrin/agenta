@@ -35,4 +35,4 @@
   (let [size-x (:size-x map-spec)
         size-y (:size-y map-spec)
         type (types (:type map-spec))]
-    (GameMap. (apply type [r size-x size-y]))))
+    (GameMap. r (apply type [r size-x size-y]))))

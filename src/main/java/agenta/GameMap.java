@@ -9,11 +9,13 @@ public class GameMap
 {
     private final int sizeX;
     private final int sizeY;
+    private final SingleRandom generator;
     private final MapCell[][] cells;
     private final Set<MapObject> objects = new HashSet<>();
 
-    public GameMap(MapCell[][] cells)
+    public GameMap(SingleRandom generator, MapCell[][] cells)
     {
+        this.generator = generator;
         this.sizeX = cells.length;
         this.sizeY = cells[0].length;
         this.cells = cells;
@@ -38,6 +40,19 @@ public class GameMap
         }
         return (cells[x][y].getType() == MapCellType.GRASS) &&
                 (cells[x][y].getObject() == null);
+    }
+
+    public void placeWherePossible(Unit unit)
+    {
+        int x, y;
+        do
+        {
+            x = this.generator.nextInt(sizeX);
+            y = this.generator.nextInt(sizeY);
+        }
+        while (!canPlaceObject(x, y));
+        objects.add(unit);
+        placeObject(unit, x, y);
     }
 
     boolean tryMove(MapObject actor, int dx, int dy)
