@@ -12,10 +12,10 @@ public class PanelViewer extends JPanel implements Viewer
     private final Map<String, Image> tileCache = new HashMap<>();
     private BufferedImage current;
 
-    public PanelViewer(int maxX, int maxY)
+    public PanelViewer(GameMap m)
     {
         super();
-        setSize(25 * maxX, 25 * maxY);
+        setSize(25 * m.getSizeX(), 25 * m.getSizeY());
         setVisible(true);
     }
 

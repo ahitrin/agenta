@@ -32,7 +32,7 @@
   (let [s (clojure.edn/read-string (slurp "setting/demo.edn"))
         r (SingleRandom/get)
         m (gm/make-map r (:map s))
-        p (PanelViewer. (.getSizeX m) (.getSizeY m))
+        p (PanelViewer. m)
         u (init-units r s)
         e (Engine. m u)
         f (ui/wrap-into-frame "Agenta demo" p)]
