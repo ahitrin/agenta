@@ -9,9 +9,8 @@ import javax.swing.*;
 
 public class PanelViewer extends JPanel implements Viewer
 {
-    private final Map<String, Image> imagesCache = new HashMap<>();
-    private BufferedImage current, old;
-    private boolean enabled;
+    private final Map<String, Image> tileCache = new HashMap<>();
+    private BufferedImage current;
 
     public PanelViewer(int maxX, int maxY)
     {
@@ -20,22 +19,19 @@ public class PanelViewer extends JPanel implements Viewer
         setVisible(true);
     }
 
+    @Override
     public void paint(Graphics g)
     {
-        BufferedImage img = enabled ? current : old;
-        g.drawImage(img, 0, 0, this);
+        g.drawImage(current, 0, 0, this);
     }
 
     @Override
     public void update(GameMap map)
     {
-        old = current;
-        enabled = false;
-
-        Image ima = null;
         final Dimension size = getSize();
-        current = (BufferedImage)createImage(size.width, size.height);
-        Graphics2D currentGraph = current.createGraphics();
+        var image = (BufferedImage)createImage(size.width, size.height);
+        Graphics2D currentGraph = image.createGraphics();
+        Image tile = null;
         for (int i = 0; i < map.getSizeX(); i++)
         {
             for (int j = 0; j < map.getSizeY(); j++)
@@ -45,35 +41,35 @@ public class PanelViewer extends JPanel implements Viewer
                 if (u != null)
                 {
                     String imageKey = u.getType().getImage() + u.getPlayer();
-                    ima = getImage(imageKey);
+                    tile = getImage(imageKey);
                 }
                 else
                 {
                     switch (map.getCellType(i, j))
                     {
                     case GRASS:
-                        ima = getImage("grass0");
+                        tile = getImage("grass0");
                         break;
                     case TREE:
-                        ima = getImage("tree0");
+                        tile = getImage("tree0");
                         break;
                     }
                 }
-                currentGraph.drawImage(ima, i * 25, j * 25, this);
+                currentGraph.drawImage(tile, i * 25, j * 25, this);
             }
         }
-        enabled = true;
+        current = image;
         repaint();
     }
 
     private Image getImage(String imageKey)
     {
-        if (!imagesCache.containsKey(imageKey))
+        if (!tileCache.containsKey(imageKey))
         {
             String fullPath = "Pictures/" + imageKey + ".gif";
-            imagesCache.put(imageKey, getToolkit().getImage(fullPath));
+            tileCache.put(imageKey, getToolkit().getImage(fullPath));
         }
-        return imagesCache.get(imageKey);
+        return tileCache.get(imageKey);
     }
 }
 
