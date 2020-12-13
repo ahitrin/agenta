@@ -28,7 +28,7 @@
                 :hitPoints   55
                 :image       "archer"
                 :perk        {
-                              "select" :select-random-unit-memo
+                              "select" :select-weakest-unit
                               }}
                {:name        "Knight"
                 :baseAttack  9
