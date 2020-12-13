@@ -1,8 +1,8 @@
 {
  :description "Visual demo of the project"
  :map         {
-               :size-x 18
-               :size-y 18
+               :size-x 24
+               :size-y 16
                :type   :forest
                }
  :unit-types  [

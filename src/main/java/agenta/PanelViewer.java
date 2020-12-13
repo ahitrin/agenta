@@ -13,10 +13,10 @@ public class PanelViewer extends JPanel implements Viewer
     private BufferedImage current, old;
     private boolean enabled;
 
-    public PanelViewer()
+    public PanelViewer(int maxX, int maxY)
     {
         super();
-        setSize(450, 450);
+        setSize(25 * maxX, 25 * maxY);
         setVisible(true);
     }
 
@@ -39,7 +39,8 @@ public class PanelViewer extends JPanel implements Viewer
         enabled = false;
 
         Image ima = null;
-        current = (BufferedImage)createImage(450, 450);
+        final Dimension size = getSize();
+        current = (BufferedImage)createImage(size.width, size.height);
         Graphics2D currentGraph = current.createGraphics();
         for (int i = 0; i < map.getSizeX(); i++)
         {

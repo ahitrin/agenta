@@ -8,7 +8,7 @@
 
 (defn wrap-into-frame [^String caption ^PanelViewer p]
   (doto (new JFrame caption)
-    (.setSize 550 480)
+    (.setSize (.-width (.getSize p)) (.-height (.getSize p)))
     (.setVisible true)
     (-add-to-content p)
     (.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE)))
