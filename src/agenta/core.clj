@@ -2,19 +2,22 @@
   (:require [agenta.game-map :as gm]
             [agenta.perk :as perk]
             [agenta.ui :as ui])
-  (:import (agenta Engine PanelViewer SingleRandom UnitTypeImpl Unit)))
+  (:import (agenta Engine PanelViewer SingleRandom UnitType Unit)))
 
 (defn make-unit [spec]
-  (doto (UnitTypeImpl.)
-    (.setName (:name spec))
-    (.setBaseAttack (:baseAttack spec))
-    (.setRandAttack (:randAttack spec))
-    (.setRange (:range spec))
-    (.setAttackSpeed (:attackSpeed spec))
-    (.setVisibility (:visibility spec))
-    (.setSpeed (:speed spec))
-    (.setHitPoints (:hitPoints spec))
-    (.setImage (:image spec))))
+  (proxy [UnitType] []
+    (getName [] (:name spec))
+    (getBaseAttack [] (:baseAttack spec))
+    (getRandAttack [] (:randAttack spec))
+    (getRange [] (:range spec))
+    (getAttackSpeed [] (:attackSpeed spec))
+    (getVisibility [] (:visibility spec))
+    (getSpeed [] (:speed spec))
+    (getHitPoints [] (:hitPoints spec))
+    (getHealthLimit [lvl] (/ (* (- 4 lvl) (:hitPoints spec)) 5))
+    (getImage [] (:image spec))
+    (toString [] (:name spec))))
+
 
 (defn init-units [^SingleRandom r setting]
   (for [ut (:unit-types setting)
