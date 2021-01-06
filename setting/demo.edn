@@ -16,7 +16,7 @@
                 :hitPoints   70
                 :image       "footman"
                 :perk        {
-                              "select" :select-random-unit-memo
+                              "select" agenta.perk/select-random-memoized
                               }}
                {:name        "Archer"
                 :baseAttack  3
@@ -28,7 +28,7 @@
                 :hitPoints   55
                 :image       "archer"
                 :perk        {
-                              "select" :select-weakest-unit
+                              "select" agenta.perk/select-weakest
                               }}
                {:name        "Knight"
                 :baseAttack  9
@@ -40,7 +40,7 @@
                 :hitPoints   110
                 :image       "knight"
                 :perk        {
-                              "select" :select-random-unit-memo
+                              "select" agenta.perk/select-random-memoized
                               }}
                ]
  :placement   {

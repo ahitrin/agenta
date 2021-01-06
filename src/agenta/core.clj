@@ -26,7 +26,7 @@
         :let [max-num (get (get (:placement setting) p)
                            (.toLowerCase (:name ut)) 0)]
         :when (< c max-num)]
-    (Unit. (make-unit ut) p r ((perk/perks (.get (:perk ut) "select")) r))))
+    (Unit. (make-unit ut) p r ((resolve (.get (:perk ut) "select")) r))))
 
 (defn -main [& args]
   (let [s (clojure.edn/read-string (slurp "setting/demo.edn"))

@@ -28,9 +28,3 @@
   (proxy [Function] []
     (apply [units]
       (first (sort-by #(.getHitPoints %) units)))))
-
-(def perks {
-            :select-random-unit      select-random
-            :select-random-unit-memo select-random-memoized
-            :select-weakest-unit     select-weakest
-            })

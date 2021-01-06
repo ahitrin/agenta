@@ -16,7 +16,7 @@
                 :range       1.45
                 :image       "footman"
                 :perk        {
-                              "select" :select-weakest-unit
+                              "select" agenta.perk/select-weakest
                               }}
                {:name        "Recruit"
                 :attackSpeed 3
@@ -28,7 +28,7 @@
                 :range       1.45
                 :image       "footman"
                 :perk        {
-                              "select" :select-random-unit
+                              "select" agenta.perk/select-random
                               }}
                ]
  :placement   {
