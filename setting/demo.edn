@@ -3,7 +3,7 @@
  :map         {
                :size-x 24
                :size-y 16
-               :type   :forest
+               :type   agenta.game-map/forest
                }
  :unit-types  [
                {:name        "Footman"

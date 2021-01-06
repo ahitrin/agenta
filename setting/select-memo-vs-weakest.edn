@@ -3,7 +3,7 @@
  :map         {
                :size-x 18
                :size-y 18
-               :type   :plane
+               :type   agenta.game-map/plane
                }
  :unit-types  [
                {:name        "Assassin"

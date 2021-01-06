@@ -24,15 +24,10 @@
     (doseq [[x y] trees] (aset a x y (MapCell. MapCellType/TREE)))
     a))
 
-(def types {
-            :plane plane
-            :forest forest
-            })
-
 (defn make-map
   "Build game map with given map spec"
   [^SingleRandom r map-spec]
   (let [size-x (:size-x map-spec)
         size-y (:size-y map-spec)
-        type (types (:type map-spec))]
+        type (resolve (:type map-spec))]
     (GameMap. r (apply type [r size-x size-y]))))
