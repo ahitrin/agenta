@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public final class Engine
@@ -50,7 +51,7 @@ public final class Engine
 
     private void checkForWinner()
     {
-        java.util.Map<Integer, Long> unitsPerPlayer = units.stream()
+        Map<Integer, Long> unitsPerPlayer = units.stream()
                 .collect(Collectors.groupingBy(Unit::getPlayer, Collectors.counting()));
         if (unitsPerPlayer.getOrDefault(0, 0L) == 0L) {
             winner = 1;
