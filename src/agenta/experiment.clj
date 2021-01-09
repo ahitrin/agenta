@@ -7,7 +7,7 @@
   (let [g (SingleRandom/get)
         m (gm/make-map g (:map setting))
         u (agenta.core/init-units g setting)
-        e (Engine. m u)
+        e (Engine. m u (list))
         limit (:max-ticks (:experiment setting))]
     (doseq [unit u] (.placeWherePossible m unit))
     (while (and (= -1 (.getWinner e))

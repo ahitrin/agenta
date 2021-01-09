@@ -34,10 +34,9 @@
         m (gm/make-map r (:map s))
         p (PanelViewer. m)
         u (init-units r s)
-        e (Engine. m u)
+        e (Engine. m u (list p))
         f (ui/wrap-into-frame "Agenta demo" p)]
     (doseq [unit u] (.placeWherePossible m unit))
-    (.addViewer e p)
     (while (== (.getWinner e) -1)
       (.step e))
     (ui/show-end-message f p (format "Player %d has won after %d ticks!"

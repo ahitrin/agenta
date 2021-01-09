@@ -10,19 +10,14 @@ public final class Engine
 {
     private final GameMap map;
     private List<Unit> units;
-    private final List<Viewer> viewers = new ArrayList<>();
+    private final List<Viewer> viewers;
     private int winner = -1;
     private long ticks = 0;
 
-    public Engine(GameMap gameMap, List<Unit> units) {
+    public Engine(GameMap gameMap, List<Unit> units, List<Viewer> viewers) {
         this.map = gameMap;
         this.units = units;
-    }
-
-    public int addViewer(Viewer viewer)
-    {
-        viewers.add(viewer);
-        return viewers.size();
+        this.viewers = viewers;
     }
 
     public int getWinner()
