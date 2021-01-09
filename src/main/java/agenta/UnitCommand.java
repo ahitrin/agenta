@@ -8,8 +8,7 @@ public class UnitCommand implements Command
     public UnitCommand(UnitState state, int priority)
     {
         this.state = state;
-        this.priority = (priority < UnitType.MIN_PRIORITY) ? UnitType.MIN_PRIORITY :
-                Math.min(priority, UnitType.MAX_PRIORITY);
+        this.priority = Math.min(Math.max(priority, UnitType.MIN_PRIORITY), UnitType.MAX_PRIORITY);
     }
 
     public int getPriority()
