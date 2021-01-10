@@ -6,8 +6,8 @@
   (.add (.getContentPane f)
         p))
 
-(defn wrap-into-frame [^String caption ^PanelViewer p]
-  (doto (new JFrame caption)
+(defn wrap-into-frame [^JFrame f ^PanelViewer p]
+  (doto f
     (.setSize (.-width (.getSize p)) (.-height (.getSize p)))
     (.setVisible true)
     (-add-to-content p)

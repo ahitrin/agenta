@@ -4,19 +4,21 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import javax.swing.*;
 
 public class PanelViewer extends JPanel implements Viewer
 {
     private final Map<String, Image> tileCache = new HashMap<>();
+    private final Consumer<PanelViewer> parent;
+    private boolean initialized = false;
     private BufferedImage current;
 
-    public PanelViewer(GameMap m)
+    public PanelViewer(Consumer<PanelViewer> parent)
     {
         super();
-        setSize(25 * m.getSizeX(), 25 * m.getSizeY());
-        setVisible(true);
+        this.parent = parent;
     }
 
     @Override
@@ -28,6 +30,12 @@ public class PanelViewer extends JPanel implements Viewer
     @Override
     public void update(GameMap map)
     {
+        if (!initialized) {
+            setSize(25 * map.getSizeX(), 25 * map.getSizeY());
+            setVisible(true);
+            parent.accept(this);
+            initialized = true;
+        }
         final Dimension size = getSize();
         var image = (BufferedImage)createImage(size.width, size.height);
         Graphics2D currentGraph = image.createGraphics();
