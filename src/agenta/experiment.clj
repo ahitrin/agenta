@@ -14,9 +14,7 @@
     (while (and (= -1 (.getWinner e))
                 (< (.getTicks e) limit))
       (.step e))
-    (println (String/format "Player %d has won after %d ticks"
-                            (object-array [(.getWinner e)
-                                           (.getTicks e)])))
+    (println (format "Player %d has won after %d ticks" (.getWinner e) (.getTicks e)))
     {:winner (.getWinner e) :steps (.getTicks e)}))
 
 (defn run-experiment [setting]
