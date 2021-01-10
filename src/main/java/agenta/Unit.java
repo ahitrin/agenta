@@ -216,9 +216,4 @@ public class Unit extends MapObject
             obtain(new UnitCommand(UnitState.ESCAPE, currentCommand.getPriority() + 1));
         }
     }
-
-    public int getHitPoints()
-    {
-        return currentHitPoints;
-    }
 }
