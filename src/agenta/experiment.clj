@@ -1,6 +1,5 @@
 (ns agenta.experiment
-  (:require [agenta.core]
-            [agenta.engine :as eng]
+  (:require [agenta.engine :as eng]
             [agenta.game-map :as gm])
   (:import (agenta Engine SingleRandom)))
 
