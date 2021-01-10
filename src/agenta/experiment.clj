@@ -1,20 +1,10 @@
 (ns agenta.experiment
-  (:require [agenta.engine :as eng]
-            [agenta.game-map :as gm])
-  (:import (agenta Engine SingleRandom)))
+  (:require [agenta.engine :as eng]))
 
 (defn single-run [setting]
-  (let [g (SingleRandom/get)
-        m (gm/make-map g (:map setting))
-        u (eng/init-units g setting)
-        e (Engine. m u (list))
-        limit (:max-ticks (:experiment setting))]
-    (doseq [unit u] (.placeWherePossible m unit))
-    (while (and (= -1 (.getWinner e))
-                (< (.getTicks e) limit))
-      (.step e))
-    (println (format "Player %d has won after %d ticks" (.getWinner e) (.getTicks e)))
-    {:winner (.getWinner e) :steps (.getTicks e)}))
+  (let [result (eng/run setting (list))]
+    (println (format "Player %d has won after %d ticks" (:winner result) (:steps result)))
+    result))
 
 (defn run-experiment [setting]
   (let [total (:total (:experiment setting))]
