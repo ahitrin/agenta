@@ -12,7 +12,6 @@ public class PanelViewer extends JPanel implements Viewer
 {
     private final Map<String, Image> tileCache = new HashMap<>();
     private final Consumer<PanelViewer> parent;
-    private boolean initialized = false;
     private BufferedImage current;
 
     public PanelViewer(Consumer<PanelViewer> parent)
@@ -30,11 +29,10 @@ public class PanelViewer extends JPanel implements Viewer
     @Override
     public void update(GameMap map)
     {
-        if (!initialized) {
+        if (current == null) {
             setSize(25 * map.getSizeX(), 25 * map.getSizeY());
             setVisible(true);
             parent.accept(this);
-            initialized = true;
         }
         final Dimension size = getSize();
         var image = (BufferedImage)createImage(size.width, size.height);
