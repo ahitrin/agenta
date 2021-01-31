@@ -1,7 +1,6 @@
 (ns agenta.ui
-  (:import (agenta PanelViewer Viewer GameMap Unit MapCellType)
+  (:import (agenta Viewer GameMap Unit MapCellType)
            (javax.swing JFrame JOptionPane JPanel)
-           (java.util.function Consumer)
            (java.awt Graphics)
            (java.awt.image BufferedImage)))
 
@@ -9,7 +8,7 @@
   (.add (.getContentPane f)
         p))
 
-(defn wrap-into-frame [^JFrame f ^JPanel p]
+(defn -wrap-into-frame [^JFrame f ^JPanel p]
   (doto f
     (.setSize (.-width (.getSize p)) (.-height (.getSize p)))
     (.setVisible true)
@@ -20,9 +19,13 @@
              MapCellType/TREE "tree0"})
 
 (defn -get-image [^JPanel panel state key]
-  (.getImage (.getToolkit panel) (str "Pictures/" key ".gif")))
+  (let [val (get-in @state
+                    [:cache key]
+                    (.getImage (.getToolkit panel) (str "Pictures/" key ".gif")))]
+    (swap! state assoc-in [:cache key] val)
+    val))
 
-(defn -make-viewer [^JFrame f]
+(defn make-viewer [^JFrame f]
   (let [state (atom {:cache {} :current nil})]
     (proxy [JPanel Viewer] []
       (paint [^Graphics g]
@@ -31,7 +34,7 @@
         (when (nil? (:current @state))
           (.setSize this (* 25 (.getSizeX m)) (* 25 (.getSizeY m)))
           (.setVisible this true)
-          (wrap-into-frame f this))
+          (-wrap-into-frame f this))
         (let [size (.getSize this)
               image (cast BufferedImage (.createImage this (.-width size) (.-height size)))
               currentGraph (.createGraphics image)]
@@ -46,13 +49,9 @@
                         (int (* 25 i))
                         (int (* 25 j))
                         this))
-          (swap! state assoc :current image))))))
+          (swap! state assoc :current image)
+          (.repaint this))))))
 
-(defn make-viewer [^JFrame f]
-  (PanelViewer. (proxy [Consumer] [] (accept [p1] (wrap-into-frame f p1))))
-  ;(-make-viewer f)
-  )
-
-(defn show-end-message [^JFrame f ^PanelViewer p ^String m]
+(defn show-end-message [^JFrame f ^JPanel p ^String m]
   (JOptionPane/showMessageDialog f m "End of game" JOptionPane/INFORMATION_MESSAGE)
   (.repaint p))
