@@ -55,7 +55,7 @@ public class GameMap
         placeObject(unit, x, y);
     }
 
-    boolean tryMove(MapObject actor, int dx, int dy)
+    public boolean tryMove(MapObject actor, int dx, int dy)
     {
         boolean moved = canPlaceObject(actor.x + dx, actor.y + dy);
         if (moved)

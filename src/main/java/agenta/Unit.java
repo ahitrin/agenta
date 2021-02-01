@@ -2,7 +2,6 @@ package agenta;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -21,12 +20,12 @@ public class Unit extends MapObject
     private final UnitType type;
     private UnitState state;
     private final int player;
-    int speedCounter;
+    public int speedCounter;
     private int attackCounter;
     private int healthCounter;
     private int currentHitPoints;
     private UnitCommand currentCommand;
-    int kills = 0;
+    public int kills = 0;
     private final String name;
     private final SingleRandom random;
     private final Function<List<Unit>, Unit> selectTargetPerk;
@@ -46,7 +45,7 @@ public class Unit extends MapObject
         healthCounter = this.random.nextInt(100) + 1;
     }
 
-    public void act(List<MapObject> visibleObjects, Consumer<Action> actionListener)
+    public List<Action> act(List<MapObject> visibleObjects)
     {
         if (healthCounter > 0)
         {
@@ -79,10 +78,11 @@ public class Unit extends MapObject
         }
         if ((attackCounter > 0) && (speedCounter > 0))
         {
-            return;
+            return List.of();
         }
 
         List<Unit> neighbours;
+        List<Action> unitActions = new ArrayList<>();
         switch (state)
         {
         case STAND:
@@ -91,7 +91,7 @@ public class Unit extends MapObject
             if (!neighbours.isEmpty())
             {
                 List<Unit> currentNeighbours = new ArrayList<>(neighbours);
-                actionListener.accept(Action.attack(this, selectTargetPerk.apply(currentNeighbours)));
+                unitActions.add(Action.attack(this, selectTargetPerk.apply(currentNeighbours)));
             }
             break;
         case ATTACK:
@@ -100,7 +100,7 @@ public class Unit extends MapObject
             if (!neighbours.isEmpty())
             {
                 List<Unit> currentNeighbours = new ArrayList<>(neighbours);
-                actionListener.accept(Action.attack(this, selectTargetPerk.apply(currentNeighbours)));
+                unitActions.add(Action.attack(this, selectTargetPerk.apply(currentNeighbours)));
             }
             else
             {
@@ -110,13 +110,13 @@ public class Unit extends MapObject
                     Unit target = selectTargetPerk.apply(neighbours);
                     int dx = Integer.compare(target.x - x, 0);
                     int dy = Integer.compare(target.y - y, 0);
-                    actionListener.accept(Action.move(this, dx, dy));
+                    unitActions.add(Action.move(this, dx, dy));
                 }
                 else
                 {
                     int dx = random.nextInt(3) - 1;
                     int dy = random.nextInt(3) - 1;
-                    actionListener.accept(Action.move(this, dx, dy));
+                    unitActions.add(Action.move(this, dx, dy));
                 }
             }
             break;
@@ -133,10 +133,11 @@ public class Unit extends MapObject
                 }
                 int idx = (dx > 0) ? 1 : (dx < 0) ? -1 : 0;
                 int idy = (dy > 0) ? 1 : (dy < 0) ? -1 : 0;
-                actionListener.accept(Action.move(this, idx, idy));
+                unitActions.add(Action.move(this, idx, idy));
             }
             break;
         }
+        return unitActions;
     }
 
     public int getPlayer()
