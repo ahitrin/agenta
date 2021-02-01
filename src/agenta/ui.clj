@@ -8,13 +8,6 @@
   (.add (.getContentPane f)
         p))
 
-(defn -wrap-into-frame [^JFrame f ^JPanel p]
-  (doto f
-    (.setSize (.-width (.getSize p)) (.-height (.getSize p)))
-    (.setVisible true)
-    (-add-to-content p)
-    (.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE)))
-
 (def -tiles {MapCellType/GRASS "grass0"
              MapCellType/TREE "tree0"})
 
@@ -38,7 +31,10 @@
           (when (nil? (:current @state))
             (.setSize this pix-x pix-y)
             (.setVisible this true)
-            (-wrap-into-frame f this))
+            (.setSize f pix-x pix-y)
+            (.setVisible f true)
+            (-add-to-content f this)
+            (.setDefaultCloseOperation f JFrame/EXIT_ON_CLOSE))
           (let [image (cast BufferedImage (.createImage this pix-x pix-y))
                 currentGraph (.createGraphics image)]
             (doseq [i (range size-x)
