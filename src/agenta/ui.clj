@@ -1,12 +1,8 @@
 (ns agenta.ui
   (:import (agenta Viewer GameMap Unit MapCellType)
            (javax.swing JFrame JOptionPane JPanel)
-           (java.awt Graphics)
+           (java.awt Graphics Component)
            (java.awt.image BufferedImage)))
-
-(defn -add-to-content [^JFrame f ^JPanel p]
-  (.add (.getContentPane f)
-        p))
 
 (def -tiles {MapCellType/GRASS "grass0"
              MapCellType/TREE "tree0"})
@@ -33,7 +29,7 @@
             (.setVisible this true)
             (.setSize f pix-x pix-y)
             (.setVisible f true)
-            (-add-to-content f this)
+            (.add (.getContentPane f) ^Component this)
             (.setDefaultCloseOperation f JFrame/EXIT_ON_CLOSE))
           (let [image (cast BufferedImage (.createImage this pix-x pix-y))
                 currentGraph (.createGraphics image)]
