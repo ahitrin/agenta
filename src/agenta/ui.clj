@@ -31,26 +31,29 @@
       (paint [^Graphics g]
         (.drawImage g (:current @state) 0 0 this))
       (update [^GameMap m]
-        (when (nil? (:current @state))
-          (.setSize this (* 25 (.getSizeX m)) (* 25 (.getSizeY m)))
-          (.setVisible this true)
-          (-wrap-into-frame f this))
-        (let [size (.getSize this)
-              image (cast BufferedImage (.createImage this (.-width size) (.-height size)))
-              currentGraph (.createGraphics image)]
-          (doseq [i (range (.getSizeX m))
-                  j (range (.getSizeY m))
-                  :let [u (cast Unit (.getGroundObject m i j))
-                        tile-name (if (some? u)
-                                    (str (.getImage (.getType u)) (.getPlayer u))
-                                    (-tiles (.getCellType m i j)))]]
-            (.drawImage ^Graphics currentGraph
-                        (-get-image this state tile-name)
-                        (int (* 25 i))
-                        (int (* 25 j))
-                        this))
-          (swap! state assoc :current image)
-          (.repaint this))))))
+        (let [size-x (.getSizeX m)
+              size-y (.getSizeY m)
+              pix-x (* 25 size-x)
+              pix-y (* 25 size-y)]
+          (when (nil? (:current @state))
+            (.setSize this pix-x pix-y)
+            (.setVisible this true)
+            (-wrap-into-frame f this))
+          (let [image (cast BufferedImage (.createImage this pix-x pix-y))
+                currentGraph (.createGraphics image)]
+            (doseq [i (range size-x)
+                    j (range size-y)
+                    :let [u (cast Unit (.getGroundObject m i j))
+                          tile-name (if (some? u)
+                                      (str (.getImage (.getType u)) (.getPlayer u))
+                                      (-tiles (.getCellType m i j)))]]
+              (.drawImage ^Graphics currentGraph
+                          (-get-image this state tile-name)
+                          (int (* 25 i))
+                          (int (* 25 j))
+                          this))
+            (swap! state assoc :current image)
+            (.repaint this)))))))
 
 (defn show-end-message [^JFrame f ^JPanel p ^String m]
   (JOptionPane/showMessageDialog f m "End of game" JOptionPane/INFORMATION_MESSAGE)
