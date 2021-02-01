@@ -26,14 +26,19 @@
         :when (< c max-num)]
     (Unit. (make-unit ut) p r ((resolve (.get (:perk ut) "select")) r))))
 
+(defn -step [e s]
+  (.step e)
+  (swap! s assoc :winner (.getWinner e) :steps (.getTicks e)))
+
 (defn run [setting viewers]
   (let [g (SingleRandom/get)
         m (gm/make-map g (:map setting))
         u (init-units g setting)
+        s (atom {:map m :units u :viewers viewers :winner -1 :steps 0})
         e (Engine. m u viewers)
         limit (:max-ticks (:experiment setting))]
     (doseq [unit u] (.placeWherePossible m unit))
-    (while (and (= -1 (.getWinner e))
-                (< (.getTicks e) limit))
-      (.step e))
-    {:winner (.getWinner e) :steps (.getTicks e)}))
+    (while (and (= -1 (:winner @s))
+                (< (:steps @s) limit))
+      (-step e s))
+    @s))
