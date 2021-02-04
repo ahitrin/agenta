@@ -2,7 +2,7 @@
   (:require [agenta.engine :as eng]))
 
 (defn single-run [setting]
-  (let [result (eng/run setting nil)]
+  (let [result (eng/run setting (fn [m] ()))]
     (println (format "Player %d has won after %d ticks" (:winner result) (:steps result)))
     result))
 

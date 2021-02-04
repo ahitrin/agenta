@@ -47,6 +47,9 @@
             (swap! state assoc :current image)
             (.repaint this)))))))
 
+(defn wrap-viewer [^Viewer v]
+  (fn [^GameMap m] (.update v m)))
+
 (defn show-end-message [^JFrame f ^JPanel p ^String m]
   (JOptionPane/showMessageDialog f m "End of game" JOptionPane/INFORMATION_MESSAGE)
   (.repaint p))
