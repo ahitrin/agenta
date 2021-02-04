@@ -30,6 +30,24 @@
   (let [visible-objects (.getObjectsInRadius m u (.getVisibility (.getType u)))]
     (first (.act u visible-objects))))
 
+(defn -perform-attack [^GameMap m ^Unit actor adata]
+  (let [target (cast Unit (.get adata "target"))
+        damage (.doAttack actor)]
+    (when (pos? damage)
+      (printf "%s strikes %s with %d%n" actor target damage)
+      (.sufferDamage target damage)
+      (when-not (.isAlive target)
+        (printf "%s is dead%n" target)
+        (set! (.-kills actor) (inc (.-kills actor)))
+        (.removeObject m target)))))
+
+(defn -perform-move [^GameMap m ^Unit actor adata]
+  (let [dx (int (.get adata "dx"))
+        dy (int (.get adata "dy"))]
+    (when (and (zero? (.-speedCounter actor))
+               (.tryMove m actor dx dy))
+      (set! (.-speedCounter actor) (.getSpeed (.getType actor))))))
+
 (defn run [setting viewers]
   (let [g (SingleRandom/get)
         m (gm/make-map g (:map setting))
@@ -51,22 +69,8 @@
                           atype (.get adata "type")]
                     :when (.isAlive actor)]
               (case atype
-                "attack"
-                (let [target (cast Unit (.get adata "target"))
-                      damage (.doAttack actor)]
-                  (when (pos? damage)
-                    (printf "%s strikes %s with %d%n" actor target damage)
-                    (.sufferDamage target damage)
-                    (when-not (.isAlive target)
-                      (printf "%s is dead%n" target)
-                      (set! (.-kills actor) (inc (.-kills actor)))
-                      (.removeObject m target))))
-                "move"
-                (let [dx (int (.get adata "dx"))
-                      dy (int (.get adata "dy"))]
-                  (when (and (zero? (.-speedCounter actor))
-                             (.tryMove m actor dx dy))
-                    (set! (.-speedCounter actor) (.getSpeed (.getType actor)))))))
+                "attack" (-perform-attack m actor adata)
+                "move" (-perform-move m actor adata)))
             (recur alive-units
                    (cond (empty? (units-per-player 0)) 1
                          (empty? (units-per-player 1)) 0
