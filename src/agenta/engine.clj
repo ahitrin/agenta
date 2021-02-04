@@ -48,7 +48,7 @@
                (.tryMove m actor dx dy))
       (set! (.-speedCounter actor) (.getSpeed (.getType actor))))))
 
-(defn run [setting viewers]
+(defn run [setting viewer]
   (let [g (SingleRandom/get)
         m (gm/make-map g (:map setting))
         u (init-units g setting)
@@ -57,8 +57,7 @@
     (loop [units u winner -1 steps 0]
       (let [alive-units (filter #(.isAlive %) units)
             units-per-player (group-by #(.getPlayer %) alive-units)]
-        (doseq [v viewers]
-          (.update v m))
+        (when (some? viewer) (.update viewer m))
         (if (or (<= 0 winner) (<= limit steps))
           {:winner winner :steps steps}
           (let [all-actions (map #(-run-unit-action % m) alive-units)
