@@ -1,5 +1,5 @@
 (ns agenta.ui
-  (:import (agenta Viewer GameMap Unit MapCellType)
+  (:import (agenta GameMap Unit MapCellType ImagePanel)
            (javax.swing JFrame JOptionPane JPanel)
            (java.awt Graphics Component)
            (java.awt.image BufferedImage)))
@@ -14,41 +14,36 @@
     (swap! state assoc-in [:cache key] val)
     val))
 
-(defn make-viewer [^JFrame f]
-  (let [state (atom {:cache {} :current nil})]
-    (proxy [JPanel Viewer] []
-      (paint [^Graphics g]
-        (.drawImage g (:current @state) 0 0 this))
-      (update [^GameMap m]
-        (let [size-x (.getSizeX m)
-              size-y (.getSizeY m)
-              pix-x (* 25 size-x)
-              pix-y (* 25 size-y)]
-          (when (nil? (:current @state))
-            (.setSize this pix-x pix-y)
-            (.setVisible this true)
-            (.setSize f pix-x pix-y)
-            (.setVisible f true)
-            (.add (.getContentPane f) ^Component this)
-            (.setDefaultCloseOperation f JFrame/EXIT_ON_CLOSE))
-          (let [image (cast BufferedImage (.createImage this pix-x pix-y))
-                currentGraph (.createGraphics image)]
-            (doseq [i (range size-x)
-                    j (range size-y)
-                    :let [u (cast Unit (.getGroundObject m i j))
-                          tile-name (if (some? u)
-                                      (str (.getImage (.getType u)) (.getPlayer u))
-                                      (-tiles (.getCellType m i j)))]]
-              (.drawImage ^Graphics currentGraph
-                          (-get-image this state tile-name)
-                          (int (* 25 i))
-                          (int (* 25 j))
-                          this))
-            (swap! state assoc :current image)
-            (.repaint this)))))))
-
-(defn wrap-viewer [^Viewer v]
-  (fn [^GameMap m] (.update v m)))
+(defn wrap-viewer [^JFrame f ^ImagePanel p]
+  (let [state (atom {:cache {} :need-init true})]
+    (fn [^GameMap m]
+      (let [size-x (.getSizeX m)
+            size-y (.getSizeY m)
+            pix-x (* 25 size-x)
+            pix-y (* 25 size-y)]
+        (when (:need-init @state)
+          (.setSize p pix-x pix-y)
+          (.setVisible p true)
+          (.setSize f pix-x pix-y)
+          (.setVisible f true)
+          (.add (.getContentPane f) ^Component p)
+          (.setDefaultCloseOperation f JFrame/EXIT_ON_CLOSE)
+          (swap! state assoc :need-init false))
+        (let [image (cast BufferedImage (.createImage p pix-x pix-y))
+              currentGraph (.createGraphics image)]
+          (doseq [i (range size-x)
+                  j (range size-y)
+                  :let [u (cast Unit (.getGroundObject m i j))
+                        tile-name (if (some? u)
+                                    (str (.getImage (.getType u)) (.getPlayer u))
+                                    (-tiles (.getCellType m i j)))]]
+            (.drawImage ^Graphics currentGraph
+                        (-get-image p state tile-name)
+                        (int (* 25 i))
+                        (int (* 25 j))
+                        p))
+          (.setImage p image)
+          (.repaint p))))))
 
 (defn show-end-message [^JFrame f ^JPanel p ^String m]
   (JOptionPane/showMessageDialog f m "End of game" JOptionPane/INFORMATION_MESSAGE)

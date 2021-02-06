@@ -10,4 +10,5 @@
   :java-source-paths ["src/main/java"
                       "src/test/java"]
   :main agenta.core
+  :aot [agenta.ImagePanel]
   :repl-options {:init-ns agenta.core})
