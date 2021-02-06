@@ -18,8 +18,8 @@
 (defn wrap-viewer [^JFrame f ^ImagePanel p]
   (let [state (atom {:cache {} :need-init true})]
     (fn [m]
-      (let [size-x (.getSizeX m)
-            size-y (.getSizeY m)
+      (let [size-x (gm/size-x m)
+            size-y (gm/size-y m)
             pix-x (* 25 size-x)
             pix-y (* 25 size-y)]
         (when (:need-init @state)

@@ -32,6 +32,12 @@
         type (resolve (:type map-spec))]
     (GameMap. r (apply type [r size-x size-y]))))
 
+(defn size-x [^GameMap m]
+  (.getSizeX m))
+
+(defn size-y [^GameMap m]
+  (.getSizeY m))
+
 (defn place-where-possible [^GameMap m ^Unit u]
   (.placeWherePossible m u))
 
