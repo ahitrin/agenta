@@ -1,7 +1,7 @@
 (ns agenta.engine
   (:require [agenta.game-map :as gm]
             [agenta.perk])
-  (:import (agenta UnitType Unit SingleRandom GameMap)))
+  (:import (agenta UnitType Unit SingleRandom)))
 
 (defn make-unit [spec]
   (proxy [UnitType] []
@@ -26,11 +26,11 @@
         :when (< c max-num)]
     (Unit. (make-unit ut) p r ((resolve (.get (:perk ut) "select")) r))))
 
-(defn -run-unit-action [^Unit u ^GameMap m]
-  (let [visible-objects (.getObjectsInRadius m u (.getVisibility (.getType u)))]
+(defn -run-unit-action [^Unit u m]
+  (let [visible-objects (gm/objects-in-radius m u (.getVisibility (.getType u)))]
     (first (.act u visible-objects))))
 
-(defn -perform-attack [^GameMap m ^Unit actor adata]
+(defn -perform-attack [m ^Unit actor adata]
   (let [target (cast Unit (.get adata "target"))
         damage (.doAttack actor)]
     (when (pos? damage)
@@ -39,13 +39,13 @@
       (when-not (.isAlive target)
         (printf "%s is dead%n" target)
         (set! (.-kills actor) (inc (.-kills actor)))
-        (.removeObject m target)))))
+        (gm/remove-object m target)))))
 
-(defn -perform-move [^GameMap m ^Unit actor adata]
+(defn -perform-move [m ^Unit actor adata]
   (let [dx (int (.get adata "dx"))
         dy (int (.get adata "dy"))]
     (when (and (zero? (.-speedCounter actor))
-               (.tryMove m actor dx dy))
+               (gm/try-move m actor dx dy))
       (set! (.-speedCounter actor) (.getSpeed (.getType actor))))))
 
 (defn run [setting viewer]
@@ -53,7 +53,7 @@
         m (gm/make-map g (:map setting))
         u (init-units g setting)
         limit (:max-ticks (:experiment setting))]
-    (doseq [unit u] (.placeWherePossible m unit))
+    (doseq [unit u] (gm/place-where-possible m unit))
     (loop [units u winner -1 steps 0]
       (let [alive-units (filter #(.isAlive %) units)
             units-per-player (group-by #(.getPlayer %) alive-units)]

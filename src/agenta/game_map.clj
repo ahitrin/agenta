@@ -1,5 +1,5 @@
 (ns agenta.game-map
-  (:import (agenta GameMap MapCell MapCellType SingleRandom)))
+  (:import (agenta GameMap MapCell MapCellType SingleRandom Unit)))
 
 (defn rnd-xy
   "Makes a random pair of coordinates within given boundaries"
@@ -31,3 +31,21 @@
         size-y (:size-y map-spec)
         type (resolve (:type map-spec))]
     (GameMap. r (apply type [r size-x size-y]))))
+
+(defn place-where-possible [^GameMap m ^Unit u]
+  (.placeWherePossible m u))
+
+(defn try-move [^GameMap m ^Unit actor dx dy]
+  (.tryMove m actor dx dy))
+
+(defn cell-type [^GameMap m x y]
+  (.getCellType m x y))
+
+(defn object-at [^GameMap m x y]
+  (cast Unit (.getGroundObject m x y)))
+
+(defn objects-in-radius [^GameMap m ^Unit u r]
+  (.getObjectsInRadius m u r))
+
+(defn remove-object [^GameMap m ^Unit u]
+  (.removeObject m u))

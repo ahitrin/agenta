@@ -1,5 +1,6 @@
 (ns agenta.ui
-  (:import (agenta GameMap Unit MapCellType ImagePanel)
+  (:require [agenta.game-map :as gm])
+  (:import (agenta MapCellType ImagePanel)
            (javax.swing JFrame JOptionPane JPanel)
            (java.awt Graphics Component)
            (java.awt.image BufferedImage)))
@@ -16,7 +17,7 @@
 
 (defn wrap-viewer [^JFrame f ^ImagePanel p]
   (let [state (atom {:cache {} :need-init true})]
-    (fn [^GameMap m]
+    (fn [m]
       (let [size-x (.getSizeX m)
             size-y (.getSizeY m)
             pix-x (* 25 size-x)
@@ -33,10 +34,10 @@
               currentGraph (.createGraphics image)]
           (doseq [i (range size-x)
                   j (range size-y)
-                  :let [u (cast Unit (.getGroundObject m i j))
+                  :let [u (gm/object-at m i j)
                         tile-name (if (some? u)
                                     (str (.getImage (.getType u)) (.getPlayer u))
-                                    (-tiles (.getCellType m i j)))]]
+                                    (-tiles (gm/cell-type m i j)))]]
             (.drawImage ^Graphics currentGraph
                         (-get-image p state tile-name)
                         (int (* 25 i))
