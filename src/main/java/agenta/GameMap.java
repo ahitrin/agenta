@@ -1,9 +1,7 @@
 package agenta;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class GameMap
 {
@@ -11,7 +9,6 @@ public class GameMap
     private final int sizeY;
     private final SingleRandom generator;
     private final MapCell[][] cells;
-    private final Set<MapObject> objects = new HashSet<>();
 
     public GameMap(SingleRandom generator, MapCell[][] cells)
     {
@@ -51,7 +48,6 @@ public class GameMap
             y = this.generator.nextInt(sizeY);
         }
         while (!canPlaceObject(x, y));
-        objects.add(unit);
         placeObject(unit, x, y);
     }
 
@@ -121,30 +117,6 @@ public class GameMap
 
     public void removeObject(MapObject obj)
     {
-        objects.remove(obj);
         cells[obj.x][obj.y].setObject(null);
-    }
-
-    public String toString()
-    {
-        StringBuilder s = new StringBuilder();
-
-        for (int i = 0; i < sizeX; i++)
-        {
-            for (int j = 0; j < sizeY; j++)
-            {
-                switch (cells[i][j].getType())
-                {
-                case GRASS:
-                    s.append('.');
-                    break;
-                case TREE:
-                    s.append('#');
-                    break;
-                }
-            }
-            s.append('\n');
-        }
-        return s.toString();
     }
 }
