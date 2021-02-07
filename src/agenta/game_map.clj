@@ -72,7 +72,15 @@
   (cast Unit (.getGroundObject m x y)))
 
 (defn objects-in-radius [^GameMap m ^Unit u r]
-  (.getObjectsInRadius m u r))
+  (let [limit (int r)]
+    (for [i (range (- limit) (inc limit))
+          j (range (- limit) (inc limit))
+          :let [d2 (+ (* i i) (* j j))
+                obj (.getGroundObject m (+ i (.getX u)) (+ j (.getY u)))]
+          :when (and (<= d2 (* r r))
+                     (pos? d2)
+                     (some? obj))]
+      obj)))
 
 (defn remove-object [^GameMap m ^Unit u]
   (.setObject (aget (.-cells m) (.getX u) (.getY u)) nil))
