@@ -69,16 +69,14 @@
     MapCellType/TREE))
 
 (defn object-at [^GameMap m x y]
-  (cast Unit (when (and (< -1 x (.-sizeX m))
-                        (< -1 y (.-sizeY m)))
-               (.getObject (aget (.-cells m) x y)))))
+  (cast Unit (.getGroundObject m x y)))
 
 (defn objects-in-radius [^GameMap m ^Unit u r]
   (let [limit (int r)]
     (for [i (range (- limit) (inc limit))
           j (range (- limit) (inc limit))
           :let [d2 (+ (* i i) (* j j))
-                obj (object-at m (+ i (.getX u)) (+ j (.getY u)))]
+                obj (.getGroundObject m (+ i (.getX u)) (+ j (.getY u)))]
           :when (and (<= d2 (* r r))
                      (pos? d2)
                      (some? obj))]
