@@ -39,10 +39,9 @@
   (.-sizeY m))
 
 (defn place-where-possible [^SingleRandom g ^GameMap m ^Unit u]
-  (let [n (fn [s] (.nextInt g s))
-        c (first (filter #(.canPlaceObject m (first %) (second %))
-                         (repeatedly (fn [] (list (n (.-sizeX m)) (n (.-sizeY m)))))))]
-    (.placeObject m u (first c) (second c))))
+  (let [xy (first (filter #(.canPlaceObject m (first %) (second %))
+                         (repeatedly #(rnd-xy g (.-sizeX m) (.-sizeY m)))))]
+    (.placeObject m u (first xy) (second xy))))
 
 (defn try-move [^GameMap m ^Unit actor dx dy]
   (.tryMove m actor dx dy))
