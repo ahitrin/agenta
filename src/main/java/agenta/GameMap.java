@@ -18,7 +18,7 @@ public class GameMap
         this.cells = cells;
     }
 
-    private boolean canPlaceObject(int x, int y)
+    public boolean canPlaceObject(int x, int y)
     {
         if ((x < 0) || (y < 0) ||
                 (x >= sizeX) || (y >= sizeY))
@@ -27,18 +27,6 @@ public class GameMap
         }
         return (cells[x][y].getType() == MapCellType.GRASS) &&
                 (cells[x][y].getObject() == null);
-    }
-
-    public void placeWherePossible(Unit unit)
-    {
-        int x, y;
-        do
-        {
-            x = this.generator.nextInt(sizeX);
-            y = this.generator.nextInt(sizeY);
-        }
-        while (!canPlaceObject(x, y));
-        placeObject(unit, x, y);
     }
 
     public boolean tryMove(Unit actor, int dx, int dy)
@@ -86,7 +74,7 @@ public class GameMap
         return objects1;
     }
 
-    private void placeObject(Unit obj, int x, int y)
+    public void placeObject(Unit obj, int x, int y)
     {
         if (canPlaceObject(x, y))
         {
