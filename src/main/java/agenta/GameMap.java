@@ -5,10 +5,10 @@ import java.util.List;
 
 public class GameMap
 {
-    private final int sizeX;
-    private final int sizeY;
-    private final SingleRandom generator;
-    private final MapCell[][] cells;
+    public final int sizeX;
+    public final int sizeY;
+    public final SingleRandom generator;
+    public final MapCell[][] cells;
 
     public GameMap(SingleRandom generator, MapCell[][] cells)
     {
@@ -16,16 +16,6 @@ public class GameMap
         this.sizeX = cells.length;
         this.sizeY = cells[0].length;
         this.cells = cells;
-    }
-
-    public int getSizeX()
-    {
-        return sizeX;
-    }
-
-    public int getSizeY()
-    {
-        return sizeY;
     }
 
     private boolean canPlaceObject(int x, int y)
@@ -60,16 +50,6 @@ public class GameMap
             placeObject(actor, actor.x + dx, actor.y + dy);
         }
         return moved;
-    }
-
-    public MapCellType getCellType(int x, int y)
-    {
-        if ((x < 0) || (y < 0) ||
-                (x >= sizeX) || (y >= sizeY))
-        {
-            return MapCellType.TREE;
-        }
-        return cells[x][y].getType();
     }
 
     public MapObject getGroundObject(int x, int y)

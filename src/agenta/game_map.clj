@@ -33,10 +33,10 @@
     (GameMap. r (apply type [r size-x size-y]))))
 
 (defn size-x [^GameMap m]
-  (.getSizeX m))
+  (.-sizeX m))
 
 (defn size-y [^GameMap m]
-  (.getSizeY m))
+  (.-sizeY m))
 
 (defn place-where-possible [^GameMap m ^Unit u]
   (.placeWherePossible m u))
@@ -45,7 +45,10 @@
   (.tryMove m actor dx dy))
 
 (defn cell-type [^GameMap m x y]
-  (.getCellType m x y))
+  (if (and (< -1 x (.-sizeX m))
+           (< -1 y (.-sizeY m)))
+   (.getType (aget (.-cells m) x y))
+    MapCellType/TREE))
 
 (defn object-at [^GameMap m x y]
   (cast Unit (.getGroundObject m x y)))
