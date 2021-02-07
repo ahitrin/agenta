@@ -69,4 +69,4 @@
   (.getObjectsInRadius m u r))
 
 (defn remove-object [^GameMap m ^Unit u]
-  (.removeObject m u))
+  (.setObject (aget (.-cells m) (.getX u) (.getY u)) nil))

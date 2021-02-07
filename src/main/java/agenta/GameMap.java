@@ -60,9 +60,4 @@ public class GameMap
         }
         return objects1;
     }
-
-    public void removeObject(Unit obj)
-    {
-        cells[obj.x][obj.y].setObject(null);
-    }
 }
