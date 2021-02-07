@@ -5,7 +5,8 @@
            (agenta ImagePanel)))
 
 (defn -main [& args]
-  (let [s (clojure.edn/read-string (slurp "setting/demo.edn"))
+  (let [i (if (seq? args) (first args) "demo")
+        s (clojure.edn/read-string (slurp (format "setting/%s.edn" i)))
         f (JFrame. "Agenta demo")
         p (ImagePanel.)
         v (ui/wrap-viewer f p)
