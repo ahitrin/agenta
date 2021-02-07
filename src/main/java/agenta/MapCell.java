@@ -3,7 +3,7 @@ package agenta;
 public class MapCell
 {
     private final MapCellType type;
-    private MapObject object = null;
+    private Unit object = null;
 
     public MapCell()
     {
@@ -15,7 +15,7 @@ public class MapCell
         this.type = type;
     }
 
-    public MapObject getObject()
+    public Unit getObject()
     {
         return object;
     }
@@ -25,7 +25,7 @@ public class MapCell
         return type;
     }
 
-    public void setObject(MapObject obj)
+    public void setObject(Unit obj)
     {
         object = obj;
     }

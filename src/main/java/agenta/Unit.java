@@ -3,20 +3,14 @@ package agenta;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import com.github.javafaker.Faker;
 
-public class Unit extends MapObject
+public class Unit
 {
-    private static final Predicate<MapObject> IS_UNIT = o -> o instanceof Unit;
-
-    private static List<Unit> filterUnits(List<MapObject> objs)
-    {
-        return objs.stream().filter(IS_UNIT).map(o -> (Unit)o).collect(Collectors.toList());
-    }
-
+    protected int x;
+    protected int y;
     private final UnitType type;
     private UnitState state;
     private final int player;
@@ -45,7 +39,7 @@ public class Unit extends MapObject
         healthCounter = this.random.nextInt(100) + 1;
     }
 
-    public List<Action> act(List<MapObject> visibleObjects)
+    public List<Action> act(List<Unit> visibleObjects)
     {
         if (healthCounter > 0)
         {
@@ -86,8 +80,7 @@ public class Unit extends MapObject
         switch (state)
         {
         case STAND:
-            neighbours = filterEnemies(filterUnits(
-                    filterInAttackRadius(visibleObjects)));
+            neighbours = filterEnemies(filterInAttackRadius(visibleObjects));
             if (!neighbours.isEmpty())
             {
                 List<Unit> currentNeighbours = new ArrayList<>(neighbours);
@@ -95,8 +88,7 @@ public class Unit extends MapObject
             }
             break;
         case ATTACK:
-            neighbours = filterEnemies(filterUnits(
-                    filterInAttackRadius(visibleObjects)));
+            neighbours = filterEnemies(filterInAttackRadius(visibleObjects));
             if (!neighbours.isEmpty())
             {
                 List<Unit> currentNeighbours = new ArrayList<>(neighbours);
@@ -104,7 +96,7 @@ public class Unit extends MapObject
             }
             else
             {
-                neighbours = filterEnemies(filterUnits(visibleObjects));
+                neighbours = filterEnemies(visibleObjects);
                 if (!neighbours.isEmpty())
                 {
                     Unit target = selectTargetPerk.apply(neighbours);
@@ -121,7 +113,7 @@ public class Unit extends MapObject
             }
             break;
         case ESCAPE:
-            neighbours = filterEnemies(filterUnits(visibleObjects));
+            neighbours = filterEnemies(visibleObjects);
             if (!neighbours.isEmpty())
             {
                 double dx = 0, dy = 0, r;
@@ -148,6 +140,16 @@ public class Unit extends MapObject
     public UnitType getType()
     {
         return type;
+    }
+
+    public final int getX()
+    {
+        return x;
+    }
+
+    public final int getY()
+    {
+        return y;
     }
 
     public boolean isAlive()
@@ -188,12 +190,24 @@ public class Unit extends MapObject
         return random.nextInt(type.getRandAttack()) + type.getBaseAttack();
     }
 
+    final void move(int dx, int dy)
+    {
+        x += dx;
+        y += dy;
+    }
+
+    final void moveTo(int newX, int newY)
+    {
+        x = newX;
+        y = newY;
+    }
+
     private List<Unit> filterEnemies(List<Unit> units)
     {
         return units.stream().filter(u -> u.getPlayer() != player).collect(Collectors.toList());
     }
 
-    private List<MapObject> filterInAttackRadius(List<MapObject> objs)
+    private List<Unit> filterInAttackRadius(List<Unit> objs)
     {
         float limit = type.getRange() * type.getRange();
         return objs.stream()

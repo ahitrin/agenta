@@ -41,7 +41,7 @@ public class GameMap
         placeObject(unit, x, y);
     }
 
-    public boolean tryMove(MapObject actor, int dx, int dy)
+    public boolean tryMove(Unit actor, int dx, int dy)
     {
         boolean moved = canPlaceObject(actor.x + dx, actor.y + dy);
         if (moved)
@@ -52,7 +52,7 @@ public class GameMap
         return moved;
     }
 
-    public MapObject getGroundObject(int x, int y)
+    public Unit getGroundObject(int x, int y)
     {
         if ((x < 0) || (y < 0) ||
                 (x >= sizeX) || (y >= sizeY))
@@ -62,10 +62,10 @@ public class GameMap
         return cells[x][y].getObject();
     }
 
-    public List<MapObject> getObjectsInRadius(MapObject o, float r)
+    public List<Unit> getObjectsInRadius(Unit o, float r)
     {
-        List<MapObject> objects1 = new ArrayList<>();
-        MapObject o1;
+        List<Unit> objects1 = new ArrayList<>();
+        Unit o1;
 
         int limit = Math.round(r);
         for (int i = -limit; i <= limit; i++)
@@ -86,7 +86,7 @@ public class GameMap
         return objects1;
     }
 
-    private void placeObject(MapObject obj, int x, int y)
+    private void placeObject(Unit obj, int x, int y)
     {
         if (canPlaceObject(x, y))
         {
@@ -95,7 +95,7 @@ public class GameMap
         }
     }
 
-    public void removeObject(MapObject obj)
+    public void removeObject(Unit obj)
     {
         cells[obj.x][obj.y].setObject(null);
     }
