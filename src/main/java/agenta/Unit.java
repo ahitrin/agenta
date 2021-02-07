@@ -196,7 +196,7 @@ public class Unit
         y += dy;
     }
 
-    final void moveTo(int newX, int newY)
+    public void moveTo(int newX, int newY)
     {
         x = newX;
         y = newY;

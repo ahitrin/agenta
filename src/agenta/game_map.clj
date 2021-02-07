@@ -38,17 +38,21 @@
 (defn size-y [^GameMap m]
   (.-sizeY m))
 
+(defn place-object [^GameMap m ^Unit u x y]
+  (.setObject (aget (.-cells m) x y) u)
+  (.moveTo u x y))
+
 (defn place-where-possible [^SingleRandom g ^GameMap m ^Unit u]
   (let [xy (first (filter #(.canPlaceObject m (first %) (second %))
                          (repeatedly #(rnd-xy g (.-sizeX m) (.-sizeY m)))))]
-    (.placeObject m u (first xy) (second xy))))
+    (place-object m u (first xy) (second xy))))
 
 (defn try-move [^GameMap m ^Unit actor dx dy]
   (let [x (.getX actor) y (.getY actor) nx (+ x dx) ny (+ y dy)]
     (if (.canPlaceObject m nx ny)
       (do
         (.setObject (aget (.-cells m) x y) nil)
-        (.placeObject m actor nx ny)
+        (place-object m actor nx ny)
         true)
       false)))
 

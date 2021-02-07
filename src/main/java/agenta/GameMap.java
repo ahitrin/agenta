@@ -61,15 +61,6 @@ public class GameMap
         return objects1;
     }
 
-    public void placeObject(Unit obj, int x, int y)
-    {
-        if (canPlaceObject(x, y))
-        {
-            cells[x][y].setObject(obj);
-            obj.moveTo(x, y);
-        }
-    }
-
     public void removeObject(Unit obj)
     {
         cells[obj.x][obj.y].setObject(null);
