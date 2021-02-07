@@ -38,18 +38,24 @@
 (defn size-y [^GameMap m]
   (.-sizeY m))
 
+(defn can-place? [^GameMap m x y]
+  (and (< -1 x (.-sizeX m))
+       (< -1 y (.-sizeY m))
+       (= MapCellType/GRASS (.getType (aget (.-cells m) x y)))
+       (nil? (.getObject (aget (.-cells m) x y)))))
+
 (defn place-object [^GameMap m ^Unit u x y]
   (.setObject (aget (.-cells m) x y) u)
   (.moveTo u x y))
 
 (defn place-where-possible [^SingleRandom g ^GameMap m ^Unit u]
-  (let [xy (first (filter #(.canPlaceObject m (first %) (second %))
+  (let [xy (first (filter #(can-place? m (first %) (second %))
                          (repeatedly #(rnd-xy g (.-sizeX m) (.-sizeY m)))))]
     (place-object m u (first xy) (second xy))))
 
 (defn try-move [^GameMap m ^Unit actor dx dy]
   (let [x (.getX actor) y (.getY actor) nx (+ x dx) ny (+ y dy)]
-    (if (.canPlaceObject m nx ny)
+    (if (can-place? m nx ny)
       (do
         (.setObject (aget (.-cells m) x y) nil)
         (place-object m actor nx ny)

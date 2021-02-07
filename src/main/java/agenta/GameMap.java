@@ -16,17 +16,6 @@ public class GameMap
         this.cells = cells;
     }
 
-    public boolean canPlaceObject(int x, int y)
-    {
-        if ((x < 0) || (y < 0) ||
-                (x >= sizeX) || (y >= sizeY))
-        {
-            return false;
-        }
-        return (cells[x][y].getType() == MapCellType.GRASS) &&
-                (cells[x][y].getObject() == null);
-    }
-
     public Unit getGroundObject(int x, int y)
     {
         if ((x < 0) || (y < 0) ||
