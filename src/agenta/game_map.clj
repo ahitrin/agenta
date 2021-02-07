@@ -30,7 +30,7 @@
   (let [size-x (:size-x map-spec)
         size-y (:size-y map-spec)
         type (resolve (:type map-spec))]
-    (GameMap. r (apply type [r size-x size-y]))))
+    (GameMap. (apply type [r size-x size-y]))))
 
 (defn size-x [^GameMap m]
   (.-sizeX m))
@@ -38,8 +38,8 @@
 (defn size-y [^GameMap m]
   (.-sizeY m))
 
-(defn place-where-possible [^GameMap m ^Unit u]
-  (let [n (fn [s] (.nextInt (.-generator m) s))
+(defn place-where-possible [^SingleRandom g ^GameMap m ^Unit u]
+  (let [n (fn [s] (.nextInt g s))
         c (first (filter #(.canPlaceObject m (first %) (second %))
                          (repeatedly (fn [] (list (n (.-sizeX m)) (n (.-sizeY m)))))))]
     (.placeObject m u (first c) (second c))))

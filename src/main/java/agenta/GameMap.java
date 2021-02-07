@@ -7,12 +7,10 @@ public class GameMap
 {
     public final int sizeX;
     public final int sizeY;
-    public final SingleRandom generator;
     public final MapCell[][] cells;
 
-    public GameMap(SingleRandom generator, MapCell[][] cells)
+    public GameMap(MapCell[][] cells)
     {
-        this.generator = generator;
         this.sizeX = cells.length;
         this.sizeY = cells[0].length;
         this.cells = cells;

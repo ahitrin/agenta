@@ -53,7 +53,7 @@
         m (gm/make-map g (:map setting))
         u (init-units g setting)
         limit (:max-ticks (:experiment setting))]
-    (doseq [unit u] (gm/place-where-possible m unit))
+    (doseq [unit u] (gm/place-where-possible g m unit))
     (loop [units u winner -1 steps 0]
       (let [alive-units (filter #(.isAlive %) units)
             units-per-player (group-by #(.getPlayer %) alive-units)]
