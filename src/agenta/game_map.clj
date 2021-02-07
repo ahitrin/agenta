@@ -44,7 +44,13 @@
     (.placeObject m u (first xy) (second xy))))
 
 (defn try-move [^GameMap m ^Unit actor dx dy]
-  (.tryMove m actor dx dy))
+  (let [x (.getX actor) y (.getY actor) nx (+ x dx) ny (+ y dy)]
+    (if (.canPlaceObject m nx ny)
+      (do
+        (.setObject (aget (.-cells m) x y) nil)
+        (.placeObject m actor nx ny)
+        true)
+      false)))
 
 (defn cell-type [^GameMap m x y]
   (if (and (< -1 x (.-sizeX m))

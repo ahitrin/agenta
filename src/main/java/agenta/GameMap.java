@@ -27,17 +27,6 @@ public class GameMap
                 (cells[x][y].getObject() == null);
     }
 
-    public boolean tryMove(Unit actor, int dx, int dy)
-    {
-        boolean moved = canPlaceObject(actor.x + dx, actor.y + dy);
-        if (moved)
-        {
-            cells[actor.x][actor.y].setObject(null);
-            placeObject(actor, actor.x + dx, actor.y + dy);
-        }
-        return moved;
-    }
-
     public Unit getGroundObject(int x, int y)
     {
         if ((x < 0) || (y < 0) ||
