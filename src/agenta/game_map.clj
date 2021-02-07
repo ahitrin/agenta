@@ -50,7 +50,7 @@
 
 (defn place-where-possible [^SingleRandom g ^GameMap m ^Unit u]
   (let [xy (first (filter #(can-place? m (first %) (second %))
-                         (repeatedly #(rnd-xy g (.-sizeX m) (.-sizeY m)))))]
+                          (repeatedly #(rnd-xy g (.-sizeX m) (.-sizeY m)))))]
     (place-object m u (first xy) (second xy))))
 
 (defn try-move [^GameMap m ^Unit actor dx dy]
@@ -65,22 +65,25 @@
 (defn cell-type [^GameMap m x y]
   (if (and (< -1 x (.-sizeX m))
            (< -1 y (.-sizeY m)))
-   (.getType (aget (.-cells m) x y))
+    (.getType (aget (.-cells m) x y))
     MapCellType/TREE))
 
 (defn object-at [^GameMap m x y]
-  (cast Unit (.getGroundObject m x y)))
+  (.getObject (aget (.-cells m) x y)))
 
 (defn objects-in-radius [^GameMap m ^Unit u r]
   (let [limit (int r)]
-    (for [i (range (- limit) (inc limit))
-          j (range (- limit) (inc limit))
-          :let [d2 (+ (* i i) (* j j))
-                obj (.getGroundObject m (+ i (.getX u)) (+ j (.getY u)))]
-          :when (and (<= d2 (* r r))
-                     (pos? d2)
-                     (some? obj))]
-      obj)))
+    (filter some?
+            (for [i (range (- limit) (inc limit))
+                  j (range (- limit) (inc limit))
+                  :let [d2 (+ (* i i) (* j j))
+                        nx (+ i (.getX u))
+                        ny (+ j (.getY u))]
+                  :when (and (<= d2 (* r r))
+                             (pos? d2)
+                             (< -1 nx (.-sizeX m))
+                             (< -1 ny (.-sizeY m)))]
+              (object-at m nx ny)))))
 
 (defn remove-object [^GameMap m ^Unit u]
   (.setObject (aget (.-cells m) (.getX u) (.getY u)) nil))
