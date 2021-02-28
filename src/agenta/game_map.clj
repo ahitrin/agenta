@@ -63,10 +63,7 @@
       false)))
 
 (defn cell-type [^GameMap m x y]
-  (if (and (< -1 x (.-sizeX m))
-           (< -1 y (.-sizeY m)))
-    (.getType (aget (.-cells m) x y))
-    MapCellType/TREE))
+  (.getType (aget (.-cells m) x y)))
 
 (defn object-at [^GameMap m x y]
   (.getObject (aget (.-cells m) x y)))
