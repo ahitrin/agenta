@@ -22,9 +22,8 @@
     (BufferedImage. cm raster is-alpha nil)))
 
 (defn draw-image [^Graphics graphics ^ImagePanel p image-cache tile-name x y]
-  (.drawImage ^Graphics graphics
-              (image-cache tile-name
-                           (.getImage (.getToolkit p) (str "Pictures/" tile-name ".gif")))
+  (.drawImage graphics
+              (image-cache tile-name (.getImage (.getToolkit p) (str "Pictures/" tile-name ".gif")))
               (int (* 25 x))
               (int (* 25 y))
               p))
