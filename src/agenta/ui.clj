@@ -21,6 +21,14 @@
         raster (.copyData i nil)]
     (BufferedImage. cm raster is-alpha nil)))
 
+(defn draw-image [^Graphics graphics ^ImagePanel p image-cache tile-name x y]
+  (.drawImage ^Graphics graphics
+              (image-cache tile-name
+                           (.getImage (.getToolkit p) (str "Pictures/" tile-name ".gif")))
+              (int (* 25 x))
+              (int (* 25 y))
+              p))
+
 (defn wrap-viewer [^JFrame f ^ImagePanel p]
   (let [bg (atom nil) image-cache (simple-cache)]
     (fn [m us]
@@ -40,23 +48,13 @@
             (doseq [i (range size-x)
                     j (range size-y)
                     :let [tile-name (-tiles (gm/cell-type m i j))]]
-              (.drawImage ^Graphics graphics
-                          (image-cache tile-name
-                                       (.getImage (.getToolkit p) (str "Pictures/" tile-name ".gif")))
-                          (int (* 25 i))
-                          (int (* 25 j))
-                          p)
+              (draw-image graphics p image-cache tile-name i j)
               (reset! bg new-bg))))
         (let [image (-copy-image @bg)
               currentGraph (.createGraphics image)]
           (doseq [u us
                   :let [tile-name (str (.getImage (.getType u)) (.getPlayer u))]]
-            (.drawImage ^Graphics currentGraph
-                        (image-cache tile-name
-                               (.getImage (.getToolkit p) (str "Pictures/" tile-name ".gif")))
-                        (int (* 25 (.getX u)))
-                        (int (* 25 (.getY u)))
-                        p))
+            (draw-image currentGraph p image-cache tile-name (.getX u) (.getY u)))
           (.setImage p image)
           (.repaint p))))))
 
