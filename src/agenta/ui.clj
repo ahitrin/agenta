@@ -48,8 +48,8 @@
             (doseq [i (range size-x)
                     j (range size-y)
                     :let [tile-name (-tiles (gm/cell-type m i j))]]
-              (draw-image graphics p image-cache tile-name i j)
-              (reset! bg new-bg))))
+              (draw-image graphics p image-cache tile-name i j))
+            (reset! bg new-bg)))
         (let [image (-copy-image @bg)
               currentGraph (.createGraphics image)]
           (doseq [u us
