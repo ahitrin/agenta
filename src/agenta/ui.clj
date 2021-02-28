@@ -22,33 +22,40 @@
     (BufferedImage. cm raster is-alpha nil)))
 
 (defn wrap-viewer [^JFrame f ^ImagePanel p]
-  (let [need-init (atom true) image-cache (simple-cache)]
+  (let [bg (atom nil) image-cache (simple-cache)]
     (fn [m us]
       (let [size-x (gm/size-x m)
             size-y (gm/size-y m)
             pix-x (* 25 size-x)
             pix-y (* 25 size-y)]
-        (when @need-init
+        (when (nil? @bg)
           (.setSize p pix-x pix-y)
           (.setVisible p true)
           (.setSize f pix-x pix-y)
           (.setVisible f true)
           (.add (.getContentPane f) ^Component p)
           (.setDefaultCloseOperation f JFrame/EXIT_ON_CLOSE)
-          (swap! need-init not))
-        (let [image (cast BufferedImage (.createImage p pix-x pix-y))
+          (let [new-bg (BufferedImage. pix-x pix-y BufferedImage/TYPE_INT_RGB)
+                graphics (.createGraphics new-bg)]
+            (doseq [i (range size-x)
+                    j (range size-y)
+                    :let [tile-name (-tiles (gm/cell-type m i j))]]
+              (.drawImage ^Graphics graphics
+                          (image-cache tile-name
+                                       (.getImage (.getToolkit p) (str "Pictures/" tile-name ".gif")))
+                          (int (* 25 i))
+                          (int (* 25 j))
+                          p)
+              (reset! bg new-bg))))
+        (let [image (-copy-image @bg)
               currentGraph (.createGraphics image)]
-          (doseq [i (range size-x)
-                  j (range size-y)
-                  :let [u (gm/object-at m i j)
-                        tile-name (if (some? u)
-                                    (str (.getImage (.getType u)) (.getPlayer u))
-                                    (-tiles (gm/cell-type m i j)))]]
+          (doseq [u us
+                  :let [tile-name (str (.getImage (.getType u)) (.getPlayer u))]]
             (.drawImage ^Graphics currentGraph
                         (image-cache tile-name
                                (.getImage (.getToolkit p) (str "Pictures/" tile-name ".gif")))
-                        (int (* 25 i))
-                        (int (* 25 j))
+                        (int (* 25 (.getX u)))
+                        (int (* 25 (.getY u)))
                         p))
           (.setImage p image)
           (.repaint p))))))
