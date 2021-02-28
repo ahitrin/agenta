@@ -15,6 +15,12 @@
         (swap! cache assoc key val)
         val))))
 
+(defn -copy-image [^BufferedImage i]
+  (let [cm (.getColorModel i)
+        is-alpha (.isAlphaPremultiplied cm)
+        raster (.copyData i nil)]
+    (BufferedImage. cm raster is-alpha nil)))
+
 (defn wrap-viewer [^JFrame f ^ImagePanel p]
   (let [need-init (atom true) image-cache (simple-cache)]
     (fn [m us]
