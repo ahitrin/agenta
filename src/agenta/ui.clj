@@ -17,7 +17,7 @@
 
 (defn wrap-viewer [^JFrame f ^ImagePanel p]
   (let [need-init (atom true) image-cache (simple-cache)]
-    (fn [m]
+    (fn [m us]
       (let [size-x (gm/size-x m)
             size-y (gm/size-y m)
             pix-x (* 25 size-x)
