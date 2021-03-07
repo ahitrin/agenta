@@ -10,7 +10,7 @@ Of course, it becomes obvious that the naive rendering attempt in `PanelViewer` 
 I think, it should be fixed someday after the rewrite in Clojure.
 
 .I need only few changes in demo.edn to achieve this!
-image::2020-12013-big.jpg[Big map]
+image::2020-12-13-big.jpg[Big map]
 
 There's also a lot of TODOs in this picture:
 
