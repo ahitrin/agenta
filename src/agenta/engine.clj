@@ -57,7 +57,7 @@
     (loop [units u winner -1 steps 0]
       (let [alive-units (filter #(.isAlive %) units)
             units-per-player (group-by #(.getPlayer %) alive-units)]
-        (viewer m u)
+        (viewer m alive-units)
         (if (or (<= 0 winner) (<= limit steps))
           {:winner winner :steps steps}
           (let [all-actions (map #(-run-unit-action % m) alive-units)
