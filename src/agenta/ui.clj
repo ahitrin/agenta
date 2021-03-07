@@ -3,7 +3,9 @@
   (:import (agenta MapCellType ImagePanel)
            (javax.swing JFrame JOptionPane JPanel)
            (java.awt Graphics Component)
-           (java.awt.image BufferedImage)))
+           (java.awt.image BufferedImage)
+           (javax.imageio ImageIO)
+           (java.io File)))
 
 (def -tiles {MapCellType/GRASS "grass0"
              MapCellType/TREE "tree0"})
@@ -21,12 +23,12 @@
         raster (.copyData i nil)]
     (BufferedImage. cm raster is-alpha nil)))
 
-(defn draw-image [^Graphics graphics ^ImagePanel p o image-cache tile-name x y]
+(defn draw-image [^Graphics graphics observer image-cache tile-name x y]
   (.drawImage graphics
-              (image-cache tile-name (.getImage (.getToolkit p) (str "Pictures/" tile-name ".gif")))
+              (image-cache tile-name (ImageIO/read (File. (str "Pictures/" tile-name ".gif"))))
               (int (* 25 x))
               (int (* 25 y))
-              o))
+              observer))
 
 (defn wrap-viewer [^JFrame f ^ImagePanel p]
   (let [bg (atom nil) image-cache (simple-cache)]
@@ -47,13 +49,13 @@
             (doseq [i (range size-x)
                     j (range size-y)
                     :let [tile-name (-tiles (gm/cell-type m i j))]]
-              (draw-image graphics p nil image-cache tile-name i j))
+              (draw-image graphics nil image-cache tile-name i j))
             (reset! bg new-bg)))
         (let [image (-copy-image @bg)
               currentGraph (.createGraphics image)]
           (doseq [u us
                   :let [tile-name (str (.getImage (.getType u)) (.getPlayer u))]]
-            (draw-image currentGraph p p image-cache tile-name (.getX u) (.getY u)))
+            (draw-image currentGraph p image-cache tile-name (.getX u) (.getY u)))
           (.setImage p image)
           (.repaint p))))))
 
