@@ -33,8 +33,8 @@
 (defn wrap-viewer [^JFrame f ^ImagePanel p]
   (let [bg (atom nil) image-cache (simple-cache)]
     (fn [m us]
-      (let [size-x (gm/size-x m)
-            size-y (gm/size-y m)
+      (let [size-x (:size-x m)
+            size-y (:size-y m)
             pix-x (* 25 size-x)
             pix-y (* 25 size-y)]
         (when (nil? @bg)
