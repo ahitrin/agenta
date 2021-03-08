@@ -34,22 +34,22 @@
         type (resolve (:type map-spec))]
     (GameMap. size-x size-y (apply type [r size-x size-y]))))
 
-(defn can-place? [^GameMap m x y]
+(defn can-place? [m x y]
   (and (< -1 x (:size-x m))
        (< -1 y (:size-y m))
        (= MapCellType/GRASS (.getType (aget (.-cells m) x y)))
        (nil? (.getObject (aget (.-cells m) x y)))))
 
-(defn place-object [^GameMap m ^Unit u x y]
+(defn place-object [m ^Unit u x y]
   (.setObject (aget (.-cells m) x y) u)
   (.moveTo u x y))
 
-(defn place-where-possible [^SingleRandom g ^GameMap m ^Unit u]
+(defn place-where-possible [^SingleRandom g m ^Unit u]
   (let [xy (first (filter #(can-place? m (first %) (second %))
                           (repeatedly #(rnd-xy g (:size-x m) (:size-y m)))))]
     (place-object m u (first xy) (second xy))))
 
-(defn try-move [^GameMap m ^Unit actor dx dy]
+(defn try-move [m ^Unit actor dx dy]
   (let [x (.getX actor) y (.getY actor) nx (+ x dx) ny (+ y dy)]
     (if (can-place? m nx ny)
       (do
@@ -58,13 +58,13 @@
         true)
       false)))
 
-(defn cell-type [^GameMap m x y]
+(defn cell-type [m x y]
   (.getType (aget (.-cells m) x y)))
 
-(defn object-at [^GameMap m x y]
+(defn object-at [m x y]
   (.getObject (aget (.-cells m) x y)))
 
-(defn objects-in-radius [^GameMap m ^Unit u r]
+(defn objects-in-radius [m ^Unit u r]
   (let [limit (int r)]
     (filter some?
             (for [i (range (- limit) (inc limit))
@@ -78,5 +78,5 @@
                              (< -1 ny (:size-y m)))]
               (object-at m nx ny)))))
 
-(defn remove-object [^GameMap m ^Unit u]
+(defn remove-object [m ^Unit u]
   (.setObject (aget (.-cells m) (.getX u) (.getY u)) nil))
