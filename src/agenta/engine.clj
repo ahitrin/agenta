@@ -58,6 +58,17 @@
                (gm/try-move m actor dx dy))
       (set! (.-speedCounter actor) (.getSpeed (.getType actor))))))
 
+(defn apply-actions [actions m]
+  (doseq [a actions
+          :let [actor (.getActor a)
+                adata (.getData a)
+                atype (.get adata "type")]
+          :when (.isAlive actor)]
+    (case atype
+      "attack" (-perform-attack m actor adata)
+      "move" (-perform-move m actor adata)))
+  m)
+
 (defn run [setting viewer]
   (let [g (SingleRandom/get)
         u (init-units g setting)
@@ -70,15 +81,8 @@
         (if (or (<= 0 winner) (<= limit steps))
           {:winner winner :steps steps}
           (let [all-actions (map #(-run-unit-action % m) alive-units)
-                good-actions (set (filter some? all-actions))]
-            (doseq [a good-actions
-                    :let [actor (.getActor a)
-                          adata (.getData a)
-                          atype (.get adata "type")]
-                    :when (.isAlive actor)]
-              (case atype
-                "attack" (-perform-attack m actor adata)
-                "move" (-perform-move m actor adata)))
+                good-actions (set (filter some? all-actions))
+                new-m (apply-actions good-actions m)]
             (recur alive-units
                    m
                    (cond (empty? (units-per-player 0)) 1
