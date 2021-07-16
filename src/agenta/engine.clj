@@ -84,7 +84,7 @@
                 good-actions (set (filter some? all-actions))
                 new-m (apply-actions good-actions m)]
             (recur alive-units
-                   m
+                   new-m
                    (cond (empty? (units-per-player 0)) 1
                          (empty? (units-per-player 1)) 0
                          :else -1)
