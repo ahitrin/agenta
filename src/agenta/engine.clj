@@ -61,9 +61,9 @@
 (defn run [setting viewer]
   (let [g (SingleRandom/get)
         u (init-units g setting)
-        m (gm/make-map g (:map setting) u)
+        start-map (gm/make-map g (:map setting) u)
         limit (:max-ticks (:experiment setting))]
-    (loop [units u winner -1 steps 0]
+    (loop [units u m start-map winner -1 steps 0]
       (let [alive-units (filter #(.isAlive %) units)
             units-per-player (group-by #(.getPlayer %) alive-units)]
         (viewer m alive-units)
@@ -80,6 +80,7 @@
                 "attack" (-perform-attack m actor adata)
                 "move" (-perform-move m actor adata)))
             (recur alive-units
+                   m
                    (cond (empty? (units-per-player 0)) 1
                          (empty? (units-per-player 1)) 0
                          :else -1)
