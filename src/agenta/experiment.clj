@@ -1,9 +1,10 @@
 (ns agenta.experiment
-  (:require [agenta.engine :as eng]))
+  (:require [agenta.engine :as eng]
+            [clojure.tools.logging :as log]))
 
 (defn single-run [setting]
   (let [result (eng/run setting (fn [m u] ()))]
-    (println (format "Player %d has won after %d ticks" (:winner result) (:steps result)))
+    (log/infof (format "Player %d has won after %d ticks" (:winner result) (:steps result)))
     result))
 
 (defn run-experiment [setting]
@@ -20,10 +21,10 @@
         steps1 (double (if (zero? wins1) 0 (/ (reduce + (map :steps (wins-per-player 1))) wins1)))
         p0 (double (if (zero? (+ wins0 wins1)) 0 (/ (* 100 wins0) (+ wins0 wins1))))
         p1 (if (zero? (+ wins0 wins1)) 0.0 (- 100 p0))]
-    (printf "Player 0 won %d times (%f%%), in %f steps average%n" wins0 p0 steps0)
-    (printf "Player 1 won %d times (%f%%), in %f steps average%n" wins1 p1 steps1)
-    (printf "Total %d draws (battle runs for too long)%n" draws)
-    (printf "Total runs: %d%n" (+ wins0 wins1 draws))))
+    (log/infof "Player 0 won %d times (%f%%), in %f steps average" wins0 p0 steps0)
+    (log/infof "Player 1 won %d times (%f%%), in %f steps average" wins1 p1 steps1)
+    (log/infof "Total %d draws (battle runs for too long)" draws)
+    (log/infof "Total runs: %d" (+ wins0 wins1 draws))))
 
 (defn -main [& args]
   (if (seq args)
@@ -31,6 +32,6 @@
           s (clojure.edn/read-string (slurp (format "setting/%s.edn" f)))
           results (run-experiment s)]
       (calc-statistics results))
-    (println "Please name current setting (e.g. baseline)."
-             "Look for setting files in the \"setting\" dir."
-             "\n**I cannot run without an argument**")))
+    (printf "Please name current setting (e.g. baseline)."
+            "Look for setting files in the \"setting\" dir."
+            "\n**I cannot run without an argument**")))

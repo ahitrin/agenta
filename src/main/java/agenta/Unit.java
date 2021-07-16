@@ -6,9 +6,13 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.github.javafaker.Faker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Unit
 {
+    private static final Logger LOG = LoggerFactory.getLogger(Unit.class);
+
     protected int x;
     protected int y;
     private final UnitType type;
@@ -35,7 +39,7 @@ public class Unit
         currentHitPoints = type.getHitPoints();
         state = UnitState.ATTACK;
         currentCommand = new UnitCommand(state, UnitType.MIN_PRIORITY);
-        name = String.format("%s %s%d", new Faker().name().firstName(), type.toString(), player);
+        name = String.format("%s %s%d", new Faker().name().firstName(), type, player);
         healthCounter = this.random.nextInt(100) + 1;
     }
 
@@ -166,7 +170,7 @@ public class Unit
         UnitCommand uc = (UnitCommand)com;
         if (currentCommand.getState() != uc.getState())
         {
-            System.out.println(toString() + " will " + uc.toString());
+            LOG.debug(this + " will " + uc);
         }
         currentCommand = uc;
         if (currentHitPoints >= type.getHealthLimit(uc.getPriority()))
@@ -175,6 +179,7 @@ public class Unit
         }
     }
 
+    @Override
     public String toString()
     {
         return String.format("%s (%d HP; %d ks) at [%d, %d]", name, currentHitPoints, kills, x, y);

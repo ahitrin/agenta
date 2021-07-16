@@ -1,6 +1,7 @@
 (ns agenta.engine
   (:require [agenta.game-map :as gm]
-            [agenta.perk])
+            [agenta.perk]
+            [clojure.tools.logging :as log])
   (:import (agenta UnitType Unit SingleRandom)))
 
 (defn make-unit [spec]
@@ -34,10 +35,10 @@
   (let [target (cast Unit (.get adata "target"))
         damage (.doAttack actor)]
     (when (pos? damage)
-      (printf "%s strikes %s with %d%n" actor target damage)
+      (log/debugf "%s strikes %s with %d" actor target damage)
       (.sufferDamage target damage)
       (when-not (.isAlive target)
-        (printf "%s is dead%n" target)
+        (log/debugf "%s is dead" target)
         (set! (.-kills actor) (inc (.-kills actor)))
         (gm/remove-object m target)))))
 
