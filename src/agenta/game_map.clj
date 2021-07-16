@@ -1,7 +1,7 @@
 (ns agenta.game-map
   (:import (agenta MapCell MapCellType SingleRandom Unit)))
 
-(defrecord GameMap [size-x size-y cells])
+(defrecord GameMap [size-x size-y cells objs])
 
 (defn rnd-xy
   "Makes a random pair of coordinates within given boundaries"
@@ -41,14 +41,14 @@
   (let [size-x (:size-x map-spec)
         size-y (:size-y map-spec)
         type (resolve (:type map-spec))
-        m (GameMap. size-x size-y (apply type [r size-x size-y]))
+        m (GameMap. size-x size-y (apply type [r size-x size-y]) {})
         xys (filter #(can-place? m %)
                     (distinct (repeatedly #(rnd-xy r size-x size-y))))
-        coords (zipmap xys units)]
-    (doseq [[[x y] unit] coords]
+        objs (zipmap xys units)]
+    (doseq [[[x y] unit] objs]
       (.setObject (aget (.-cells m) x y) unit)
       (.moveTo unit x y))
-    m))
+    (GameMap. size-x size-y (.-cells m) objs)))
 
 (defn try-move [m ^Unit actor dx dy]
   (let [x (.getX actor) y (.getY actor) nx (+ x dx) ny (+ y dy)]
