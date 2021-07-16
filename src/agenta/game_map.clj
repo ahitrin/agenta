@@ -34,11 +34,14 @@
         type (resolve (:type map-spec))]
     (GameMap. size-x size-y (apply type [r size-x size-y]))))
 
+(defn object-at [m x y]
+  (.getObject (aget (.-cells m) x y)))
+
 (defn can-place? [m x y]
   (and (< -1 x (:size-x m))
        (< -1 y (:size-y m))
        (= MapCellType/GRASS (.getType (aget (.-cells m) x y)))
-       (nil? (.getObject (aget (.-cells m) x y)))))
+       (nil? (object-at m x y))))
 
 (defn place-object [m ^Unit u x y]
   (.setObject (aget (.-cells m) x y) u)
@@ -60,9 +63,6 @@
 
 (defn cell-type [m x y]
   (.getType (aget (.-cells m) x y)))
-
-(defn object-at [m x y]
-  (.getObject (aget (.-cells m) x y)))
 
 (defn objects-in-radius [m ^Unit u r]
   (let [limit (int r)]
