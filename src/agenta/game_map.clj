@@ -35,10 +35,6 @@
        (= MapCellType/GRASS (.getType (aget (.-cells m) x y)))
        (nil? (object-at m x y))))
 
-(defn place-object [m ^Unit u [x y]]
-  (.setObject (aget (.-cells m) x y) u)
-  (.moveTo u x y))
-
 (defn make-map
   "Build game map with given map spec"
   [^SingleRandom r map-spec units]
@@ -48,8 +44,11 @@
         m (GameMap. size-x size-y (apply type [r size-x size-y]))]
     (doseq [unit units]
       (let [xy (first (filter #(can-place? m %)
-                              (repeatedly #(rnd-xy r size-x size-y))))]
-        (place-object m unit xy)))
+                              (repeatedly #(rnd-xy r size-x size-y))))
+            x (first xy)
+            y (second xy)]
+        (.setObject (aget (.-cells m) x y) unit)
+        (.moveTo unit x y)))
     m))
 
 (defn try-move [m ^Unit actor dx dy]
@@ -57,7 +56,8 @@
     (if (can-place? m (list nx ny))
       (do
         (.setObject (aget (.-cells m) x y) nil)
-        (place-object m actor (list nx ny))
+        (.setObject (aget (.-cells m) nx ny) actor)
+        (.moveTo actor nx ny)
         true)
       false)))
 
