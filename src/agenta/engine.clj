@@ -2,7 +2,7 @@
   (:require [agenta.game-map :as gm]
             [agenta.perk]
             [clojure.tools.logging :as log])
-  (:import (agenta UnitType Unit SingleRandom)))
+  (:import (agenta UnitType Unit SingleRandom UnitCommand UnitState)))
 
 (defn make-unit [spec]
   (proxy [UnitType] []
@@ -31,12 +31,25 @@
   (let [visible-objects (gm/objects-in-radius m u (.getVisibility (.getType u)))]
     (first (.act u visible-objects))))
 
+(defn -suffer-damage [^Unit target damage]
+  (let [hp (.-currentHitPoints target)
+        new-hp (- hp damage)
+        ctr (.-healthCounter target)
+        prio (.getPriority (.-currentCommand target))
+        limit (.getHealthLimit (.-type target) prio)]
+    (when (pos? hp)
+      (set! (.-currentHitPoints target) new-hp)
+      (when (neg-int? ctr)
+        (set! (.-healthCounter target) 100))
+      (when (< new-hp limit)
+        (.obtain target (UnitCommand. UnitState/ESCAPE (inc prio)))))))
+
 (defn -perform-attack [m ^Unit actor adata]
   (let [target (cast Unit (.get adata "target"))
         damage (.doAttack actor)]
     (when (pos? damage)
       (log/debugf "%s strikes %s with %d" actor target damage)
-      (.sufferDamage target damage)
+      (-suffer-damage target damage)
       (when-not (.isAlive target)
         (log/debugf "%s is dead" target)
         (set! (.-kills actor) (inc (.-kills actor)))

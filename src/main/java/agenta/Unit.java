@@ -15,14 +15,14 @@ public class Unit
 
     protected int x;
     protected int y;
-    private final UnitType type;
+    public final UnitType type;
     private UnitState state;
     private final int player;
     public int speedCounter;
     private int attackCounter;
-    private int healthCounter;
-    private int currentHitPoints;
-    private UnitCommand currentCommand;
+    public int healthCounter;
+    public int currentHitPoints;
+    public UnitCommand currentCommand;
     public int kills = 0;
     private final String name;
     private final SingleRandom random;
@@ -213,22 +213,4 @@ public class Unit
                 .filter(o -> (o.x - x) * (o.x - x) + (o.y - y) * (o.y - y) <= limit)
                 .collect(Collectors.toList());
     }
-
-    public void sufferDamage(int value)
-    {
-        if (!isAlive())
-        {
-            return;
-        }
-        currentHitPoints -= value;
-        if (healthCounter == -1)
-        {
-            healthCounter = 100;
-        }
-        if (currentHitPoints < type.getHealthLimit(currentCommand.getPriority()))
-        {
-            obtain(new UnitCommand(UnitState.ESCAPE, currentCommand.getPriority() + 1));
-        }
-    }
-
 }
