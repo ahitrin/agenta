@@ -35,7 +35,7 @@
        (= MapCellType/GRASS (.getType (aget (.-cells m) x y)))
        (nil? (object-at m x y))))
 
-(defn place-object [m ^Unit u x y]
+(defn place-object [m ^Unit u [x y]]
   (.setObject (aget (.-cells m) x y) u)
   (.moveTo u x y))
 
@@ -49,7 +49,7 @@
     (doseq [unit units]
       (let [xy (first (filter #(can-place? m (first %) (second %))
                               (repeatedly #(rnd-xy r size-x size-y))))]
-        (place-object m unit (first xy) (second xy))))
+        (place-object m unit xy)))
     m))
 
 (defn try-move [m ^Unit actor dx dy]
@@ -57,7 +57,7 @@
     (if (can-place? m nx ny)
       (do
         (.setObject (aget (.-cells m) x y) nil)
-        (place-object m actor nx ny)
+        (place-object m actor (list nx ny))
         true)
       false)))
 
