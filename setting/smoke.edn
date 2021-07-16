@@ -1,0 +1,30 @@
+{
+ :description "Baseline experiment: each of two players with same forces should have ~50% chance to win"
+ :map         {
+               :size-x 18
+               :size-y 18
+               :type   agenta.game-map/plane
+               }
+ :unit-types  [
+               {:name        "Warrior"
+                :attackSpeed 3
+                :baseAttack  1
+                :randAttack  4
+                :hitPoints   10
+                :speed       3
+                :visibility  10
+                :range       1.45
+                :image       "footman"
+                :perk        {
+                              "select" agenta.perk/select-random-memoized
+                              }}
+               ]
+ :placement   {
+               0 {"warrior" 10}
+               1 {"warrior" 10}
+               }
+ :experiment  {
+               :max-ticks 500
+               :total     1
+               }
+ }
