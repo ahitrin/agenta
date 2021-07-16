@@ -44,7 +44,7 @@
         m (GameMap. size-x size-y (apply type [r size-x size-y]))
         coords (partition 2 (interleave units
                                         (filter #(can-place? m %)
-                                                (repeatedly #(rnd-xy r size-x size-y)))))]
+                                                (distinct (repeatedly #(rnd-xy r size-x size-y))))))]
     (doseq [[unit [x y]] coords]
       (.setObject (aget (.-cells m) x y) unit)
       (.moveTo unit x y))
