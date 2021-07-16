@@ -42,10 +42,10 @@
         size-y (:size-y map-spec)
         type (resolve (:type map-spec))
         m (GameMap. size-x size-y (apply type [r size-x size-y]))
-        coords (partition 2 (interleave units
-                                        (filter #(can-place? m %)
-                                                (distinct (repeatedly #(rnd-xy r size-x size-y))))))]
-    (doseq [[unit [x y]] coords]
+        xys (filter #(can-place? m %)
+                    (distinct (repeatedly #(rnd-xy r size-x size-y))))
+        coords (zipmap xys units)]
+    (doseq [[[x y] unit] coords]
       (.setObject (aget (.-cells m) x y) unit)
       (.moveTo unit x y))
     m))
