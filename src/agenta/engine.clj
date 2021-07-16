@@ -37,17 +37,17 @@
         ctr (.-healthCounter target)
         prio (.getPriority (.-currentCommand target))
         limit (.getHealthLimit (.-type target) prio)]
-    (when (pos? hp)
-      (set! (.-currentHitPoints target) new-hp)
-      (when (neg-int? ctr)
-        (set! (.-healthCounter target) 100))
-      (when (< new-hp limit)
-        (.obtain target (UnitCommand. UnitState/ESCAPE (inc prio)))))))
+    (set! (.-currentHitPoints target) new-hp)
+    (when (neg-int? ctr)
+      (set! (.-healthCounter target) 100))
+    (when (< new-hp limit)
+      (.obtain target (UnitCommand. UnitState/ESCAPE (inc prio))))))
 
 (defn -perform-attack [m ^Unit actor adata]
   (let [target (cast Unit (.get adata "target"))
+        hp (.-currentHitPoints target)
         damage (.doAttack actor)]
-    (when (pos? damage)
+    (when (and (pos? damage) (pos? hp))
       (log/debugf "%s strikes %s with %d" actor target damage)
       (-suffer-damage target damage)
       (when-not (.isAlive target)
