@@ -29,7 +29,7 @@
 (defn object-at [m x y]
   (.getObject (aget (.-cells m) x y)))
 
-(defn can-place? [m x y]
+(defn can-place? [m [x y]]
   (and (< -1 x (:size-x m))
        (< -1 y (:size-y m))
        (= MapCellType/GRASS (.getType (aget (.-cells m) x y)))
@@ -47,14 +47,14 @@
         type (resolve (:type map-spec))
         m (GameMap. size-x size-y (apply type [r size-x size-y]))]
     (doseq [unit units]
-      (let [xy (first (filter #(can-place? m (first %) (second %))
+      (let [xy (first (filter #(can-place? m %)
                               (repeatedly #(rnd-xy r size-x size-y))))]
         (place-object m unit xy)))
     m))
 
 (defn try-move [m ^Unit actor dx dy]
   (let [x (.getX actor) y (.getY actor) nx (+ x dx) ny (+ y dy)]
-    (if (can-place? m nx ny)
+    (if (can-place? m (list nx ny))
       (do
         (.setObject (aget (.-cells m) x y) nil)
         (place-object m actor (list nx ny))
