@@ -27,4 +27,4 @@
   [^SingleRandom r]
   (proxy [Function] []
     (apply [units]
-      (first (sort-by #(.getHitPoints %) units)))))
+      (first (sort-by #(.-currentHitPoints %) units)))))

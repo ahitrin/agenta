@@ -195,12 +195,6 @@ public class Unit
         return random.nextInt(type.getRandAttack()) + type.getBaseAttack();
     }
 
-    final void move(int dx, int dy)
-    {
-        x += dx;
-        y += dy;
-    }
-
     public void moveTo(int newX, int newY)
     {
         x = newX;
@@ -237,8 +231,4 @@ public class Unit
         }
     }
 
-    public int getHitPoints()
-    {
-        return currentHitPoints;
-    }
 }
