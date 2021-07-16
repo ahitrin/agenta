@@ -26,14 +26,6 @@
     (doseq [[x y] trees] (aset a x y (MapCell. MapCellType/TREE)))
     a))
 
-(defn make-map
-  "Build game map with given map spec"
-  [^SingleRandom r map-spec]
-  (let [size-x (:size-x map-spec)
-        size-y (:size-y map-spec)
-        type (resolve (:type map-spec))]
-    (GameMap. size-x size-y (apply type [r size-x size-y]))))
-
 (defn object-at [m x y]
   (.getObject (aget (.-cells m) x y)))
 
@@ -51,6 +43,16 @@
   (let [xy (first (filter #(can-place? m (first %) (second %))
                           (repeatedly #(rnd-xy g (:size-x m) (:size-y m)))))]
     (place-object m u (first xy) (second xy))))
+
+(defn make-map
+  "Build game map with given map spec"
+  [^SingleRandom r map-spec units]
+  (let [size-x (:size-x map-spec)
+        size-y (:size-y map-spec)
+        type (resolve (:type map-spec))
+        m (GameMap. size-x size-y (apply type [r size-x size-y]))]
+    (doseq [unit units] (place-where-possible r m unit))
+    m))
 
 (defn try-move [m ^Unit actor dx dy]
   (let [x (.getX actor) y (.getY actor) nx (+ x dx) ny (+ y dy)]
