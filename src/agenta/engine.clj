@@ -31,10 +31,8 @@
   (let [visible-objects (gm/objects-in-radius m u (.getVisibility (.getType u)))]
     (first (.act u visible-objects))))
 
-(defn -suffer-damage [^Unit target damage]
-  (let [hp (.-currentHitPoints target)
-        new-hp (- hp damage)
-        ctr (.-healthCounter target)
+(defn -suffer-damage [^Unit target new-hp]
+  (let [ctr (.-healthCounter target)
         prio (.getPriority (.-currentCommand target))
         limit (.getHealthLimit (.-type target) prio)]
     (set! (.-currentHitPoints target) new-hp)
@@ -45,11 +43,12 @@
 
 (defn -perform-attack [m ^Unit actor adata]
   (let [target (cast Unit (.get adata "target"))
+        damage (.doAttack actor)
         hp (.-currentHitPoints target)
-        damage (.doAttack actor)]
+        new-hp (- hp damage)]
     (when (and (pos? damage) (pos? hp))
       (log/debugf "%s strikes %s with %d" actor target damage)
-      (-suffer-damage target damage)
+      (-suffer-damage target new-hp)
       (when-not (.isAlive target)
         (log/debugf "%s is dead" target)
         (set! (.-kills actor) (inc (.-kills actor)))
