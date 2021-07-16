@@ -41,14 +41,13 @@
   (let [size-x (:size-x map-spec)
         size-y (:size-y map-spec)
         type (resolve (:type map-spec))
-        m (GameMap. size-x size-y (apply type [r size-x size-y]))]
-    (doseq [unit units]
-      (let [xy (first (filter #(can-place? m %)
-                              (repeatedly #(rnd-xy r size-x size-y))))
-            x (first xy)
-            y (second xy)]
-        (.setObject (aget (.-cells m) x y) unit)
-        (.moveTo unit x y)))
+        m (GameMap. size-x size-y (apply type [r size-x size-y]))
+        coords (partition 2 (interleave units
+                                        (filter #(can-place? m %)
+                                                (repeatedly #(rnd-xy r size-x size-y)))))]
+    (doseq [[unit [x y]] coords]
+      (.setObject (aget (.-cells m) x y) unit)
+      (.moveTo unit x y))
     m))
 
 (defn try-move [m ^Unit actor dx dy]
