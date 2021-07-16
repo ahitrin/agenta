@@ -48,7 +48,7 @@
         m (GameMap. size-x size-y (apply type [r size-x size-y]))]
     (doseq [unit units]
       (let [xy (first (filter #(can-place? m (first %) (second %))
-                              (repeatedly #(rnd-xy r (:size-x m) (:size-y m)))))]
+                              (repeatedly #(rnd-xy r size-x size-y))))]
         (place-object m unit (first xy) (second xy))))
     m))
 
