@@ -39,11 +39,6 @@
   (.setObject (aget (.-cells m) x y) u)
   (.moveTo u x y))
 
-(defn place-where-possible [^SingleRandom g m ^Unit u]
-  (let [xy (first (filter #(can-place? m (first %) (second %))
-                          (repeatedly #(rnd-xy g (:size-x m) (:size-y m)))))]
-    (place-object m u (first xy) (second xy))))
-
 (defn make-map
   "Build game map with given map spec"
   [^SingleRandom r map-spec units]
@@ -51,7 +46,10 @@
         size-y (:size-y map-spec)
         type (resolve (:type map-spec))
         m (GameMap. size-x size-y (apply type [r size-x size-y]))]
-    (doseq [unit units] (place-where-possible r m unit))
+    (doseq [unit units]
+      (let [xy (first (filter #(can-place? m (first %) (second %))
+                              (repeatedly #(rnd-xy r (:size-x m) (:size-y m)))))]
+        (place-object m unit (first xy) (second xy))))
     m))
 
 (defn try-move [m ^Unit actor dx dy]
