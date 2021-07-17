@@ -10,7 +10,7 @@
         f (JFrame. "Agenta demo")
         p (ImagePanel.)
         v (ui/wrap-viewer f p)
-        result (eng/run! s v)]
+        result (eng/run-game! s v)]
       (ui/show-end-message f p (format "Player %d has won after %d ticks!"
                                        (:winner result)
                                        (:steps result)))))

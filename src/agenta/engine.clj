@@ -76,7 +76,7 @@
   (reduce -apply-action! m
           (filter #(.isAlive (.getActor %)) actions)))
 
-(defn run! [setting viewer]
+(defn run-game! [setting viewer]
   (let [g (SingleRandom/get)
         u (-init-units g setting)
         start-map (gm/make-map g (:map setting) u)
