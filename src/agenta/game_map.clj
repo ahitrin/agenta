@@ -27,7 +27,7 @@
     a))
 
 (defn -object-at [m x y]
-  (.getObject (aget (:cells m) x y)))
+  ((:objs m) [x y]))
 
 (defn -can-place? [m [x y]]
   (and (< -1 x (:size-x m))
@@ -52,12 +52,14 @@
 
 (defn try-move! [m ^Unit actor dx dy]
   (let [x (.getX actor) y (.getY actor) nx (+ x dx) ny (+ y dy)]
-    (when (-can-place? m (list nx ny))
-      (.setObject (aget (:cells m) x y) nil)
-      (.setObject (aget (:cells m) nx ny) actor)
-      (.moveTo actor nx ny)
-      (set! (.-speedCounter actor) (.getSpeed (.getType actor))))
-    m))
+    (if (-can-place? m (list nx ny))
+      (do
+        (.moveTo actor nx ny)
+        (set! (.-speedCounter actor) (.getSpeed (.getType actor)))
+        (GameMap. (:size-x m) (:size-y m) (:cells m) (-> (:objs m)
+                                                         (dissoc [x y])
+                                                         (assoc [nx ny] actor))))
+      m)))
 
 (defn cell-type [m x y]
   (.getType (aget (:cells m) x y)))
@@ -77,5 +79,4 @@
               (-object-at m nx ny)))))
 
 (defn remove-object! [m ^Unit u]
-  (.setObject (aget (:cells m) (.getX u) (.getY u)) nil)
-  m)
+  (GameMap. (:size-x m) (:size-y m) (:cells m) (dissoc (:objs m) [(.getX u) (.getY u)])))
