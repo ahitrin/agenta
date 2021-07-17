@@ -46,7 +46,6 @@
                     (distinct (repeatedly #(-rnd-xy! r size-x size-y))))
         objs (zipmap xys units)]
     (doseq [[[x y] unit] objs]
-      (.setObject (aget (:cells m) x y) unit)
       (.moveTo unit x y))
     (GameMap. size-x size-y (:cells m) objs)))
 
