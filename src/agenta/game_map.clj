@@ -1,5 +1,5 @@
 (ns agenta.game-map
-  (:import (agenta MapCell MapCellType SingleRandom Unit)))
+  (:import (agenta MapCellType SingleRandom Unit)))
 
 (defrecord GameMap [size-x size-y cells objs])
 
@@ -11,10 +11,10 @@
 (defn plane
   "Fill given rectangle with grass solely"
   [^SingleRandom r size-x size-y]
-  (let [a (make-array MapCell size-x size-y)]
+  (let [a (make-array MapCellType size-x size-y)]
     (dotimes [x size-x]
       (dotimes [y size-y]
-        (aset a x y (MapCell.))))
+        (aset a x y MapCellType/GRASS)))
     a))
 
 (defn forest
@@ -23,7 +23,7 @@
   (let [a (plane r size-x size-y)
         n (int (/ (* size-x size-y) 20))
         trees (take n (distinct (repeatedly #(-rnd-xy! r size-x size-y))))]
-    (doseq [[x y] trees] (aset a x y (MapCell. MapCellType/TREE)))
+    (doseq [[x y] trees] (aset a x y MapCellType/TREE))
     a))
 
 (defn -object-at [m x y]
@@ -32,7 +32,7 @@
 (defn -can-place? [m [x y]]
   (and (< -1 x (:size-x m))
        (< -1 y (:size-y m))
-       (= MapCellType/GRASS (.getType (aget (:cells m) x y)))
+       (= MapCellType/GRASS (aget (:cells m) x y))
        (nil? (-object-at m x y))))
 
 (defn make-map
@@ -61,7 +61,7 @@
       m)))
 
 (defn cell-type [m x y]
-  (.getType (aget (:cells m) x y)))
+  (aget (:cells m) x y))
 
 (defn objects-in-radius [m ^Unit u r]
   (let [limit (int r)]
