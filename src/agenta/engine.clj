@@ -46,7 +46,7 @@
         (set! (.-healthCounter target) 100))
       (when (< new-hp limit)
         (.obtain target (UnitCommand. UnitState/ESCAPE (inc prio))))
-      (when-not (.isAlive target)
+      (when-not (pos-int? new-hp)
         (log/debugf "%s is dead" target)
         (set! (.-kills actor) (inc (.-kills actor)))
         (gm/remove-object! m target)))))
@@ -62,7 +62,7 @@
           :let [actor (.getActor a)
                 adata (.getData a)
                 atype (.get adata "type")]
-          :when (.isAlive actor)]
+          :when (pos-int? (.-currentHitPoints actor))]
     (case atype
       "attack" (-perform-attack! m actor adata)
       "move" (-perform-move! m actor adata)))
@@ -74,7 +74,7 @@
         start-map (gm/make-map g (:map setting) u)
         limit (:max-ticks (:experiment setting))]
     (loop [units u m start-map winner -1 steps 0]
-      (let [alive-units (filter #(.isAlive %) units)
+      (let [alive-units (filter #(pos-int? (.-currentHitPoints %)) units)
             units-per-player (group-by #(.getPlayer %) alive-units)]
         (viewer m alive-units)
         (if (or (<= 0 winner) (<= limit steps))
