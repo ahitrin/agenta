@@ -51,7 +51,7 @@
           (do
             (log/debugf "%s is dead" target)
             (set! (.-kills actor) (inc (.-kills actor)))
-            (gm/remove-object! m target))
+            (gm/remove-object m target))
           m))
       m)))
 

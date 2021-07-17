@@ -77,5 +77,5 @@
                              (< -1 ny (:size-y m)))]
               (object-at m nx ny)))))
 
-(defn remove-object! [m ^Unit u]
+(defn remove-object [m ^Unit u]
   (GameMap. (:size-x m) (:size-y m) (:cells m) (dissoc (:objs m) [(.getX u) (.getY u)])))
