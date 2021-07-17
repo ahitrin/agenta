@@ -3,7 +3,7 @@
             [clojure.tools.logging :as log]))
 
 (defn single-run [setting]
-  (let [result (eng/run setting (fn [m u] ()))]
+  (let [result (eng/run! setting (fn [m u] ()))]
     (log/infof (format "Player %d has won after %d ticks" (:winner result) (:steps result)))
     result))
 

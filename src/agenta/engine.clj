@@ -27,11 +27,11 @@
         :when (< c max-num)]
     (Unit. (make-unit ut) p r ((resolve (.get (:perk ut) "select")) r))))
 
-(defn -run-unit-action [^Unit u m]
+(defn -run-unit-action! [^Unit u m]
   (let [visible-objects (gm/objects-in-radius m u (.getVisibility (.getType u)))]
     (first (.act u visible-objects))))
 
-(defn -perform-attack [m ^Unit actor adata]
+(defn -perform-attack! [m ^Unit actor adata]
   (let [target (cast Unit (.get adata "target"))
         damage (.doAttack actor)
         hp (.-currentHitPoints target)
@@ -51,25 +51,25 @@
         (set! (.-kills actor) (inc (.-kills actor)))
         (gm/remove-object! m target)))))
 
-(defn -perform-move [m ^Unit actor adata]
+(defn -perform-move! [m ^Unit actor adata]
   (let [dx (int (.get adata "dx"))
         dy (int (.get adata "dy"))]
     (when (and (zero? (.-speedCounter actor))
                (gm/try-move! m actor dx dy))
       (set! (.-speedCounter actor) (.getSpeed (.getType actor))))))
 
-(defn apply-actions [actions m]
+(defn apply-actions! [actions m]
   (doseq [a actions
           :let [actor (.getActor a)
                 adata (.getData a)
                 atype (.get adata "type")]
           :when (.isAlive actor)]
     (case atype
-      "attack" (-perform-attack m actor adata)
-      "move" (-perform-move m actor adata)))
+      "attack" (-perform-attack! m actor adata)
+      "move" (-perform-move! m actor adata)))
   m)
 
-(defn run [setting viewer]
+(defn run! [setting viewer]
   (let [g (SingleRandom/get)
         u (init-units g setting)
         start-map (gm/make-map g (:map setting) u)
@@ -80,9 +80,9 @@
         (viewer m alive-units)
         (if (or (<= 0 winner) (<= limit steps))
           {:winner winner :steps steps}
-          (let [all-actions (map #(-run-unit-action % m) alive-units)
+          (let [all-actions (map #(-run-unit-action! % m) alive-units)
                 good-actions (set (filter some? all-actions))
-                new-m (apply-actions good-actions m)]
+                new-m (apply-actions! good-actions m)]
             (recur alive-units
                    new-m
                    (cond (empty? (units-per-player 0)) 1
