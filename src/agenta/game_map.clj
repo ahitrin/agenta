@@ -77,4 +77,5 @@
               (-object-at m nx ny)))))
 
 (defn remove-object! [m ^Unit u]
-  (.setObject (aget (.-cells m) (.getX u) (.getY u)) nil))
+  (.setObject (aget (.-cells m) (.getX u) (.getY u)) nil)
+  m)

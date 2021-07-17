@@ -39,18 +39,21 @@
         ctr (.-healthCounter target)
         prio (.getPriority (.-currentCommand target))
         limit (.getHealthLimit (.-type target) prio)]
-    (when (and (pos? damage) (pos? hp))
-      (log/debugf "%s strikes %s with %d" actor target damage)
-      (set! (.-currentHitPoints target) new-hp)
-      (when (neg-int? ctr)
-        (set! (.-healthCounter target) 100))
-      (when (< new-hp limit)
-        (.obtain target (UnitCommand. UnitState/ESCAPE (inc prio))))
-      (when-not (pos-int? new-hp)
-        (log/debugf "%s is dead" target)
-        (set! (.-kills actor) (inc (.-kills actor)))
-        (gm/remove-object! m target)))
-    m))
+    (if (and (pos? damage) (pos? hp))
+      (do
+        (log/debugf "%s strikes %s with %d" actor target damage)
+        (set! (.-currentHitPoints target) new-hp)
+        (when (neg-int? ctr)
+          (set! (.-healthCounter target) 100))
+        (when (< new-hp limit)
+          (.obtain target (UnitCommand. UnitState/ESCAPE (inc prio))))
+        (if-not (pos-int? new-hp)
+          (do
+            (log/debugf "%s is dead" target)
+            (set! (.-kills actor) (inc (.-kills actor)))
+            (gm/remove-object! m target))
+          m))
+      m)))
 
 (defn -perform-move! [m ^Unit actor adata]
   (let [dx (int (.get adata "dx"))
