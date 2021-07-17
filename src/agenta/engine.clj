@@ -55,9 +55,9 @@
 (defn -perform-move! [m ^Unit actor adata]
   (let [dx (int (.get adata "dx"))
         dy (int (.get adata "dy"))]
-    (when (zero? (.-speedCounter actor))
-      (gm/try-move! m actor dx dy))
-    m))
+    (if (zero? (.-speedCounter actor))
+      (gm/try-move! m actor dx dy)
+      m)))
 
 (def -action-selector
   {"attack" -perform-attack!

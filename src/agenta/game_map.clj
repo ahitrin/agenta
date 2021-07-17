@@ -56,7 +56,8 @@
       (.setObject (aget (.-cells m) x y) nil)
       (.setObject (aget (.-cells m) nx ny) actor)
       (.moveTo actor nx ny)
-      (set! (.-speedCounter actor) (.getSpeed (.getType actor))))))
+      (set! (.-speedCounter actor) (.getSpeed (.getType actor))))
+    m))
 
 (defn cell-type [m x y]
   (.getType (aget (.-cells m) x y)))
