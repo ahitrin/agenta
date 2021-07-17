@@ -5,10 +5,9 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.github.javafaker.Faker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.github.javafaker.Faker;
 
 public class Unit
 {
@@ -155,6 +154,11 @@ public class Unit
     public final int getY()
     {
         return y;
+    }
+
+    public boolean isAlive()
+    {
+        return (currentHitPoints > 0);
     }
 
     public void obtain(Command com)
