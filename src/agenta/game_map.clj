@@ -11,6 +11,7 @@
 (defn plane
   "Fill given rectangle with grass solely"
   [^SingleRandom r size-x size-y]
+  ; {}
   (to-array-2d (vec (repeat size-x (vec (repeat size-y MapCellType/GRASS))))))
 
 (defn forest
@@ -20,6 +21,7 @@
         n (int (/ (* size-x size-y) 20))
         trees (take n (distinct (repeatedly #(rnd-xy! r size-x size-y))))]
     (doseq [[x y] trees] (aset a x y MapCellType/TREE))
+    ; (zipmap trees (repeatedly TREE))
     a))
 
 (defn- object-at [m x y]
@@ -57,6 +59,7 @@
       m)))
 
 (defn cell-type [m x y]
+  ; (get (:cells m) [x y] GRASS)
   (aget (:cells m) x y))
 
 (defn objects-in-radius [m ^Unit u r]
