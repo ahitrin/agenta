@@ -59,14 +59,15 @@
       (gm/try-move! m actor dx dy))
     m))
 
+(def -action-selector
+  {"attack" -perform-attack!
+   "move" -perform-move!})
+
 (defn -apply-action! [m ^Action action]
   (let [actor (.getActor action)
         adata (.getData action)
         atype (.get adata "type")]
-    (case atype
-      "attack" (-perform-attack! m actor adata)
-      "move" (-perform-move! m actor adata))
-    m))
+    (apply (-action-selector atype) [m actor adata])))
 
 (defn -apply-actions! [actions m]
   (reduce -apply-action! m
