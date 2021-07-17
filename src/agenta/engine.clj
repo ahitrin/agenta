@@ -4,7 +4,7 @@
             [clojure.tools.logging :as log])
   (:import (agenta UnitType Unit SingleRandom UnitCommand UnitState)))
 
-(defn make-unit [spec]
+(defn -make-unit [spec]
   (proxy [UnitType] []
     (getName [] (:name spec))
     (getBaseAttack [] (:baseAttack spec))
@@ -18,14 +18,14 @@
     (getImage [] (:image spec))
     (toString [] (:name spec))))
 
-(defn init-units [^SingleRandom r setting]
+(defn -init-units [^SingleRandom r setting]
   (for [ut (:unit-types setting)
         p (range 2)
         c (range 100)
         :let [max-num (get (get (:placement setting) p)
                            (.toLowerCase (:name ut)) 0)]
         :when (< c max-num)]
-    (Unit. (make-unit ut) p r ((resolve (.get (:perk ut) "select")) r))))
+    (Unit. (-make-unit ut) p r ((resolve (.get (:perk ut) "select")) r))))
 
 (defn -run-unit-action! [^Unit u m]
   (let [visible-objects (gm/objects-in-radius m u (.getVisibility (.getType u)))]
@@ -58,7 +58,7 @@
                (gm/try-move! m actor dx dy))
       (set! (.-speedCounter actor) (.getSpeed (.getType actor))))))
 
-(defn apply-actions! [actions m]
+(defn -apply-actions! [actions m]
   (doseq [a actions
           :let [actor (.getActor a)
                 adata (.getData a)
@@ -71,7 +71,7 @@
 
 (defn run! [setting viewer]
   (let [g (SingleRandom/get)
-        u (init-units g setting)
+        u (-init-units g setting)
         start-map (gm/make-map g (:map setting) u)
         limit (:max-ticks (:experiment setting))]
     (loop [units u m start-map winner -1 steps 0]
@@ -82,7 +82,7 @@
           {:winner winner :steps steps}
           (let [all-actions (map #(-run-unit-action! % m) alive-units)
                 good-actions (set (filter some? all-actions))
-                new-m (apply-actions! good-actions m)]
+                new-m (-apply-actions! good-actions m)]
             (recur alive-units
                    new-m
                    (cond (empty? (units-per-player 0)) 1
