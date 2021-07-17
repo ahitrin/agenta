@@ -2,7 +2,7 @@
   (:require [agenta.game-map :as gm]
             [agenta.perk]
             [clojure.tools.logging :as log])
-  (:import (agenta UnitType Unit SingleRandom UnitCommand UnitState)))
+  (:import (agenta UnitType Unit SingleRandom UnitCommand UnitState Action)))
 
 (defn -make-unit [spec]
   (proxy [UnitType] []
@@ -46,27 +46,31 @@
         (set! (.-healthCounter target) 100))
       (when (< new-hp limit)
         (.obtain target (UnitCommand. UnitState/ESCAPE (inc prio))))
-      (when-not (.isAlive target)
+      (when-not (pos-int? new-hp)
         (log/debugf "%s is dead" target)
         (set! (.-kills actor) (inc (.-kills actor)))
-        (gm/remove-object! m target)))))
+        (gm/remove-object! m target)))
+    m))
 
 (defn -perform-move! [m ^Unit actor adata]
   (let [dx (int (.get adata "dx"))
         dy (int (.get adata "dy"))]
     (when (zero? (.-speedCounter actor))
-      (gm/try-move! m actor dx dy))))
+      (gm/try-move! m actor dx dy))
+    m))
 
-(defn -apply-actions! [actions m]
-  (doseq [a actions
-          :let [actor (.getActor a)
-                adata (.getData a)
-                atype (.get adata "type")]
-          :when (.isAlive actor)]
+(defn -apply-action! [m ^Action action]
+  (let [actor (.getActor action)
+        adata (.getData action)
+        atype (.get adata "type")]
     (case atype
       "attack" (-perform-attack! m actor adata)
-      "move" (-perform-move! m actor adata)))
-  m)
+      "move" (-perform-move! m actor adata))
+    m))
+
+(defn -apply-actions! [actions m]
+  (reduce -apply-action! m
+          (filter #(.isAlive (.getActor %)) actions)))
 
 (defn run! [setting viewer]
   (let [g (SingleRandom/get)
