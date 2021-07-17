@@ -3,7 +3,7 @@
 
 (defrecord GameMap [size-x size-y cells objs])
 
-(defn -rnd-xy!
+(defn- rnd-xy!
   "Makes a random pair of coordinates within given boundaries"
   [^SingleRandom r mx my]
   (vec [(.nextInt r mx) (.nextInt r my)]))
@@ -22,18 +22,18 @@
   [^SingleRandom r size-x size-y]
   (let [a (plane r size-x size-y)
         n (int (/ (* size-x size-y) 20))
-        trees (take n (distinct (repeatedly #(-rnd-xy! r size-x size-y))))]
+        trees (take n (distinct (repeatedly #(rnd-xy! r size-x size-y))))]
     (doseq [[x y] trees] (aset a x y MapCellType/TREE))
     a))
 
-(defn -object-at [m x y]
+(defn- object-at [m x y]
   ((:objs m) [x y]))
 
-(defn -can-place? [m [x y]]
+(defn- can-place? [m [x y]]
   (and (< -1 x (:size-x m))
        (< -1 y (:size-y m))
        (= MapCellType/GRASS (aget (:cells m) x y))
-       (nil? (-object-at m x y))))
+       (nil? (object-at m x y))))
 
 (defn make-map
   "Build game map with given map spec"
@@ -42,8 +42,8 @@
         size-y (:size-y map-spec)
         type (resolve (:type map-spec))
         m (GameMap. size-x size-y (apply type [r size-x size-y]) {})
-        xys (filter #(-can-place? m %)
-                    (distinct (repeatedly #(-rnd-xy! r size-x size-y))))
+        xys (filter #(can-place? m %)
+                    (distinct (repeatedly #(rnd-xy! r size-x size-y))))
         objs (zipmap xys units)]
     (doseq [[[x y] unit] objs]
       (.moveTo unit x y))
@@ -51,7 +51,7 @@
 
 (defn try-move! [m ^Unit actor dx dy]
   (let [x (.getX actor) y (.getY actor) nx (+ x dx) ny (+ y dy)]
-    (if (-can-place? m (list nx ny))
+    (if (can-place? m (list nx ny))
       (do
         (.moveTo actor nx ny)
         (set! (.-speedCounter actor) (.getSpeed (.getType actor)))
@@ -75,7 +75,7 @@
                              (pos? d2)
                              (< -1 nx (:size-x m))
                              (< -1 ny (:size-y m)))]
-              (-object-at m nx ny)))))
+              (object-at m nx ny)))))
 
 (defn remove-object! [m ^Unit u]
   (GameMap. (:size-x m) (:size-y m) (:cells m) (dissoc (:objs m) [(.getX u) (.getY u)])))
