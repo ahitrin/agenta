@@ -27,12 +27,12 @@
     a))
 
 (defn -object-at [m x y]
-  (.getObject (aget (.-cells m) x y)))
+  (.getObject (aget (:cells m) x y)))
 
 (defn -can-place? [m [x y]]
   (and (< -1 x (:size-x m))
        (< -1 y (:size-y m))
-       (= MapCellType/GRASS (.getType (aget (.-cells m) x y)))
+       (= MapCellType/GRASS (.getType (aget (:cells m) x y)))
        (nil? (-object-at m x y))))
 
 (defn make-map
@@ -46,21 +46,21 @@
                     (distinct (repeatedly #(-rnd-xy! r size-x size-y))))
         objs (zipmap xys units)]
     (doseq [[[x y] unit] objs]
-      (.setObject (aget (.-cells m) x y) unit)
+      (.setObject (aget (:cells m) x y) unit)
       (.moveTo unit x y))
-    (GameMap. size-x size-y (.-cells m) objs)))
+    (GameMap. size-x size-y (:cells m) objs)))
 
 (defn try-move! [m ^Unit actor dx dy]
   (let [x (.getX actor) y (.getY actor) nx (+ x dx) ny (+ y dy)]
     (when (-can-place? m (list nx ny))
-      (.setObject (aget (.-cells m) x y) nil)
-      (.setObject (aget (.-cells m) nx ny) actor)
+      (.setObject (aget (:cells m) x y) nil)
+      (.setObject (aget (:cells m) nx ny) actor)
       (.moveTo actor nx ny)
       (set! (.-speedCounter actor) (.getSpeed (.getType actor))))
     m))
 
 (defn cell-type [m x y]
-  (.getType (aget (.-cells m) x y)))
+  (.getType (aget (:cells m) x y)))
 
 (defn objects-in-radius [m ^Unit u r]
   (let [limit (int r)]
@@ -77,5 +77,5 @@
               (-object-at m nx ny)))))
 
 (defn remove-object! [m ^Unit u]
-  (.setObject (aget (.-cells m) (.getX u) (.getY u)) nil)
+  (.setObject (aget (:cells m) (.getX u) (.getY u)) nil)
   m)
