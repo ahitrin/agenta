@@ -49,13 +49,13 @@
       (when-not (.isAlive target)
         (log/debugf "%s is dead" target)
         (set! (.-kills actor) (inc (.-kills actor)))
-        (gm/remove-object m target)))))
+        (gm/remove-object! m target)))))
 
 (defn -perform-move [m ^Unit actor adata]
   (let [dx (int (.get adata "dx"))
         dy (int (.get adata "dy"))]
     (when (and (zero? (.-speedCounter actor))
-               (gm/try-move m actor dx dy))
+               (gm/try-move! m actor dx dy))
       (set! (.-speedCounter actor) (.getSpeed (.getType actor))))))
 
 (defn apply-actions [actions m]

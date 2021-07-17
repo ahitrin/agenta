@@ -3,7 +3,7 @@
 
 (defrecord GameMap [size-x size-y cells objs])
 
-(defn rnd-xy
+(defn rnd-xy!
   "Makes a random pair of coordinates within given boundaries"
   [^SingleRandom r mx my]
   (vec [(.nextInt r mx) (.nextInt r my)]))
@@ -22,7 +22,7 @@
   [^SingleRandom r size-x size-y]
   (let [a (plane r size-x size-y)
         n (int (/ (* size-x size-y) 20))
-        trees (take n (distinct (repeatedly #(rnd-xy r size-x size-y))))]
+        trees (take n (distinct (repeatedly #(rnd-xy! r size-x size-y))))]
     (doseq [[x y] trees] (aset a x y (MapCell. MapCellType/TREE)))
     a))
 
@@ -43,14 +43,14 @@
         type (resolve (:type map-spec))
         m (GameMap. size-x size-y (apply type [r size-x size-y]) {})
         xys (filter #(can-place? m %)
-                    (distinct (repeatedly #(rnd-xy r size-x size-y))))
+                    (distinct (repeatedly #(rnd-xy! r size-x size-y))))
         objs (zipmap xys units)]
     (doseq [[[x y] unit] objs]
       (.setObject (aget (.-cells m) x y) unit)
       (.moveTo unit x y))
     (GameMap. size-x size-y (.-cells m) objs)))
 
-(defn try-move [m ^Unit actor dx dy]
+(defn try-move! [m ^Unit actor dx dy]
   (let [x (.getX actor) y (.getY actor) nx (+ x dx) ny (+ y dy)]
     (if (can-place? m (list nx ny))
       (do
@@ -77,5 +77,5 @@
                              (< -1 ny (:size-y m)))]
               (object-at m nx ny)))))
 
-(defn remove-object [m ^Unit u]
+(defn remove-object! [m ^Unit u]
   (.setObject (aget (.-cells m) (.getX u) (.getY u)) nil))
