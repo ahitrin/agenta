@@ -52,13 +52,11 @@
 
 (defn try-move! [m ^Unit actor dx dy]
   (let [x (.getX actor) y (.getY actor) nx (+ x dx) ny (+ y dy)]
-    (if (-can-place? m (list nx ny))
-      (do
-        (.setObject (aget (.-cells m) x y) nil)
-        (.setObject (aget (.-cells m) nx ny) actor)
-        (.moveTo actor nx ny)
-        true)
-      false)))
+    (when (-can-place? m (list nx ny))
+      (.setObject (aget (.-cells m) x y) nil)
+      (.setObject (aget (.-cells m) nx ny) actor)
+      (.moveTo actor nx ny)
+      (set! (.-speedCounter actor) (.getSpeed (.getType actor))))))
 
 (defn cell-type [m x y]
   (.getType (aget (.-cells m) x y)))

@@ -54,9 +54,8 @@
 (defn -perform-move! [m ^Unit actor adata]
   (let [dx (int (.get adata "dx"))
         dy (int (.get adata "dy"))]
-    (when (and (zero? (.-speedCounter actor))
-               (gm/try-move! m actor dx dy))
-      (set! (.-speedCounter actor) (.getSpeed (.getType actor))))))
+    (when (zero? (.-speedCounter actor))
+      (gm/try-move! m actor dx dy))))
 
 (defn -apply-actions! [actions m]
   (doseq [a actions
