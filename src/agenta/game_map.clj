@@ -11,11 +11,7 @@
 (defn plane
   "Fill given rectangle with grass solely"
   [^SingleRandom r size-x size-y]
-  (let [a (make-array MapCellType size-x size-y)]
-    (dotimes [x size-x]
-      (dotimes [y size-y]
-        (aset a x y MapCellType/GRASS)))
-    a))
+  (to-array-2d (vec (repeat size-x (vec (repeat size-y MapCellType/GRASS))))))
 
 (defn forest
   "Fill given rectangle with a mix of grass (95%) and trees (5%)"
