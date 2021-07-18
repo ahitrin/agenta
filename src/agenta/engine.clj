@@ -83,9 +83,8 @@
         limit (:max-ticks (:experiment setting))]
     (loop [m start-map winner -1 steps 0]
       (let [objs (:objs m)
-            units (vals objs)
-            units-per-player (group-by #(.getPlayer %) units)]
-        (viewer m units)
+            units-per-player (group-by #(.getPlayer %) (vals objs))]
+        (viewer m (vals objs))
         (if (or (<= 0 winner) (<= limit steps))
           {:winner winner :steps steps}
           (let [actions (set (filter some? (map #(run-unit-action! % m) objs)))
