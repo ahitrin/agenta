@@ -88,9 +88,8 @@
         (viewer m units)
         (if (or (<= 0 winner) (<= limit steps))
           {:winner winner :steps steps}
-          (let [all-actions (map #(run-unit-action! % m) objs)
-                good-actions (set (filter some? all-actions))
-                new-m (apply-actions! good-actions m)]
+          (let [actions (set (filter some? (map #(run-unit-action! % m) objs)))
+                new-m (apply-actions! actions m)]
             (recur new-m
                    (cond (empty? (units-per-player 0)) 1
                          (empty? (units-per-player 1)) 0
