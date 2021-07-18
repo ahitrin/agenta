@@ -52,11 +52,12 @@
               (draw-image graphics image-cache tile-name i j))
             (reset! bg new-bg)))
         (let [image (-copy-image @bg)
-              currentGraph (.createGraphics image)
-              us (vals objs)]
-          (doseq [u us
-                  :let [tile-name (str (.getImage (.getType u)) (.getPlayer u))]]
-            (draw-image currentGraph image-cache tile-name (.getX u) (.getY u)))
+              currentGraph (.createGraphics image)]
+          (doseq [o objs
+                  :let [[x y] (key o)
+                        u (val o)
+                        tile-name (str (.getImage (.getType u)) (.getPlayer u))]]
+            (draw-image currentGraph image-cache tile-name x y))
           (.setImage p image)
           (.repaint p))))))
 
