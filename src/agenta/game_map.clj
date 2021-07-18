@@ -1,5 +1,5 @@
 (ns agenta.game-map
-  (:import (agenta MapCellType SingleRandom Unit)))
+  (:import (agenta SingleRandom Unit)))
 
 (defrecord GameMap [size-x size-y cells objs])
 
@@ -18,18 +18,18 @@
   [^SingleRandom r size-x size-y]
   (let [n (int (/ (* size-x size-y) 20))
         trees (take n (distinct (repeatedly #(rnd-xy! r size-x size-y))))]
-    (apply assoc {} (interleave trees (repeat n MapCellType/TREE)))))
+    (apply assoc {} (interleave trees (repeat n :tree)))))
 
 (defn- object-at [m x y]
   ((:objs m) [x y]))
 
 (defn cell-type [m x y]
-  (get (:cells m) [x y] MapCellType/GRASS))
+  (get (:cells m) [x y] :grass))
 
 (defn- can-place? [m [x y]]
   (and (< -1 x (:size-x m))
        (< -1 y (:size-y m))
-       (= MapCellType/GRASS (cell-type m x y))
+       (= :grass (cell-type m x y))
        (nil? (object-at m x y))))
 
 (defn make-map

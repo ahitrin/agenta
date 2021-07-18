@@ -1,14 +1,14 @@
 (ns agenta.ui
   (:require [agenta.game-map :as gm])
-  (:import (agenta MapCellType ImagePanel)
+  (:import (agenta ImagePanel)
            (javax.swing JFrame JOptionPane JPanel)
            (java.awt Graphics Component)
            (java.awt.image BufferedImage)
            (javax.imageio ImageIO)
            (java.io File)))
 
-(def -tiles {MapCellType/GRASS "grass0"
-             MapCellType/TREE "tree0"})
+(def -tiles {:grass "grass0"
+             :tree "tree0"})
 
 (defn simple-cache []
   (let [cache (atom {})]
