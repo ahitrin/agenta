@@ -32,7 +32,9 @@
     [u (first (.act u visible-objects)) [x y]]))
 
 (defn- perform-attack! [m ^Unit actor action [x y]]
-  (let [target (cast Unit (.get action "target"))
+  (let [tx (int (.get action "tx"))
+        ty (int (.get action "ty"))
+        target (cast Unit (.get action "target"))
         damage (.doAttack actor)
         hp (.-currentHitPoints target)
         new-hp (- hp damage)
@@ -42,6 +44,8 @@
     (if (and (pos? damage) (pos? hp))
       (do
         (log/debugf "%s strikes %s with %d" actor target damage)
+        (when (not= [tx ty] [(.getX target) (.getY target)])
+          (log/warnf "Target moved: [%d %d] -> [%d %d]" tx ty (.getX target) (.getY target)))
         (set! (.-currentHitPoints target) new-hp)
         (when (neg-int? ctr)
           (set! (.-healthCounter target) 100))

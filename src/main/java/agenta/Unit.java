@@ -145,7 +145,7 @@ public class Unit
 
     private static Map<String, Object> attack(Unit other)
     {
-        return Map.of("type", "attack", "target", other);
+        return Map.of("type", "attack", "target", other, "tx", other.x, "ty", other.y);
     }
 
     public int getPlayer()
