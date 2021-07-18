@@ -29,7 +29,7 @@
 
 (defn- run-unit-action! [[[x y] u] m]
   (let [visible-objects (gm/objects-in-radius m x y (.getVisibility (.getType u)))]
-    (first (.act u visible-objects))))
+    [u (first (.act u visible-objects))]))
 
 (defn- perform-attack! [m ^Unit actor adata]
   (let [target (cast Unit (.get adata "target"))
@@ -66,15 +66,14 @@
   {"attack" perform-attack!
    "move"   perform-move!})
 
-(defn- apply-action! [m ^Action action]
-  (let [actor (.getActor action)
-        adata (.getData action)
+(defn- apply-action! [m [actor action]]
+  (let [adata (.getData action)
         atype (.get adata "type")]
     (apply (action-selector atype) [m actor adata])))
 
 (defn- apply-actions! [actions m]
   (reduce apply-action! m
-          (filter #(.isAlive (.getActor %)) actions)))
+          (filter #(.isAlive (first %)) actions)))
 
 (defn run-game! [setting viewer]
   (let [g (SingleRandom/get)
@@ -86,7 +85,7 @@
         (viewer m objs)
         (if (or (<= 0 winner) (<= limit steps))
           {:winner winner :steps steps}
-          (let [actions (set (filter some? (map #(run-unit-action! % m) objs)))
+          (let [actions (set (filter #(some? (second %)) (map #(run-unit-action! % m) objs)))
                 new-m (apply-actions! actions m)
                 units-per-player (group-by #(.getPlayer %) (vals (:objs new-m)))]
             (recur new-m
