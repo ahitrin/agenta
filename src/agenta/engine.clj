@@ -28,7 +28,7 @@
     (Unit. (make-unit ut) p r ((resolve (.get (:perk ut) "select")) r))))
 
 (defn- run-unit-action! [^Unit u m]
-  (let [visible-objects (gm/objects-in-radius m u (.getVisibility (.getType u)))]
+  (let [visible-objects (gm/objects-in-radius m (.getX u) (.getY u) (.getVisibility (.getType u)))]
     (first (.act u visible-objects))))
 
 (defn- perform-attack! [m ^Unit actor adata]

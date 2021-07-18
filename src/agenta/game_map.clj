@@ -58,14 +58,14 @@
         (new-map m #(assoc (dissoc % [x y]) [nx ny] actor)))
       m)))
 
-(defn objects-in-radius [m ^Unit u r]
+(defn objects-in-radius [m x y r]
   (let [limit (int r)]
     (filter some?
             (for [i (range (- limit) (inc limit))
                   j (range (- limit) (inc limit))
                   :let [d2 (+ (* i i) (* j j))
-                        nx (+ i (.getX u))
-                        ny (+ j (.getY u))]
+                        nx (+ i x)
+                        ny (+ j y)]
                   :when (and (<= d2 (* r r))
                              (pos? d2)
                              (< -1 nx (:size-x m))
