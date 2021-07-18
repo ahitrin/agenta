@@ -11,26 +11,25 @@
 (defn plane
   "Fill given rectangle with grass solely"
   [^SingleRandom r size-x size-y]
-  ; {}
-  (to-array-2d (vec (repeat size-x (vec (repeat size-y MapCellType/GRASS))))))
+  {})
 
 (defn forest
   "Fill given rectangle with a mix of grass (95%) and trees (5%)"
   [^SingleRandom r size-x size-y]
-  (let [a (plane r size-x size-y)
-        n (int (/ (* size-x size-y) 20))
+  (let [n (int (/ (* size-x size-y) 20))
         trees (take n (distinct (repeatedly #(rnd-xy! r size-x size-y))))]
-    (doseq [[x y] trees] (aset a x y MapCellType/TREE))
-    ; (zipmap trees (repeatedly TREE))
-    a))
+    (apply assoc {} (interleave trees (repeat n MapCellType/TREE)))))
 
 (defn- object-at [m x y]
   ((:objs m) [x y]))
 
+(defn cell-type [m x y]
+  (get (:cells m) [x y] MapCellType/GRASS))
+
 (defn- can-place? [m [x y]]
   (and (< -1 x (:size-x m))
        (< -1 y (:size-y m))
-       (= MapCellType/GRASS (aget (:cells m) x y))
+       (= MapCellType/GRASS (cell-type m x y))
        (nil? (object-at m x y))))
 
 (defn make-map
@@ -57,10 +56,6 @@
                                                          (dissoc [x y])
                                                          (assoc [nx ny] actor))))
       m)))
-
-(defn cell-type [m x y]
-  ; (get (:cells m) [x y] GRASS)
-  (aget (:cells m) x y))
 
 (defn objects-in-radius [m ^Unit u r]
   (let [limit (int r)]
