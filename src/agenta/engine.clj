@@ -2,7 +2,7 @@
   (:require [agenta.game-map :as gm]
             [agenta.perk]
             [clojure.tools.logging :as log])
-  (:import (agenta UnitType Unit SingleRandom UnitCommand UnitState Action)))
+  (:import (agenta UnitType Unit SingleRandom UnitCommand UnitState)))
 
 (defn- make-unit [spec]
   (proxy [UnitType] []
@@ -67,9 +67,8 @@
    "move"   perform-move!})
 
 (defn- apply-action! [m [actor action [x y]]]
-  (let [adata (.getData action)
-        atype (.get adata "type")]
-    (apply (action-selector atype) [m actor adata [x y]])))
+  (let [atype (.get action "type")]
+    (apply (action-selector atype) [m actor action [x y]])))
 
 (defn- apply-actions! [actions m]
   (reduce apply-action! m

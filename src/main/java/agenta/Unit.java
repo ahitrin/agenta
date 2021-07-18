@@ -2,12 +2,14 @@ package agenta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import com.github.javafaker.Faker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.github.javafaker.Faker;
 
 public class Unit
 {
@@ -43,7 +45,7 @@ public class Unit
         healthCounter = this.random.nextInt(100) + 1;
     }
 
-    public List<Action> act(List<Unit> visibleObjects)
+    public List<Map<String, Object>> act(List<Unit> visibleObjects)
     {
         if (healthCounter > 0)
         {
@@ -80,7 +82,7 @@ public class Unit
         }
 
         List<Unit> neighbours;
-        List<Action> unitActions = new ArrayList<>();
+        List<Map<String, Object>> unitActions = new ArrayList<>();
         switch (state)
         {
         case STAND:
@@ -88,7 +90,7 @@ public class Unit
             if (!neighbours.isEmpty())
             {
                 List<Unit> currentNeighbours = new ArrayList<>(neighbours);
-                unitActions.add(Action.attack(selectTargetPerk.apply(currentNeighbours)));
+                unitActions.add(attack(selectTargetPerk.apply(currentNeighbours)));
             }
             break;
         case ATTACK:
@@ -96,7 +98,7 @@ public class Unit
             if (!neighbours.isEmpty())
             {
                 List<Unit> currentNeighbours = new ArrayList<>(neighbours);
-                unitActions.add(Action.attack(selectTargetPerk.apply(currentNeighbours)));
+                unitActions.add(attack(selectTargetPerk.apply(currentNeighbours)));
             }
             else
             {
@@ -106,13 +108,13 @@ public class Unit
                     Unit target = selectTargetPerk.apply(neighbours);
                     int dx = Integer.compare(target.x - x, 0);
                     int dy = Integer.compare(target.y - y, 0);
-                    unitActions.add(Action.move(dx, dy));
+                    unitActions.add(move(dx, dy));
                 }
                 else
                 {
                     int dx = random.nextInt(3) - 1;
                     int dy = random.nextInt(3) - 1;
-                    unitActions.add(Action.move(dx, dy));
+                    unitActions.add(move(dx, dy));
                 }
             }
             break;
@@ -129,11 +131,21 @@ public class Unit
                 }
                 int idx = (dx > 0) ? 1 : (dx < 0) ? -1 : 0;
                 int idy = (dy > 0) ? 1 : (dy < 0) ? -1 : 0;
-                unitActions.add(Action.move(idx, idy));
+                unitActions.add(move(idx, idy));
             }
             break;
         }
         return unitActions;
+    }
+
+    private static Map<String, Object> move(int dx, int dy)
+    {
+        return Map.of("type", "move", "dx", dx, "dy", dy);
+    }
+
+    private static Map<String, Object> attack(Unit other)
+    {
+        return Map.of("type", "attack", "target", other);
     }
 
     public int getPlayer()
