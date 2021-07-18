@@ -49,8 +49,8 @@
       (.moveTo unit x y))
     (new-map m #(into % objs))))
 
-(defn try-move! [m ^Unit actor dx dy]
-  (let [x (.getX actor) y (.getY actor) nx (+ x dx) ny (+ y dy)]
+(defn try-move! [m ^Unit actor x y dx dy]
+  (let [nx (+ x dx) ny (+ y dy)]
     (if (can-place? m (list nx ny))
       (do
         (.moveTo actor nx ny)

@@ -59,7 +59,7 @@
   (let [dx (int (.get adata "dx"))
         dy (int (.get adata "dy"))]
     (if (zero? (.-speedCounter actor))
-      (gm/try-move! m actor dx dy)
+      (gm/try-move! m actor (.getX actor) (.getY actor) dx dy)
       m)))
 
 (def action-selector
