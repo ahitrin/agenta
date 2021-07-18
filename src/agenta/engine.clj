@@ -29,9 +29,9 @@
 
 (defn- run-unit-action! [[[x y] u] m]
   (let [visible-objects (gm/objects-in-radius m x y (.getVisibility (.getType u)))]
-    [u (first (.act u visible-objects))]))
+    [u (first (.act u visible-objects)) [x y]]))
 
-(defn- perform-attack! [m ^Unit actor adata]
+(defn- perform-attack! [m ^Unit actor adata [x y]]
   (let [target (cast Unit (.get adata "target"))
         damage (.doAttack actor)
         hp (.-currentHitPoints target)
@@ -55,21 +55,21 @@
           m))
       m)))
 
-(defn- perform-move! [m ^Unit actor adata]
+(defn- perform-move! [m ^Unit actor adata [x y]]
   (let [dx (int (.get adata "dx"))
         dy (int (.get adata "dy"))]
     (if (zero? (.-speedCounter actor))
-      (gm/try-move! m actor (.getX actor) (.getY actor) dx dy)
+      (gm/try-move! m actor x y dx dy)
       m)))
 
 (def action-selector
   {"attack" perform-attack!
    "move"   perform-move!})
 
-(defn- apply-action! [m [actor action]]
+(defn- apply-action! [m [actor action [x y]]]
   (let [adata (.getData action)
         atype (.get adata "type")]
-    (apply (action-selector atype) [m actor adata])))
+    (apply (action-selector atype) [m actor adata [x y]])))
 
 (defn- apply-actions! [actions m]
   (reduce apply-action! m
