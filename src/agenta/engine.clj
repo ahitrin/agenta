@@ -27,8 +27,8 @@
         :when (< c max-num)]
     (Unit. (make-unit ut) p r ((resolve (.get (:perk ut) "select")) r))))
 
-(defn- run-unit-action! [^Unit u m]
-  (let [visible-objects (gm/objects-in-radius m (.getX u) (.getY u) (.getVisibility (.getType u)))]
+(defn- run-unit-action! [[[x y] u] m]
+  (let [visible-objects (gm/objects-in-radius m x y (.getVisibility (.getType u)))]
     (first (.act u visible-objects))))
 
 (defn- perform-attack! [m ^Unit actor adata]
@@ -82,12 +82,13 @@
         start-map (gm/make-map g (:map setting) u)
         limit (:max-ticks (:experiment setting))]
     (loop [m start-map winner -1 steps 0]
-      (let [units (vals (:objs m))
+      (let [objs (:objs m)
+            units (vals objs)
             units-per-player (group-by #(.getPlayer %) units)]
         (viewer m units)
         (if (or (<= 0 winner) (<= limit steps))
           {:winner winner :steps steps}
-          (let [all-actions (map #(run-unit-action! % m) units)
+          (let [all-actions (map #(run-unit-action! % m) objs)
                 good-actions (set (filter some? all-actions))
                 new-m (apply-actions! good-actions m)]
             (recur new-m
