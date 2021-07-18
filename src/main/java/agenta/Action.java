@@ -8,28 +8,21 @@ import java.util.Map;
  */
 public class Action
 {
-    public static Action attack(Unit self, Unit other)
+    public static Action attack(Unit other)
     {
-        return new Action(self, Map.of("type", "attack", "target", other));
+        return new Action(Map.of("type", "attack", "target", other));
     }
 
-    public static Action move(Unit self, int dx, int dy)
+    public static Action move(int dx, int dy)
     {
-        return new Action(self, Map.of("type", "move", "dx", dx, "dy", dy));
+        return new Action(Map.of("type", "move", "dx", dx, "dy", dy));
     }
 
-    private final Unit self;
     protected final Map<String, Object> data;
 
-    public Action(Unit self, Map<String, Object> data)
+    public Action(Map<String, Object> data)
     {
-        this.self = self;
         this.data = data;
-    }
-
-    public Unit getActor()
-    {
-        return self;
     }
 
     public Map<String, Object> getData()

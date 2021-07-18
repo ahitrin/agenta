@@ -88,7 +88,7 @@ public class Unit
             if (!neighbours.isEmpty())
             {
                 List<Unit> currentNeighbours = new ArrayList<>(neighbours);
-                unitActions.add(Action.attack(this, selectTargetPerk.apply(currentNeighbours)));
+                unitActions.add(Action.attack(selectTargetPerk.apply(currentNeighbours)));
             }
             break;
         case ATTACK:
@@ -96,7 +96,7 @@ public class Unit
             if (!neighbours.isEmpty())
             {
                 List<Unit> currentNeighbours = new ArrayList<>(neighbours);
-                unitActions.add(Action.attack(this, selectTargetPerk.apply(currentNeighbours)));
+                unitActions.add(Action.attack(selectTargetPerk.apply(currentNeighbours)));
             }
             else
             {
@@ -106,13 +106,13 @@ public class Unit
                     Unit target = selectTargetPerk.apply(neighbours);
                     int dx = Integer.compare(target.x - x, 0);
                     int dy = Integer.compare(target.y - y, 0);
-                    unitActions.add(Action.move(this, dx, dy));
+                    unitActions.add(Action.move(dx, dy));
                 }
                 else
                 {
                     int dx = random.nextInt(3) - 1;
                     int dy = random.nextInt(3) - 1;
-                    unitActions.add(Action.move(this, dx, dy));
+                    unitActions.add(Action.move(dx, dy));
                 }
             }
             break;
@@ -129,7 +129,7 @@ public class Unit
                 }
                 int idx = (dx > 0) ? 1 : (dx < 0) ? -1 : 0;
                 int idy = (dy > 0) ? 1 : (dy < 0) ? -1 : 0;
-                unitActions.add(Action.move(this, idx, idy));
+                unitActions.add(Action.move(idx, idy));
             }
             break;
         }
