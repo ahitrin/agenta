@@ -3,6 +3,9 @@
 
 (defrecord GameMap [size-x size-y cells objs])
 
+(defn- new-map [^GameMap m objs-fn]
+  (GameMap. (:size-x m) (:size-y m) (:cells m) (-> (:objs m) objs-fn)))
+
 (defn- rnd-xy!
   "Makes a random pair of coordinates within given boundaries"
   [^SingleRandom r mx my]
@@ -44,7 +47,7 @@
         objs (zipmap xys units)]
     (doseq [[[x y] unit] objs]
       (.moveTo unit x y))
-    (GameMap. size-x size-y (:cells m) objs)))
+    (new-map m #(into % objs))))
 
 (defn try-move! [m ^Unit actor dx dy]
   (let [x (.getX actor) y (.getY actor) nx (+ x dx) ny (+ y dy)]
@@ -52,9 +55,7 @@
       (do
         (.moveTo actor nx ny)
         (set! (.-speedCounter actor) (.getSpeed (.getType actor)))
-        (GameMap. (:size-x m) (:size-y m) (:cells m) (-> (:objs m)
-                                                         (dissoc [x y])
-                                                         (assoc [nx ny] actor))))
+        (new-map m #(assoc (dissoc % [x y]) [nx ny] actor)))
       m)))
 
 (defn objects-in-radius [m ^Unit u r]
@@ -72,4 +73,4 @@
               (object-at m nx ny)))))
 
 (defn remove-object [m ^Unit u]
-  (GameMap. (:size-x m) (:size-y m) (:cells m) (dissoc (:objs m) [(.getX u) (.getY u)])))
+  (new-map m #(dissoc % [(.getX u) (.getY u)])))
