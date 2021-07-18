@@ -84,7 +84,7 @@
     (loop [m start-map winner -1 steps 0]
       (let [objs (:objs m)
             units-per-player (group-by #(.getPlayer %) (vals objs))]
-        (viewer m (vals objs))
+        (viewer m objs)
         (if (or (<= 0 winner) (<= limit steps))
           {:winner winner :steps steps}
           (let [actions (set (filter some? (map #(run-unit-action! % m) objs)))

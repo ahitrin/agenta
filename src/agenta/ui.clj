@@ -32,7 +32,7 @@
 
 (defn wrap-viewer [^JFrame f ^ImagePanel p]
   (let [bg (atom nil) image-cache (simple-cache)]
-    (fn [m us]
+    (fn [m objs]
       (let [size-x (:size-x m)
             size-y (:size-y m)
             pix-x (* 25 size-x)
@@ -52,7 +52,8 @@
               (draw-image graphics image-cache tile-name i j))
             (reset! bg new-bg)))
         (let [image (-copy-image @bg)
-              currentGraph (.createGraphics image)]
+              currentGraph (.createGraphics image)
+              us (vals objs)]
           (doseq [u us
                   :let [tile-name (str (.getImage (.getType u)) (.getPlayer u))]]
             (draw-image currentGraph image-cache tile-name (.getX u) (.getY u)))
