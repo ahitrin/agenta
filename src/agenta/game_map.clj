@@ -72,5 +72,5 @@
                              (< -1 ny (:size-y m)))]
               (object-at m nx ny)))))
 
-(defn remove-object [m ^Unit u]
-  (new-map m #(dissoc % [(.getX u) (.getY u)])))
+(defn remove-object [m x y]
+  (new-map m #(dissoc % [x y])))
