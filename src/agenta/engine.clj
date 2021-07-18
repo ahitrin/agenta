@@ -82,12 +82,12 @@
         start-map (gm/make-map g (:map setting) u)
         limit (:max-ticks (:experiment setting))]
     (loop [m start-map winner -1 steps 0]
-      (let [alive-units (vals (:objs m))
-            units-per-player (group-by #(.getPlayer %) alive-units)]
-        (viewer m alive-units)
+      (let [units (vals (:objs m))
+            units-per-player (group-by #(.getPlayer %) units)]
+        (viewer m units)
         (if (or (<= 0 winner) (<= limit steps))
           {:winner winner :steps steps}
-          (let [all-actions (map #(run-unit-action! % m) alive-units)
+          (let [all-actions (map #(run-unit-action! % m) units)
                 good-actions (set (filter some? all-actions))
                 new-m (apply-actions! good-actions m)]
             (recur new-m
