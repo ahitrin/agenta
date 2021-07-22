@@ -1,6 +1,7 @@
 (ns agenta.engine
   (:require [agenta.game-map :as gm]
             [agenta.perk]
+            [agenta.random :as rnd]
             [clojure.tools.logging :as log])
   (:import (agenta UnitType Unit SingleRandom UnitCommand UnitState)))
 
@@ -75,7 +76,7 @@
           (filter #(.isAlive (first %)) actions)))
 
 (defn run-game! [setting viewer]
-  (let [g (SingleRandom/get)
+  (let [g (rnd/get-generator)
         u (init-units g setting)
         start-map (gm/make-map g (:map setting) u)
         limit (:max-ticks (:experiment setting))]

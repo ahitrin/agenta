@@ -1,7 +1,22 @@
 (ns agenta.random
-  (:import (agenta SingleRandom)))
+  (:require [clojure.tools.logging :as log])
+  (:import (agenta SingleRandom)
+           (java.util Random)))
+
+(def generator nil)
+
+(defn init! []
+  (alter-var-root
+    (var generator)
+    (fn [_]
+      (let [seed (.nextLong (Random.))]
+        (log/infof "Seed: %d" seed)
+        (SingleRandom. (Random. seed))))))
+
+(defn get-generator []
+  generator)
 
 (defn rnd-xy!
   "Makes a random pair of coordinates within given boundaries"
   [^SingleRandom r mx my]
-  (vec [(.nextInt r mx) (.nextInt r my)]))
+  (vec [(.nextInt generator mx) (.nextInt generator my)]))

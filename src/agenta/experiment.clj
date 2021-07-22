@@ -1,8 +1,10 @@
 (ns agenta.experiment
   (:require [agenta.engine :as eng]
+            [agenta.random :as rnd]
             [clojure.tools.logging :as log]))
 
 (defn single-run [setting]
+  (rnd/init!)
   (let [result (eng/run-game! setting (fn [m u] ()))]
     (log/infof (format "Player %d has won after %d ticks" (:winner result) (:steps result)))
     result))
