@@ -13,7 +13,9 @@
         (log/infof "Seed: %d" seed)
         (SingleRandom. (Random. seed))))))
 
-(defn get-generator []
+(defn get-generator
+  "Returns an Random instance"
+  []
   generator)
 
 (defn xy!

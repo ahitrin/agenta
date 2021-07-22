@@ -3,7 +3,7 @@
             [agenta.perk]
             [agenta.random :as rnd]
             [clojure.tools.logging :as log])
-  (:import (agenta UnitType Unit SingleRandom UnitCommand UnitState)))
+  (:import (agenta UnitType Unit UnitCommand UnitState)))
 
 (defn- make-unit [spec]
   (proxy [UnitType] []
@@ -19,14 +19,14 @@
     (getImage [] (:image spec))
     (toString [] (:name spec))))
 
-(defn- init-units [^SingleRandom r setting]
+(defn- init-units [setting]
   (for [ut (:unit-types setting)
         p (range 2)
         c (range 100)
         :let [max-num (get (get (:placement setting) p)
                            (.toLowerCase (:name ut)) 0)]
         :when (< c max-num)]
-    (Unit. (make-unit ut) p r ((resolve (.get (:perk ut) "select"))))))
+    (Unit. (make-unit ut) p (rnd/get-generator) ((resolve (.get (:perk ut) "select"))))))
 
 (defn- run-unit-action! [[[x y] u] m]
   (let [visible-objects (gm/objects-in-radius m x y (.getVisibility (.getType u)))]
@@ -76,8 +76,7 @@
           (filter #(.isAlive (first %)) actions)))
 
 (defn run-game! [setting viewer]
-  (let [g (rnd/get-generator)
-        u (init-units g setting)
+  (let [u (init-units setting)
         start-map (gm/make-map (:map setting) u)
         limit (:max-ticks (:experiment setting))]
     (loop [m start-map winner -1 steps 0]
