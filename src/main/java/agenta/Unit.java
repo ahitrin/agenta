@@ -3,6 +3,7 @@ package agenta;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -27,10 +28,10 @@ public class Unit
     public UnitCommand currentCommand;
     public int kills = 0;
     private final String name;
-    private final SingleRandom random;
+    private final Random random;
     private final Function<List<Unit>, Unit> selectTargetPerk;
 
-    public Unit(UnitType type, int player, SingleRandom random, Function<List<Unit>, Unit> selectTargetPerk)
+    public Unit(UnitType type, int player, Random random, Function<List<Unit>, Unit> selectTargetPerk)
     {
         this.type = type;
         this.player = player;

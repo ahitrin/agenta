@@ -1,7 +1,6 @@
 (ns agenta.random
   (:require [clojure.tools.logging :as log])
-  (:import (agenta SingleRandom)
-           (java.util Random)))
+  (:import (java.util Random)))
 
 (def generator nil)
 
@@ -11,7 +10,7 @@
     (fn [_]
       (let [seed (.nextLong (Random.))]
         (log/infof "Seed: %d" seed)
-        (SingleRandom. (Random. seed))))))
+        (Random. seed)))))
 
 (defn get-generator
   "Returns an Random instance"
