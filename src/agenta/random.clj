@@ -16,7 +16,7 @@
 (defn get-generator []
   generator)
 
-(defn rnd-xy!
+(defn xy!
   "Makes a random pair of coordinates within given boundaries"
   [mx my]
   (vec [(.nextInt generator mx) (.nextInt generator my)]))

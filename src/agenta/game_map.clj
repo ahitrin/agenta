@@ -16,7 +16,7 @@
   "Fill given rectangle with a mix of grass (95%) and trees (5%)"
   [size-x size-y]
   (let [n (int (/ (* size-x size-y) 20))
-        trees (take n (distinct (repeatedly #(rnd/rnd-xy! size-x size-y))))]
+        trees (take n (distinct (repeatedly #(rnd/xy! size-x size-y))))]
     (apply assoc {} (interleave trees (repeat n :tree)))))
 
 (defn- object-at [m x y]
@@ -39,7 +39,7 @@
         type (resolve (:type map-spec))
         m (GameMap. size-x size-y (apply type [size-x size-y]) {})
         xys (filter #(can-place? m %)
-                    (distinct (repeatedly #(rnd/rnd-xy! size-x size-y))))
+                    (distinct (repeatedly #(rnd/xy! size-x size-y))))
         objs (zipmap xys units)]
     (doseq [[[x y] unit] objs]
       (.moveTo unit x y))
