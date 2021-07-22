@@ -48,26 +48,11 @@ public class Unit
 
     public List<Map<String, Object>> act(List<Unit> visibleObjects)
     {
-        if (healthCounter > 0)
+        regenerate();
+        if (currentHitPoints >= type.getHealthLimit(currentCommand.getPriority()) &&
+                state == UnitState.ESCAPE)
         {
-            healthCounter--;
-            if (healthCounter == 0)
-            {
-                healthCounter = 100;
-                if (currentHitPoints < type.getHitPoints())
-                {
-                    currentHitPoints++;
-                }
-                if (currentHitPoints >= type.getHealthLimit(currentCommand.getPriority()) &&
-                        state == UnitState.ESCAPE)
-                {
-                    obtain(new UnitCommand(UnitState.ATTACK, currentCommand.getPriority() - 1));
-                }
-                if (currentHitPoints == type.getHitPoints())
-                {
-                    healthCounter = -1;
-                }
-            }
+            obtain(new UnitCommand(UnitState.ATTACK, currentCommand.getPriority() - 1));
         }
         if (attackCounter > 0)
         {
@@ -137,6 +122,26 @@ public class Unit
             break;
         }
         return unitActions;
+    }
+
+    private void regenerate()
+    {
+        if (healthCounter > 0)
+        {
+            healthCounter--;
+            if (healthCounter == 0)
+            {
+                healthCounter = 100;
+                if (currentHitPoints < type.getHitPoints())
+                {
+                    currentHitPoints++;
+                }
+                if (currentHitPoints == type.getHitPoints())
+                {
+                    healthCounter = -1;
+                }
+            }
+        }
     }
 
     private static Map<String, Object> move(int dx, int dy)
