@@ -1,22 +1,22 @@
 (ns agenta.perk
-  (:import (agenta SingleRandom)
-           (java.util.function Function)))
+  (:require [agenta.random :as rnd])
+  (:import (java.util.function Function)))
 
 (defn select-random
   "Given several units select one of them absolutely randomly"
-  [^SingleRandom r]
+  []
   (proxy [Function] []
     (apply [units]
-      (.get units (.nextInt r (count units))))))
+      (.get units (rnd/i! (count units))))))
 
 (defn select-random-memoized
   "Remember previously selected unit and try to select it when possible; else do it randomly"
-  [^SingleRandom r]
+  []
   (let [target (atom nil)
         choose (fn [cur new-units]
                  (cond
                    (and (some? cur) (.isAlive cur) (.contains new-units cur)) cur
-                   (false? (.isEmpty new-units)) (.get new-units (.nextInt r (count new-units)))
+                   (false? (.isEmpty new-units)) (.get new-units (rnd/i! (count new-units)))
                    :else nil))]
     (proxy [Function] []
       (apply [units]
@@ -24,7 +24,7 @@
 
 (defn select-weakest
   "Given several units select the one who has fewer hit points"
-  [^SingleRandom r]
+  []
   (proxy [Function] []
     (apply [units]
       (first (sort-by #(.-currentHitPoints %) units)))))

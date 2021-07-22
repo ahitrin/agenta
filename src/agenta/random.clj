@@ -20,3 +20,8 @@
   "Makes a random pair of coordinates within given boundaries"
   [mx my]
   (vec [(.nextInt generator mx) (.nextInt generator my)]))
+
+(defn i!
+  "Makes a random integer between 0 (inclusive) and n (exclusive)"
+  [n]
+  (.nextInt generator n))
