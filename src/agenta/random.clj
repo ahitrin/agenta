@@ -18,5 +18,5 @@
 
 (defn rnd-xy!
   "Makes a random pair of coordinates within given boundaries"
-  [^SingleRandom r mx my]
+  [mx my]
   (vec [(.nextInt generator mx) (.nextInt generator my)]))

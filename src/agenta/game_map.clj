@@ -1,6 +1,6 @@
 (ns agenta.game-map
   (:require [agenta.random :as rnd])
-  (:import (agenta SingleRandom Unit)))
+  (:import (agenta Unit)))
 
 (defrecord GameMap [size-x size-y cells objs])
 
@@ -9,14 +9,14 @@
 
 (defn plane
   "Fill given rectangle with grass solely"
-  [^SingleRandom r size-x size-y]
+  [_ _]
   {})
 
 (defn forest
   "Fill given rectangle with a mix of grass (95%) and trees (5%)"
-  [^SingleRandom r size-x size-y]
+  [size-x size-y]
   (let [n (int (/ (* size-x size-y) 20))
-        trees (take n (distinct (repeatedly #(rnd/rnd-xy! r size-x size-y))))]
+        trees (take n (distinct (repeatedly #(rnd/rnd-xy! size-x size-y))))]
     (apply assoc {} (interleave trees (repeat n :tree)))))
 
 (defn- object-at [m x y]
@@ -33,13 +33,13 @@
 
 (defn make-map
   "Build game map with given map spec"
-  [^SingleRandom r map-spec units]
+  [map-spec units]
   (let [size-x (:size-x map-spec)
         size-y (:size-y map-spec)
         type (resolve (:type map-spec))
-        m (GameMap. size-x size-y (apply type [r size-x size-y]) {})
+        m (GameMap. size-x size-y (apply type [size-x size-y]) {})
         xys (filter #(can-place? m %)
-                    (distinct (repeatedly #(rnd/rnd-xy! r size-x size-y))))
+                    (distinct (repeatedly #(rnd/rnd-xy! size-x size-y))))
         objs (zipmap xys units)]
     (doseq [[[x y] unit] objs]
       (.moveTo unit x y))

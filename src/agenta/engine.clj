@@ -78,7 +78,7 @@
 (defn run-game! [setting viewer]
   (let [g (rnd/get-generator)
         u (init-units g setting)
-        start-map (gm/make-map g (:map setting) u)
+        start-map (gm/make-map (:map setting) u)
         limit (:max-ticks (:experiment setting))]
     (loop [m start-map winner -1 steps 0]
       (let [objs (:objs m)]
