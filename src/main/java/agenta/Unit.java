@@ -174,21 +174,16 @@ public class Unit
         return (currentHitPoints > 0);
     }
 
-    public void obtain(Command com)
+    public void obtain(UnitCommand com)
     {
-        if (!(com instanceof UnitCommand))
+        if (currentCommand.getState() != com.getState())
         {
-            return;
+            LOG.debug(this + " will " + com);
         }
-        UnitCommand uc = (UnitCommand)com;
-        if (currentCommand.getState() != uc.getState())
+        currentCommand = com;
+        if (currentHitPoints >= type.getHealthLimit(com.getPriority()))
         {
-            LOG.debug(this + " will " + uc);
-        }
-        currentCommand = uc;
-        if (currentHitPoints >= type.getHealthLimit(uc.getPriority()))
-        {
-            state = uc.getState();
+            state = com.getState();
         }
     }
 

@@ -1,6 +1,6 @@
 package agenta;
 
-public class UnitCommand implements Command
+public class UnitCommand
 {
     private final UnitState state;
     private final int priority;
