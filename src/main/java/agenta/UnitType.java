@@ -13,8 +13,6 @@ public interface UnitType
 
     int getHitPoints();
 
-    String getName();
-
     int getRandAttack();
 
     float getRange();

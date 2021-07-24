@@ -7,7 +7,6 @@
 
 (defn- make-unit [spec]
   (proxy [UnitType] []
-    (getName [] (:name spec))
     (getBaseAttack [] (:baseAttack spec))
     (getRandAttack [] (:randAttack spec))
     (getRange [] (:range spec))
