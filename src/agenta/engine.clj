@@ -42,7 +42,7 @@
         limit (.getHealthLimit (.-type target) prio)]
     (if (and (pos? damage) (pos? hp))
       (do
-        (log/debugf "%s strikes %s with %d" actor target damage)
+        (log/debugf "%s strikes %s with %d" (dissoc actor :img) target damage)
         (set! (.-currentHitPoints target) new-hp)
         (when (neg-int? ctr)
           (set! (.-healthCounter target) 100))
