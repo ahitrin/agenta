@@ -24,9 +24,9 @@
         :let [max-num (get (get (:placement setting) p)
                            (.toLowerCase (:name ut)) 0)]
         :when (< c max-num)]
-    {:old (Unit. (make-unit ut) p (rnd/get-generator) ((resolve (.get (:perk ut) "select"))))
+    {:old   (Unit. (make-unit ut) p (rnd/get-generator) ((resolve (.get (:perk ut) "select"))))
      :kills 0
-     :img (str (:image ut) p)}))
+     :img   (str (:image ut) p)}))
 
 (defn- run-unit-action! [[[x y] u] m]
   (let [visible-objects (gm/objects-in-radius m x y (.getVisibility (.getType (:old u))))]
