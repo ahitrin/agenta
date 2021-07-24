@@ -24,7 +24,7 @@
 (defn cell-type [m x y]
   (get (:cells m) [x y] :grass))
 
-(defn- can-place? [m [x y]]
+(defn can-place? [m [x y]]
   (and (< -1 x (:size-x m))
        (< -1 y (:size-y m))
        (= :grass (cell-type m x y))
@@ -43,15 +43,6 @@
     (doseq [[[x y] unit] objs]
       (.moveTo (:old unit) x y))
     (new-map m #(into % objs))))
-
-(defn try-move! [m actor x y dx dy]
-  (let [nx (+ x dx) ny (+ y dy)]
-    (if (can-place? m (list nx ny))
-      (do
-        (.moveTo (:old actor) nx ny)
-        (set! (.-speedCounter (:old actor)) (.getSpeed (.getType (:old actor))))
-        (new-map m #(assoc (dissoc % [x y]) [nx ny] actor)))
-      m)))
 
 (defn objects-in-radius [m x y r]
   (let [limit (int r)]
