@@ -11,7 +11,6 @@
     (getRandAttack [] (:randAttack spec))
     (getRange [] (:range spec))
     (getAttackSpeed [] (:attackSpeed spec))
-    (getVisibility [] (:visibility spec))
     (getHitPoints [] (:hitPoints spec))
     (getHealthLimit [lvl] (/ (* (- 4 lvl) (:hitPoints spec)) 5))
     (toString [] (:name spec))))
@@ -23,13 +22,14 @@
         :let [max-num (get (get (:placement setting) p)
                            (.toLowerCase (:name ut)) 0)]
         :when (< c max-num)]
-    {:max-spd (:speed ut)
-     :old     (Unit. (make-unit ut) p (:speed ut) (rnd/get-generator) ((resolve (.get (:perk ut) "select"))))
-     :kills   0
-     :img     (str (:image ut) p)}))
+    {:max-spd    (:speed ut)
+     :visibility (:visibility ut)
+     :old        (Unit. (make-unit ut) p (:speed ut) (rnd/get-generator) ((resolve (.get (:perk ut) "select"))))
+     :kills      0
+     :img        (str (:image ut) p)}))
 
 (defn- run-unit-action! [[[x y] u] m]
-  (let [visible-objects (gm/objects-in-radius m x y (.getVisibility (.getType (:old u))))]
+  (let [visible-objects (gm/objects-in-radius m x y (:visibility u))]
     [u (first (.act (:old u) (map :old visible-objects))) [x y]]))
 
 (defn- perform-attack! [m actor action [x y]]
@@ -42,7 +42,7 @@
         limit (.getHealthLimit (.-type target) prio)]
     (if (and (pos? damage) (pos? hp))
       (do
-        (log/debugf "%s strikes %s with %d" (dissoc actor :img :max-spd) target damage)
+        (log/debugf "%s strikes %s with %d" (dissoc actor :img :max-spd :visibility) target damage)
         (set! (.-currentHitPoints target) new-hp)
         (when (neg-int? ctr)
           (set! (.-healthCounter target) 100))

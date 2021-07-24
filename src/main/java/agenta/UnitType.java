@@ -16,8 +16,4 @@ public interface UnitType
     int getRandAttack();
 
     float getRange();
-
-    int getVisibility();
-
-    String toString();
 }
