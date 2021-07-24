@@ -55,9 +55,8 @@
               currentGraph (.createGraphics image)]
           (doseq [o objs
                   :let [[x y] (key o)
-                        u (val o)
-                        tile-name (str (.getImage (.getType (:old u))) (.getPlayer (:old u)))]]
-            (draw-image currentGraph image-cache tile-name x y))
+                        u (val o)]]
+            (draw-image currentGraph image-cache (:img u) x y))
           (.setImage p image)
           (.repaint p))))))
 
