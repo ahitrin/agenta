@@ -33,9 +33,19 @@
      :kills      0}))
 
 (defn- run-unit-action! [[[x y] u] m]
-  (let [visible-objects (gm/objects-in-radius m x y (:visibility u))]
-    (.regenerate (:old u))
-    [u (first (.act (:old u) (map :old visible-objects))) [x y]]))
+  (let [unit (:old u)
+        visible-objects (gm/objects-in-radius m x y (:visibility u))]
+    (let [hc (.-healthCounter unit)
+          hp (.-currentHitPoints unit)
+          max-hp (.getHitPoints (.getType unit))]
+      (if (> hc 1)
+        (set! (.-healthCounter unit) (dec hc))
+        (do (set! (.-healthCounter unit) 100)
+            (when (< hp max-hp)
+              (set! (.-currentHitPoints unit) (inc hp)))
+            (when (= hp (dec max-hp))
+              (set! (.-healthCounter unit) -1)))))
+    [u (first (.act unit (map :old visible-objects))) [x y]]))
 
 (defn- perform-attack! [m actor action [x y]]
   (let [target (cast Unit (.get action "target"))

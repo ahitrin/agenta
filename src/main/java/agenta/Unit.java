@@ -122,26 +122,6 @@ public class Unit
         return unitActions;
     }
 
-    public void regenerate()
-    {
-        if (healthCounter > 0)
-        {
-            healthCounter--;
-            if (healthCounter == 0)
-            {
-                healthCounter = 100;
-                if (currentHitPoints < type.getHitPoints())
-                {
-                    currentHitPoints++;
-                }
-                if (currentHitPoints == type.getHitPoints())
-                {
-                    healthCounter = -1;
-                }
-            }
-        }
-    }
-
     private static Map<String, Object> move(int dx, int dy)
     {
         return Map.of("type", "move", "dx", dx, "dy", dy);
