@@ -62,7 +62,7 @@
         dy (int (.get action "dy"))]
     (if (zero? (.-speedCounter (:old actor)))
       (let [nx (+ x dx) ny (+ y dy)]
-        (if (gm/can-place? m (list nx ny))
+        (if (gm/can-place? m [nx ny])
           (do
             (.moveTo (:old actor) nx ny)
             (set! (.-speedCounter (:old actor)) (.getSpeed (.getType (:old actor))))
