@@ -57,20 +57,17 @@
           m))
       m)))
 
-(defn try-move! [m actor x y dx dy]
-  (let [nx (+ x dx) ny (+ y dy)]
-    (if (gm/can-place? m (list nx ny))
-      (do
-        (.moveTo (:old actor) nx ny)
-        (set! (.-speedCounter (:old actor)) (.getSpeed (.getType (:old actor))))
-        (gm/new-map m #(assoc (dissoc % [x y]) [nx ny] actor)))
-      m)))
-
 (defn- perform-move! [m actor action [x y]]
   (let [dx (int (.get action "dx"))
         dy (int (.get action "dy"))]
     (if (zero? (.-speedCounter (:old actor)))
-      (try-move! m actor x y dx dy)
+      (let [nx (+ x dx) ny (+ y dy)]
+        (if (gm/can-place? m (list nx ny))
+          (do
+            (.moveTo (:old actor) nx ny)
+            (set! (.-speedCounter (:old actor)) (.getSpeed (.getType (:old actor))))
+            (gm/new-map m #(assoc (dissoc % [x y]) [nx ny] actor)))
+          m))
       m)))
 
 (def action-selector
