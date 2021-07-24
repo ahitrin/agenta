@@ -40,7 +40,7 @@
         (when (nil? @bg)
           (.setSize p pix-x pix-y)
           (.setVisible p true)
-          (.setSize f pix-x pix-y)
+          (.setSize f (+ 10 pix-x) (+ 30 pix-y))
           (.setVisible f true)
           (.add (.getContentPane f) ^Component p)
           (.setDefaultCloseOperation f JFrame/EXIT_ON_CLOSE)
