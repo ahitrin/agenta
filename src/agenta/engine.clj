@@ -25,6 +25,7 @@
                            (.toLowerCase (:name ut)) 0)]
         :when (< c max-num)]
     {:old (Unit. (make-unit ut) p (rnd/get-generator) ((resolve (.get (:perk ut) "select"))))
+     :kills 0
      :img (str (:image ut) p)}))
 
 (defn- run-unit-action! [[[x y] u] m]
@@ -50,8 +51,8 @@
         (if-not (pos-int? new-hp)
           (do
             (log/debugf "%s is dead" target)
-            (set! (.-kills (:old actor)) (inc (.-kills (:old actor))))
             (-> m
+                (gm/new-map #(update-in % [[x y] :kills] inc))
                 (gm/remove-object (.getX target) (.getY target))))
           m))
       m)))

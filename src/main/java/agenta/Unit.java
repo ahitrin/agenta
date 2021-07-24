@@ -26,7 +26,6 @@ public class Unit
     public int healthCounter;
     public int currentHitPoints;
     public UnitCommand currentCommand;
-    public int kills = 0;
     private final String name;
     private final Random random;
     private final Function<List<Unit>, Unit> selectTargetPerk;
@@ -195,7 +194,7 @@ public class Unit
     @Override
     public String toString()
     {
-        return String.format("%s (%d HP; %d ks) at [%d, %d]", name, currentHitPoints, kills, x, y);
+        return String.format("%s (%d HP) at [%d, %d]", name, currentHitPoints, x, y);
     }
 
     public int doAttack()
