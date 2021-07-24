@@ -47,7 +47,6 @@ public class Unit
 
     public List<Map<String, Object>> act(List<Unit> visibleObjects)
     {
-        regenerate();
         if (currentHitPoints >= type.getHealthLimit(currentCommand.getPriority()) &&
                 state == UnitState.ESCAPE)
         {
@@ -123,7 +122,7 @@ public class Unit
         return unitActions;
     }
 
-    private void regenerate()
+    public void regenerate()
     {
         if (healthCounter > 0)
         {

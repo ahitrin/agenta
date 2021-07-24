@@ -34,6 +34,7 @@
 
 (defn- run-unit-action! [[[x y] u] m]
   (let [visible-objects (gm/objects-in-radius m x y (:visibility u))]
+    (.regenerate (:old u))
     [u (first (.act (:old u) (map :old visible-objects))) [x y]]))
 
 (defn- perform-attack! [m actor action [x y]]
