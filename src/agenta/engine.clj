@@ -26,15 +26,15 @@
         :let [max-num (get (get (:placement setting) p)
                            (.toLowerCase (:name ut)) 0)]
         :when (< c max-num)]
-    (Unit. (make-unit ut) p (rnd/get-generator) ((resolve (.get (:perk ut) "select"))))))
+    {:old (Unit. (make-unit ut) p (rnd/get-generator) ((resolve (.get (:perk ut) "select"))))}))
 
 (defn- run-unit-action! [[[x y] u] m]
-  (let [visible-objects (gm/objects-in-radius m x y (.getVisibility (.getType u)))]
-    [u (first (.act u visible-objects)) [x y]]))
+  (let [visible-objects (gm/objects-in-radius m x y (.getVisibility (.getType (:old u))))]
+    [u (first (.act (:old u) (map :old visible-objects))) [x y]]))
 
-(defn- perform-attack! [m ^Unit actor action [x y]]
+(defn- perform-attack! [m actor action [x y]]
   (let [target (cast Unit (.get action "target"))
-        damage (.doAttack actor)
+        damage (.doAttack (:old actor))
         hp (.-currentHitPoints target)
         new-hp (- hp damage)
         ctr (.-healthCounter target)
@@ -51,15 +51,15 @@
         (if-not (pos-int? new-hp)
           (do
             (log/debugf "%s is dead" target)
-            (set! (.-kills actor) (inc (.-kills actor)))
+            (set! (.-kills (:old actor)) (inc (.-kills (:old actor))))
             (gm/remove-object m (.getX target) (.getY target)))
           m))
       m)))
 
-(defn- perform-move! [m ^Unit actor action [x y]]
+(defn- perform-move! [m actor action [x y]]
   (let [dx (int (.get action "dx"))
         dy (int (.get action "dy"))]
-    (if (zero? (.-speedCounter actor))
+    (if (zero? (.-speedCounter (:old actor)))
       (gm/try-move! m actor x y dx dy)
       m)))
 
@@ -73,7 +73,7 @@
 
 (defn- apply-actions! [actions m]
   (reduce apply-action! m
-          (filter #(.isAlive (first %)) actions)))
+          (filter #(.isAlive (:old (first %))) actions)))
 
 (defn run-game! [setting viewer]
   (let [u (init-units setting)
@@ -86,7 +86,7 @@
           {:winner winner :steps steps}
           (let [actions (set (filter #(some? (second %)) (map #(run-unit-action! % m) objs)))
                 new-m (apply-actions! actions m)
-                units-per-player (group-by #(.getPlayer %) (vals (:objs new-m)))]
+                units-per-player (group-by #(.getPlayer (:old %)) (vals (:objs new-m)))]
             (recur new-m
                    (cond (empty? (units-per-player 0)) 1
                          (empty? (units-per-player 1)) 0

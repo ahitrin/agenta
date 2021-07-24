@@ -42,15 +42,15 @@
                     (distinct (repeatedly #(rnd/xy! size-x size-y))))
         objs (zipmap xys units)]
     (doseq [[[x y] unit] objs]
-      (.moveTo unit x y))
+      (.moveTo (:old unit) x y))
     (new-map m #(into % objs))))
 
-(defn try-move! [m ^Unit actor x y dx dy]
+(defn try-move! [m actor x y dx dy]
   (let [nx (+ x dx) ny (+ y dy)]
     (if (can-place? m (list nx ny))
       (do
-        (.moveTo actor nx ny)
-        (set! (.-speedCounter actor) (.getSpeed (.getType actor)))
+        (.moveTo (:old actor) nx ny)
+        (set! (.-speedCounter (:old actor)) (.getSpeed (.getType (:old actor))))
         (new-map m #(assoc (dissoc % [x y]) [nx ny] actor)))
       m)))
 
