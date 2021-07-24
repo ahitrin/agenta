@@ -1,6 +1,5 @@
 (ns agenta.game-map
-  (:require [agenta.random :as rnd])
-  (:import (agenta Unit)))
+  (:require [agenta.random :as rnd]))
 
 (defrecord GameMap [size-x size-y cells objs])
 
