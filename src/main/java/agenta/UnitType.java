@@ -17,8 +17,6 @@ public interface UnitType
 
     float getRange();
 
-    int getSpeed();
-
     int getVisibility();
 
     String toString();

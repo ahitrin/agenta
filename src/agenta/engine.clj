@@ -12,7 +12,6 @@
     (getRange [] (:range spec))
     (getAttackSpeed [] (:attackSpeed spec))
     (getVisibility [] (:visibility spec))
-    (getSpeed [] (:speed spec))
     (getHitPoints [] (:hitPoints spec))
     (getHealthLimit [lvl] (/ (* (- 4 lvl) (:hitPoints spec)) 5))
     (toString [] (:name spec))))
@@ -24,9 +23,10 @@
         :let [max-num (get (get (:placement setting) p)
                            (.toLowerCase (:name ut)) 0)]
         :when (< c max-num)]
-    {:old   (Unit. (make-unit ut) p (rnd/get-generator) ((resolve (.get (:perk ut) "select"))))
-     :kills 0
-     :img   (str (:image ut) p)}))
+    {:max-spd (:speed ut)
+     :old     (Unit. (make-unit ut) p (:speed ut) (rnd/get-generator) ((resolve (.get (:perk ut) "select"))))
+     :kills   0
+     :img     (str (:image ut) p)}))
 
 (defn- run-unit-action! [[[x y] u] m]
   (let [visible-objects (gm/objects-in-radius m x y (.getVisibility (.getType (:old u))))]
@@ -42,7 +42,7 @@
         limit (.getHealthLimit (.-type target) prio)]
     (if (and (pos? damage) (pos? hp))
       (do
-        (log/debugf "%s strikes %s with %d" (dissoc actor :img) target damage)
+        (log/debugf "%s strikes %s with %d" (dissoc actor :img :max-spd) target damage)
         (set! (.-currentHitPoints target) new-hp)
         (when (neg-int? ctr)
           (set! (.-healthCounter target) 100))
@@ -65,7 +65,7 @@
         (if (gm/can-place? m [nx ny])
           (do
             (.moveTo (:old actor) nx ny)
-            (set! (.-speedCounter (:old actor)) (.getSpeed (.getType (:old actor))))
+            (set! (.-speedCounter (:old actor)) (:max-spd actor))
             (gm/new-map m #(assoc (dissoc % [x y]) [nx ny] actor)))
           m))
       m)))
