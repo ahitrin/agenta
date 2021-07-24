@@ -32,19 +32,22 @@
      ; "dynamic" properties (change during game)
      :kills      0}))
 
+(defn regen [ctr hp max-hp]
+  (cond
+    (neg-int? ctr) [ctr hp]
+    (pos-int? ctr) [(dec ctr) hp]
+    (>= hp max-hp) [-1 hp]
+    :else          [100 (inc hp)]))
+
 (defn- run-unit-action! [[[x y] u] m]
   (let [unit (:old u)
         visible-objects (gm/objects-in-radius m x y (:visibility u))]
     (let [hc (.-healthCounter unit)
           hp (.-currentHitPoints unit)
-          max-hp (.getHitPoints (.getType unit))]
-      (if (> hc 1)
-        (set! (.-healthCounter unit) (dec hc))
-        (do (set! (.-healthCounter unit) 100)
-            (when (< hp max-hp)
-              (set! (.-currentHitPoints unit) (inc hp)))
-            (when (= hp (dec max-hp))
-              (set! (.-healthCounter unit) -1)))))
+          max-hp (.getHitPoints (.getType unit))
+          [new-ctr new-hp] (regen hc hp max-hp)]
+      (set! (.-healthCounter unit) new-ctr)
+      (set! (.-currentHitPoints unit) new-hp))
     [u (first (.act unit (map :old visible-objects))) [x y]]))
 
 (defn- perform-attack! [m actor action [x y]]
