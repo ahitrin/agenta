@@ -22,11 +22,15 @@
         :let [max-num (get (get (:placement setting) p)
                            (.toLowerCase (:name ut)) 0)]
         :when (< c max-num)]
-    {:max-spd    (:speed ut)
+    {
+     ; "static" properties (do not change during game)
+     :max-spd    (:speed ut)
      :visibility (:visibility ut)
+     :img        (str (:image ut) p)
+     ; Unit instance (should be removed)
      :old        (Unit. (make-unit ut) p (:speed ut) (rnd/get-generator) ((resolve (.get (:perk ut) "select"))))
-     :kills      0
-     :img        (str (:image ut) p)}))
+     ; "dynamic" properties (change during game)
+     :kills      0}))
 
 (defn- run-unit-action! [[[x y] u] m]
   (let [visible-objects (gm/objects-in-radius m x y (:visibility u))]
