@@ -66,6 +66,3 @@
                              (< -1 nx (:size-x m))
                              (< -1 ny (:size-y m)))]
               (object-at m nx ny)))))
-
-(defn remove-object [m x y]
-  (new-map m #(dissoc % [x y])))

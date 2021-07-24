@@ -53,7 +53,7 @@
             (log/debugf "%s is dead" target)
             (-> m
                 (gm/new-map #(update-in % [[x y] :kills] inc))
-                (gm/remove-object (.getX target) (.getY target))))
+                (gm/new-map #(dissoc % [(.getX target) (.getY target)]))))
           m))
       m)))
 
