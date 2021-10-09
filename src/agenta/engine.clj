@@ -34,6 +34,7 @@
        :max-spd    (:speed ut)
        :visibility (:visibility ut)
        :img        (str (:image ut) p)
+       :id         id
        ; Unit instance (should be removed)
        :old        (Unit. (make-unit ut)
                           id
@@ -68,27 +69,30 @@
     [u (first (.act unit (map :old visible-objects))) [x y]]))
 
 (defn- perform-attack! [m actor action [x y]]
-  (let [target (cast Unit (.get action "target"))
-        damage (.doAttack (:old actor))
-        hp (.-currentHitPoints target)
-        new-hp (- hp damage)
-        ctr (.-healthCounter target)
-        prio (.getPriority (.-currentCommand target))
-        limit (.getHealthLimit (.-type target) prio)]
-    (if (and (pos? damage) (pos? hp))
-      (do
-        (log/debugf "%s strikes %s with %d" (dissoc actor :img :max-spd :visibility) target damage)
-        (set! (.-currentHitPoints target) new-hp)
-        (when (neg-int? ctr)
-          (set! (.-healthCounter target) 100))
-        (when (< new-hp limit)
-          (.obtain target (UnitCommand. UnitState/ESCAPE (inc prio))))
-        (if-not (pos-int? new-hp)
+  (let [target-id (int (.get action "target"))
+        target (:old (first (filter #(= target-id (:id %)) (vals (:objs m)))))]
+    (if (some? target)
+      (let [damage (.doAttack (:old actor))
+            hp (.-currentHitPoints target)
+            new-hp (- hp damage)
+            ctr (.-healthCounter target)
+            prio (.getPriority (.-currentCommand target))
+            limit (.getHealthLimit (.-type target) prio)]
+        (if (and (pos? damage) (pos? hp))
           (do
-            (log/debugf "%s is dead" target)
-            (-> m
-                (gm/new-map #(update-in % [[x y] :kills] inc))
-                (gm/new-map #(dissoc % [(.getX target) (.getY target)]))))
+            (log/debugf "%s strikes %s with %d" (dissoc actor :img :max-spd :visibility) target damage)
+            (set! (.-currentHitPoints target) new-hp)
+            (when (neg-int? ctr)
+              (set! (.-healthCounter target) 100))
+            (when (< new-hp limit)
+              (.obtain target (UnitCommand. UnitState/ESCAPE (inc prio))))
+            (if-not (pos-int? new-hp)
+              (do
+                (log/debugf "%s is dead" target)
+                (-> m
+                    (gm/new-map #(update-in % [[x y] :kills] inc))
+                    (gm/new-map #(dissoc % [(.getX target) (.getY target)]))))
+              m))
           m))
       m)))
 
