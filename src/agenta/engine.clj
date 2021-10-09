@@ -20,7 +20,8 @@
         p (range 2)
         c (range 100)
         :let [max-num (get (get (:placement setting) p)
-                           (.toLowerCase (:name ut)) 0)]
+                           (.toLowerCase (:name ut)) 0)
+              g (rnd/get-generator)]
         :when (< c max-num)]
     {
      ; "static" properties (do not change during game)
@@ -28,7 +29,12 @@
      :visibility (:visibility ut)
      :img        (str (:image ut) p)
      ; Unit instance (should be removed)
-     :old        (Unit. (make-unit ut) p (:speed ut) (rnd/get-generator) ((resolve (.get (:perk ut) "select"))))
+     :old        (Unit. (make-unit ut)
+                        p
+                        (:speed ut)
+                        (inc (rnd/i! (:attackSpeed ut)))
+                        g
+                        ((resolve (.get (:perk ut) "select"))))
      ; "dynamic" properties (change during game)
      :kills      0}))
 
