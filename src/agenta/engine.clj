@@ -16,34 +16,38 @@
     (toString [] (:name spec))))
 
 (defn- init-units [setting]
-  (for [ut (:unit-types setting)
-        p (range 2)
-        c (range (-> (:placement setting)
-                     (get p)
-                     (get (.toLowerCase (:name ut)) 0)))
-        :let [g (rnd/get-generator)
-              spd-counter (inc (rnd/i! (:speed ut)))
-              att-counter (inc (rnd/i! (:attackSpeed ut)))
-              hlt-counter (inc (rnd/i! 100))]]
-    {
-     ; "static" properties (do not change during game)
-     :max-spd    (:speed ut)
-     :visibility (:visibility ut)
-     :img        (str (:image ut) p)
-     ; Unit instance (should be removed)
-     :old        (Unit. (make-unit ut)
-                        0
-                        p
-                        spd-counter
-                        att-counter
-                        hlt-counter
-                        g
-                        ((resolve (.get (:perk ut) "select"))))
-     ; "dynamic" properties (change during game)
-     :speed-counter spd-counter
-     :attack-counter att-counter
-     :health-counter hlt-counter
-     :kills      0}))
+  (let [defs (for [ut (:unit-types setting)
+                   p (range 2)
+                   c (range (-> (:placement setting)
+                                (get p)
+                                (get (.toLowerCase (:name ut)) 0)))]
+               [ut p c])
+        idx (range)
+        defs+ (map flatten (map vector defs idx))]
+    (for [[ut p _ id] defs+
+          :let [g (rnd/get-generator)
+                spd-counter (inc (rnd/i! (:speed ut)))
+                att-counter (inc (rnd/i! (:attackSpeed ut)))
+                hlt-counter (inc (rnd/i! 100))]]
+      {
+       ; "static" properties (do not change during game)
+       :max-spd    (:speed ut)
+       :visibility (:visibility ut)
+       :img        (str (:image ut) p)
+       ; Unit instance (should be removed)
+       :old        (Unit. (make-unit ut)
+                          id
+                          p
+                          spd-counter
+                          att-counter
+                          hlt-counter
+                          g
+                          ((resolve (.get (:perk ut) "select"))))
+       ; "dynamic" properties (change during game)
+       :speed-counter spd-counter
+       :attack-counter att-counter
+       :health-counter hlt-counter
+       :kills      0})))
 
 (defn regen [ctr hp max-hp]
   (cond
