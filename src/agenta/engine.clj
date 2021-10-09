@@ -33,6 +33,7 @@
      :img        (str (:image ut) p)
      ; Unit instance (should be removed)
      :old        (Unit. (make-unit ut)
+                        0
                         p
                         spd-counter
                         att-counter

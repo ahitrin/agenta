@@ -19,6 +19,7 @@ public class Unit
     protected int x;
     protected int y;
     public final UnitType type;
+    private final int id;
     private UnitState state;
     private final int player;
     public int speedCounter;
@@ -30,10 +31,11 @@ public class Unit
     private final Random random;
     private final Function<List<Unit>, Unit> selectTargetPerk;
 
-    public Unit(UnitType type, int player, int speedCounter, int attackCounter, int healthCounter, Random random,
-            Function<List<Unit>, Unit> selectTargetPerk)
+    public Unit(UnitType type, int id, int player, int speedCounter, int attackCounter, int healthCounter,
+            Random random, Function<List<Unit>, Unit> selectTargetPerk)
     {
         this.type = type;
+        this.id = id;
         this.player = player;
         this.random = random;
         this.selectTargetPerk = selectTargetPerk;
@@ -174,7 +176,7 @@ public class Unit
     @Override
     public String toString()
     {
-        return String.format("%s (%d HP) at [%d, %d]", name, currentHitPoints, x, y);
+        return String.format("%s #%d (%d HP) at [%d, %d]", name, id, currentHitPoints, x, y);
     }
 
     public int doAttack()
