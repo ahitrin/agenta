@@ -31,31 +31,31 @@
                 hlt-counter (inc (rnd/i! 100))]]
       {
        ; "static" properties (do not change during game)
-       :max-spd    (:speed ut)
-       :visibility (:visibility ut)
-       :img        (str (:image ut) p)
-       :id         id
+       :max-spd        (:speed ut)
+       :visibility     (:visibility ut)
+       :img            (str (:image ut) p)
+       :id             id
        ; Unit instance (should be removed)
-       :old        (Unit. (make-unit ut)
-                          id
-                          p
-                          spd-counter
-                          att-counter
-                          hlt-counter
-                          g
-                          ((resolve (.get (:perk ut) "select"))))
+       :old            (Unit. (make-unit ut)
+                              id
+                              p
+                              spd-counter
+                              att-counter
+                              hlt-counter
+                              g
+                              ((resolve (.get (:perk ut) "select"))))
        ; "dynamic" properties (change during game)
-       :speed-counter spd-counter
+       :speed-counter  spd-counter
        :attack-counter att-counter
        :health-counter hlt-counter
-       :kills      0})))
+       :kills          0})))
 
 (defn regen [ctr hp max-hp]
   (cond
     (neg-int? ctr) [ctr hp]
     (pos-int? ctr) [(dec ctr) hp]
     (>= hp max-hp) [-1 hp]
-    :else          [100 (inc hp)]))
+    :else [100 (inc hp)]))
 
 (defn- run-unit-action! [[[x y] u] m]
   (let [unit (:old u)

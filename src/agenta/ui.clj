@@ -8,7 +8,7 @@
            (java.io File)))
 
 (def -tiles {:grass "grass0"
-             :tree "tree0"})
+             :tree  "tree0"})
 
 (defn simple-cache []
   (let [cache (atom {})]
