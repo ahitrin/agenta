@@ -70,6 +70,7 @@
 
 (defn- perform-attack! [m actor action [x y]]
   (let [target-id (int (.get action "target"))
+        ; TODO replace this (very ineffective) calculation with some kind of map :id -> unit
         target (:old (first (filter #(= target-id (:id %)) (vals (:objs m)))))]
     (if (some? target)
       (let [damage (.doAttack (:old actor))
