@@ -31,7 +31,7 @@
      ; Unit instance (should be removed)
      :old        (Unit. (make-unit ut)
                         p
-                        (:speed ut)
+                        (inc (rnd/i! (:speed ut)))
                         (inc (rnd/i! (:attackSpeed ut)))
                         g
                         ((resolve (.get (:perk ut) "select"))))
