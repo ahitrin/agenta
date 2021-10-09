@@ -18,15 +18,13 @@
 (defn- init-units [setting]
   (for [ut (:unit-types setting)
         p (range 2)
-        c (range 100)
-        :let [max-num (-> (:placement setting)
-                          (get p)
-                          (get (.toLowerCase (:name ut)) 0))
-              g (rnd/get-generator)
+        c (range (-> (:placement setting)
+                     (get p)
+                     (get (.toLowerCase (:name ut)) 0)))
+        :let [g (rnd/get-generator)
               spd-counter (inc (rnd/i! (:speed ut)))
               att-counter (inc (rnd/i! (:attackSpeed ut)))
-              hlt-counter (inc (rnd/i! 100))]
-        :when (< c max-num)]
+              hlt-counter (inc (rnd/i! 100))]]
     {
      ; "static" properties (do not change during game)
      :max-spd    (:speed ut)
