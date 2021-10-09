@@ -21,7 +21,10 @@
         c (range 100)
         :let [max-num (get (get (:placement setting) p)
                            (.toLowerCase (:name ut)) 0)
-              g (rnd/get-generator)]
+              g (rnd/get-generator)
+              spd-counter (inc (rnd/i! (:speed ut)))
+              att-counter (inc (rnd/i! (:attackSpeed ut)))
+              hlt-counter (inc (rnd/i! 100))]
         :when (< c max-num)]
     {
      ; "static" properties (do not change during game)
@@ -31,11 +34,15 @@
      ; Unit instance (should be removed)
      :old        (Unit. (make-unit ut)
                         p
-                        (inc (rnd/i! (:speed ut)))
-                        (inc (rnd/i! (:attackSpeed ut)))
+                        spd-counter
+                        att-counter
+                        hlt-counter
                         g
                         ((resolve (.get (:perk ut) "select"))))
      ; "dynamic" properties (change during game)
+     :speed-counter spd-counter
+     :attack-counter att-counter
+     :health-counter hlt-counter
      :kills      0}))
 
 (defn regen [ctr hp max-hp]

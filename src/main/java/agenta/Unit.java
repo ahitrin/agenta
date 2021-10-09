@@ -30,7 +30,7 @@ public class Unit
     private final Random random;
     private final Function<List<Unit>, Unit> selectTargetPerk;
 
-    public Unit(UnitType type, int player, int speedCounter, int attackCounter, Random random,
+    public Unit(UnitType type, int player, int speedCounter, int attackCounter, int healthCounter, Random random,
             Function<List<Unit>, Unit> selectTargetPerk)
     {
         this.type = type;
@@ -39,11 +39,11 @@ public class Unit
         this.selectTargetPerk = selectTargetPerk;
         this.speedCounter = speedCounter;
         this.attackCounter = attackCounter;
+        this.healthCounter = healthCounter;
         currentHitPoints = type.getHitPoints();
         state = UnitState.ATTACK;
         currentCommand = new UnitCommand(state, UnitType.MIN_PRIORITY);
         name = String.format("%s %s%d", new Faker().name().firstName(), type, player);
-        healthCounter = this.random.nextInt(100) + 1;
     }
 
     public List<Map<String, Object>> act(List<Unit> visibleObjects)
