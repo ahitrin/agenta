@@ -23,10 +23,10 @@
                                 (get (.toLowerCase (:name ut)) 0)))]
                [ut p c])
         idx (range)
+        g (rnd/get-generator)
         defs+ (map flatten (map vector defs idx))]
     (for [[ut p _ id] defs+
-          :let [g (rnd/get-generator)
-                spd-counter (inc (rnd/i! (:speed ut)))
+          :let [spd-counter (inc (rnd/i! (:speed ut)))
                 att-counter (inc (rnd/i! (:attackSpeed ut)))
                 hlt-counter (inc (rnd/i! 100))]]
       {
