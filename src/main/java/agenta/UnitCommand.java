@@ -1,5 +1,7 @@
 package agenta;
 
+import java.util.Objects;
+
 public class UnitCommand
 {
     private final UnitState state;
@@ -29,6 +31,12 @@ public class UnitCommand
         }
         UnitCommand c = (UnitCommand) obj;
         return priority == c.priority && state.equals(c.state);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(state, priority);
     }
 
     public String toString()
