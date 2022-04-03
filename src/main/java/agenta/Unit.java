@@ -30,6 +30,7 @@ public class Unit
     private final String name;
     private final Random random;
     private final Function<List<Unit>, Unit> selectTargetPerk;
+    private final List<UnitCommand> inbox = new ArrayList<>();
 
     public Unit(UnitType type, int id, int player, int speedCounter, int attackCounter, int healthCounter,
             Random random, Function<List<Unit>, Unit> selectTargetPerk)
@@ -53,6 +54,24 @@ public class Unit
                 state == UnitState.ESCAPE)
         {
             obtain(new UnitCommand(UnitState.ATTACK, currentCommand.getPriority() - 1));
+        }
+        if (!inbox.isEmpty()) {
+            UnitCommand com = null;
+            // find the last command of the maximal priority
+            for (UnitCommand candidate: inbox) {
+                if (com == null || candidate.getPriority() >= com.getPriority()) {
+                    com = candidate;
+                }
+            }
+            if (currentCommand.getState() != com.getState())
+            {
+                LOG.debug(this + " will " + com);
+            }
+            currentCommand = com;
+            if (currentHitPoints >= type.getHealthLimit(com.getPriority()))
+            {
+                state = com.getState();
+            }
         }
     }
 
@@ -166,15 +185,7 @@ public class Unit
 
     public void obtain(UnitCommand com)
     {
-        if (currentCommand.getState() != com.getState())
-        {
-            LOG.debug(this + " will " + com);
-        }
-        currentCommand = com;
-        if (currentHitPoints >= type.getHealthLimit(com.getPriority()))
-        {
-            state = com.getState();
-        }
+        inbox.add(com);
     }
 
     @Override
