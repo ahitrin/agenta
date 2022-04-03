@@ -47,7 +47,7 @@ public class Unit
         name = String.format("%s %s%d", new Faker().name().firstName(), type, player);
     }
 
-    private void doThink() {
+    public void doThink() {
         if (currentHitPoints >= type.getHealthLimit(currentCommand.getPriority()) &&
                 currentCommand.getState() == UnitState.ESCAPE)
         {
