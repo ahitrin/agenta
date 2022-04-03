@@ -21,6 +21,16 @@ public class UnitCommand
         return state;
     }
 
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (!(obj instanceof UnitCommand)) {
+            return false;
+        }
+        UnitCommand c = (UnitCommand) obj;
+        return priority == c.priority && state.equals(c.state);
+    }
+
     public String toString()
     {
         return state.name() + " with " + priority;
