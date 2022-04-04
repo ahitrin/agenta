@@ -3,7 +3,7 @@
             [agenta.perk]
             [agenta.random :as rnd]
             [clojure.tools.logging :as log])
-  (:import (agenta UnitType Unit UnitCommand UnitState)))
+  (:import (agenta Unit UnitType)))
 
 (defn- make-unit [spec]
   (proxy [UnitType] []
