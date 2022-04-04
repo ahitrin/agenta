@@ -3,7 +3,7 @@
             [agenta.perk]
             [agenta.random :as rnd]
             [clojure.tools.logging :as log])
-  (:import (agenta Unit UnitType UnitState)))
+  (:import (agenta Unit UnitState UnitType)))
 
 (defn- make-unit [spec]
   (proxy [UnitType] []
@@ -58,13 +58,12 @@
 
 (defn- do-think! [unit hp max-hp]
   (let [escape-threshold (int (/ max-hp 5))
-             attack-threshold (int (/ max-hp 4))
-             old-state (.-state unit)
-             new-state (cond
-                         (< hp escape-threshold) UnitState/ESCAPE
-                         (>= hp attack-threshold) UnitState/ATTACK
-                         :else old-state)
-             ]
+        attack-threshold (int (/ max-hp 4))
+        old-state (.-state unit)
+        new-state (cond
+                    (< hp escape-threshold) UnitState/ESCAPE
+                    (>= hp attack-threshold) UnitState/ATTACK
+                    :else old-state)]
     (when (not= old-state new-state)
       (log/debugf "%s will %s" (str unit) new-state)
       (set! (.-state unit) new-state))))
