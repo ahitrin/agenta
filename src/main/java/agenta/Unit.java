@@ -26,11 +26,9 @@ public class Unit
     private int attackCounter;
     public int healthCounter;
     public int currentHitPoints;
-    public UnitCommand currentCommand;
     private final String name;
     private final Random random;
     private final Function<List<Unit>, Unit> selectTargetPerk;
-    private final List<UnitCommand> inbox = new ArrayList<>();
 
     public Unit(UnitType type, int id, int player, int speedCounter, int attackCounter, int healthCounter,
             Random random, Function<List<Unit>, Unit> selectTargetPerk)
@@ -45,33 +43,23 @@ public class Unit
         this.healthCounter = healthCounter;
         currentHitPoints = type.getHitPoints();
         state = UnitState.ATTACK;
-        currentCommand = new UnitCommand(state, UnitType.MIN_PRIORITY);
         name = String.format("%s %s%d", new Faker().name().firstName(), type, player);
     }
 
     public void doThink() {
-        if (currentHitPoints >= type.getHealthLimit(currentCommand.getPriority()) &&
-                state == UnitState.ESCAPE)
-        {
-            obtain(new UnitCommand(UnitState.ATTACK, currentCommand.getPriority() - 1));
+        int escapeThreshold = type.getHitPoints() / 5;
+        int attackThreshold = type.getHitPoints() / 4;
+        UnitState newState = state;
+
+        if (currentHitPoints < escapeThreshold) {
+            newState = UnitState.ESCAPE;
         }
-        if (!inbox.isEmpty()) {
-            UnitCommand com = null;
-            // find the last command of the maximal priority
-            for (UnitCommand candidate: inbox) {
-                if (com == null || candidate.getPriority() >= com.getPriority()) {
-                    com = candidate;
-                }
-            }
-            if (currentCommand.getState() != com.getState())
-            {
-                LOG.debug(this + " will " + com);
-            }
-            currentCommand = com;
-            if (currentHitPoints >= type.getHealthLimit(com.getPriority()))
-            {
-                state = com.getState();
-            }
+        else if (currentHitPoints >= attackThreshold) {
+            newState = UnitState.ATTACK;
+        }
+        if (newState != state) {
+            LOG.debug("{} will {}", this, newState);
+            state = newState;
         }
     }
 
@@ -185,7 +173,6 @@ public class Unit
 
     public void obtain(UnitCommand com)
     {
-        inbox.add(com);
     }
 
     @Override
