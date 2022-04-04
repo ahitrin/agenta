@@ -49,14 +49,14 @@
        :health-counter hlt-counter
        :kills          0})))
 
-(defn regen [ctr hp max-hp]
+(defn- regen [ctr hp max-hp]
   (cond
     (neg-int? ctr) [ctr hp]
     (pos-int? ctr) [(dec ctr) hp]
     (>= hp max-hp) [-1 hp]
     :else [100 (inc hp)]))
 
-(defn do-think! [unit hp max-hp]
+(defn- do-think! [unit hp max-hp]
   (let [escape-threshold (int (/ max-hp 5))
              attack-threshold (int (/ max-hp 4))
              old-state (.-state unit)
