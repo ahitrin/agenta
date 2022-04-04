@@ -20,6 +20,7 @@ public class Unit
     protected int y;
     public final UnitType type;
     private final int id;
+    private UnitState state;
     private final int player;
     public int speedCounter;
     private int attackCounter;
@@ -43,13 +44,14 @@ public class Unit
         this.attackCounter = attackCounter;
         this.healthCounter = healthCounter;
         currentHitPoints = type.getHitPoints();
-        currentCommand = new UnitCommand(UnitState.ATTACK, UnitType.MIN_PRIORITY);
+        state = UnitState.ATTACK;
+        currentCommand = new UnitCommand(state, UnitType.MIN_PRIORITY);
         name = String.format("%s %s%d", new Faker().name().firstName(), type, player);
     }
 
     public void doThink() {
         if (currentHitPoints >= type.getHealthLimit(currentCommand.getPriority()) &&
-                currentCommand.getState() == UnitState.ESCAPE)
+                state == UnitState.ESCAPE)
         {
             obtain(new UnitCommand(UnitState.ATTACK, currentCommand.getPriority() - 1));
         }
@@ -65,9 +67,10 @@ public class Unit
             {
                 LOG.debug(this + " will " + com);
             }
+            currentCommand = com;
             if (currentHitPoints >= type.getHealthLimit(com.getPriority()))
             {
-                currentCommand = com;
+                state = com.getState();
             }
         }
     }
@@ -90,7 +93,7 @@ public class Unit
 
         List<Unit> neighbours;
         List<Map<String, Object>> unitActions = new ArrayList<>();
-        switch (currentCommand.getState())
+        switch (state)
         {
         case STAND:
             neighbours = filterEnemies(filterInAttackRadius(visibleObjects));
