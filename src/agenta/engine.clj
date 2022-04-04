@@ -12,7 +12,6 @@
     (getRange [] (:range spec))
     (getAttackSpeed [] (:attackSpeed spec))
     (getHitPoints [] (:hitPoints spec))
-    (getHealthLimit [lvl] (/ (* (- 4 lvl) (:hitPoints spec)) 5))
     (toString [] (:name spec))))
 
 (defn- init-units [setting]
