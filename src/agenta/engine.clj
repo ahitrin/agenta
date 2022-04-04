@@ -86,8 +86,6 @@
             (set! (.-currentHitPoints target) new-hp)
             (when (neg-int? ctr)
               (set! (.-healthCounter target) 100))
-            (when (< new-hp limit)
-              (.obtain target (UnitCommand. UnitState/ESCAPE (inc prio))))
             (if-not (pos-int? new-hp)
               (do
                 (log/debugf "%s is dead" target)

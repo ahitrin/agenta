@@ -171,10 +171,6 @@ public class Unit
         return (currentHitPoints > 0);
     }
 
-    public void obtain(UnitCommand com)
-    {
-    }
-
     @Override
     public String toString()
     {
