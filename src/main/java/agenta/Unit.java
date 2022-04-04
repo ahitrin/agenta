@@ -46,7 +46,7 @@ public class Unit
         name = String.format("%s %s%d", new Faker().name().firstName(), type, player);
     }
 
-    public void doThink() {
+    public void doThink(List<Unit> visibleObjects) {
         int escapeThreshold = type.getHitPoints() / 5;
         int attackThreshold = type.getHitPoints() / 4;
         UnitState newState = state;
@@ -65,7 +65,6 @@ public class Unit
 
     public List<Map<String, Object>> act(List<Unit> visibleObjects)
     {
-        doThink();
         if (attackCounter > 0)
         {
             attackCounter--;

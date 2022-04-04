@@ -64,7 +64,8 @@
           max-hp (.getHitPoints (.getType unit))
           [new-ctr new-hp] (regen hc hp max-hp)]
       (set! (.-healthCounter unit) new-ctr)
-      (set! (.-currentHitPoints unit) new-hp))
+      (set! (.-currentHitPoints unit) new-hp)
+      (.doThink unit visible-objects))
     [u (first (.act unit (map :old visible-objects))) [x y]]))
 
 (defn- perform-attack! [m actor action [x y]]
