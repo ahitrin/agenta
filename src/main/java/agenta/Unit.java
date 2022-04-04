@@ -20,7 +20,7 @@ public class Unit
     protected int y;
     public final UnitType type;
     private final int id;
-    private UnitState state;
+    public UnitState state;
     private final int player;
     public int speedCounter;
     private int attackCounter;
@@ -44,23 +44,6 @@ public class Unit
         currentHitPoints = type.getHitPoints();
         state = UnitState.ATTACK;
         name = String.format("%s %s%d", new Faker().name().firstName(), type, player);
-    }
-
-    public void doThink(List<Unit> visibleObjects) {
-        int escapeThreshold = type.getHitPoints() / 5;
-        int attackThreshold = type.getHitPoints() / 4;
-        UnitState newState = state;
-
-        if (currentHitPoints < escapeThreshold) {
-            newState = UnitState.ESCAPE;
-        }
-        else if (currentHitPoints >= attackThreshold) {
-            newState = UnitState.ATTACK;
-        }
-        if (newState != state) {
-            LOG.debug("{} will {}", this, newState);
-            state = newState;
-        }
     }
 
     public List<Map<String, Object>> act(List<Unit> visibleObjects)

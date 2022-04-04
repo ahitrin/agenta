@@ -3,7 +3,7 @@
             [agenta.perk]
             [agenta.random :as rnd]
             [clojure.tools.logging :as log])
-  (:import (agenta Unit UnitType)))
+  (:import (agenta Unit UnitType UnitState)))
 
 (defn- make-unit [spec]
   (proxy [UnitType] []
@@ -56,6 +56,19 @@
     (>= hp max-hp) [-1 hp]
     :else [100 (inc hp)]))
 
+(defn do-think! [unit hp max-hp]
+  (let [escape-threshold (int (/ max-hp 5))
+             attack-threshold (int (/ max-hp 4))
+             old-state (.-state unit)
+             new-state (cond
+                         (< hp escape-threshold) UnitState/ESCAPE
+                         (>= hp attack-threshold) UnitState/ATTACK
+                         :else old-state)
+             ]
+    (when (not= old-state new-state)
+      (log/debugf "%s will %s" (str unit) new-state)
+      (set! (.-state unit) new-state))))
+
 (defn- run-unit-action! [[[x y] u] m]
   (let [unit (:old u)
         visible-objects (gm/objects-in-radius m x y (:visibility u))]
@@ -65,7 +78,7 @@
           [new-ctr new-hp] (regen hc hp max-hp)]
       (set! (.-healthCounter unit) new-ctr)
       (set! (.-currentHitPoints unit) new-hp)
-      (.doThink unit visible-objects))
+      (do-think! unit hp max-hp))
     [u (first (.act unit (map :old visible-objects))) [x y]]))
 
 (defn- perform-attack! [m actor action [x y]]
