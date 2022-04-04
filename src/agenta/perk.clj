@@ -15,7 +15,7 @@
   (let [target (atom nil)
         choose (fn [cur new-units]
                  (cond
-                   (and (some? cur) (.isAlive cur) (.contains new-units cur)) cur
+                   (and (some? cur) (pos? (.-currentHitPoints cur)) (.contains new-units cur)) cur
                    (false? (.isEmpty new-units)) (.get new-units (rnd/i! (count new-units)))
                    :else nil))]
     (proxy [Function] []

@@ -129,7 +129,7 @@
 
 (defn- apply-actions! [actions m]
   (reduce apply-action! m
-          (filter #(.isAlive (:old (first %))) actions)))
+          (filter #(pos? (.-currentHitPoints (:old (first %)))) actions)))
 
 (defn run-game! [setting viewer]
   (let [u (init-units setting)

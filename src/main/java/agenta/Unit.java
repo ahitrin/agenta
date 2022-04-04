@@ -143,11 +143,6 @@ public class Unit
         return y;
     }
 
-    public boolean isAlive()
-    {
-        return (currentHitPoints > 0);
-    }
-
     @Override
     public String toString()
     {
