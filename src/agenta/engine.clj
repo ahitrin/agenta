@@ -77,9 +77,7 @@
       (let [damage (.doAttack (:old actor))
             hp (.-currentHitPoints target)
             new-hp (- hp damage)
-            ctr (.-healthCounter target)
-            prio (.getPriority (.-currentCommand target))
-            limit (.getHealthLimit (.-type target) prio)]
+            ctr (.-healthCounter target)]
         (if (and (pos? damage) (pos? hp))
           (do
             (log/debugf "%s strikes %s with %d" (dissoc actor :img :max-spd :visibility) target damage)
