@@ -142,7 +142,7 @@ public class Unit
     @Override
     public String toString()
     {
-        return String.format("#%d (%d HP) at [%d, %d]", id, currentHitPoints, x, y);
+        return String.format("(%d HP) at [%d, %d]", currentHitPoints, x, y);
     }
 
     public int doAttack()
