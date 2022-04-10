@@ -50,6 +50,7 @@
        ; "dynamic" properties (change during game)
        :speed-counter  (ctr/make spd-counter (:speed ut))
        :attack-counter (ctr/make att-counter (:attackSpeed ut))
+       :health         (:hitPoints ut)
        :health-counter (ctr/make hlt-counter 100)
        :kills          0})))
 
