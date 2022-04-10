@@ -1,5 +1,6 @@
 (ns agenta.engine
-  (:require [agenta.game-map :as gm]
+  (:require [agenta.counter :as ctr]
+            [agenta.game-map :as gm]
             [agenta.perk]
             [agenta.random :as rnd]
             [clojure.tools.logging :as log])
@@ -47,9 +48,9 @@
                               g
                               ((resolve (.get (:perk ut) "select"))))
        ; "dynamic" properties (change during game)
-       :speed-counter  spd-counter
-       :attack-counter att-counter
-       :health-counter hlt-counter
+       :speed-counter  (ctr/make spd-counter (:speed ut))
+       :attack-counter (ctr/make att-counter (:attackSpeed ut))
+       :health-counter (ctr/make hlt-counter 100)
        :kills          0})))
 
 (defn- pretty [unit]
