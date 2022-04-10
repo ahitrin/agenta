@@ -139,9 +139,7 @@
           (filter #(pos? (.-currentHitPoints (:old (first %)))) actions)))
 
 (defn- tick-health [objs]
-  (let [before (first objs)]
-    ; (log/debug before)
-    objs))
+  (reduce-kv #(assoc %1 %2 (update %3 :health-counter ctr/tick)) {} objs))
 
 (defn run-game! [setting viewer]
   (let [u (init-units setting)
