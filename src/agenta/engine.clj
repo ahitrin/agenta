@@ -138,16 +138,22 @@
   (reduce apply-action! m
           (filter #(pos? (.-currentHitPoints (:old (first %)))) actions)))
 
+(defn- tick-health [objs]
+  (let [before (first objs)]
+    ; (log/debug before)
+    objs))
+
 (defn run-game! [setting viewer]
   (let [u (init-units setting)
         start-map (gm/make-map (:map setting) u)
         limit (:max-ticks (:experiment setting))]
     (loop [m start-map winner -1 tick 0]
-      (let [objs (:objs m)]
-        (viewer m objs)
+      (let [objs (:objs m)
+            objs1 (tick-health objs)]
+        (viewer m objs1)
         (if (or (<= 0 winner) (<= limit tick))
           {:winner winner :steps tick}
-          (let [actions (set (filter #(some? (second %)) (map #(run-unit-action! % m) objs)))
+          (let [actions (set (filter #(some? (second %)) (map #(run-unit-action! % m) objs1)))
                 new-m (apply-actions! actions m)
                 units-per-player (group-by #(.getPlayer (:old %)) (vals (:objs new-m)))]
             (recur new-m
