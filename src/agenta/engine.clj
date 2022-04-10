@@ -105,7 +105,7 @@
               (set! (.-healthCounter target) 100))
             (if-not (pos-int? new-hp)
               (do
-                (log/debugf "%s is dead" target)
+                (log/debugf "%s is dead" (pretty u))
                 (-> m
                     (gm/new-map #(update-in % [[x y] :kills] inc))
                     (gm/new-map #(dissoc % [(.getX target) (.getY target)]))))
