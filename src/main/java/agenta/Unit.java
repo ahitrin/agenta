@@ -7,8 +7,6 @@ import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import com.github.javafaker.Faker;
-
 public class Unit
 {
     protected int x;
@@ -21,7 +19,6 @@ public class Unit
     private int attackCounter;
     public int healthCounter;
     public int currentHitPoints;
-    private final String name;
     private final Random random;
     private final Function<List<Unit>, Unit> selectTargetPerk;
 
@@ -38,7 +35,6 @@ public class Unit
         this.healthCounter = healthCounter;
         currentHitPoints = type.getHitPoints();
         state = UnitState.ATTACK;
-        name = String.format("%s %s%d", new Faker().name().firstName(), type, player);
     }
 
     public List<Map<String, Object>> act(List<Unit> visibleObjects)
@@ -146,7 +142,7 @@ public class Unit
     @Override
     public String toString()
     {
-        return String.format("%s #%d (%d HP) at [%d, %d]", name, id, currentHitPoints, x, y);
+        return String.format("#%d (%d HP) at [%d, %d]", id, currentHitPoints, x, y);
     }
 
     public int doAttack()

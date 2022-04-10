@@ -3,7 +3,8 @@
             [agenta.perk]
             [agenta.random :as rnd]
             [clojure.tools.logging :as log])
-  (:import (agenta Unit UnitState UnitType)))
+  (:import (agenta Unit UnitState UnitType)
+           (com.github.javafaker Faker)))
 
 (defn- make-unit [spec]
   (proxy [UnitType] []
@@ -27,15 +28,17 @@
     (for [[ut p _ id] defs+
           :let [spd-counter (inc (rnd/i! (:speed ut)))
                 att-counter (inc (rnd/i! (:attackSpeed ut)))
-                hlt-counter (inc (rnd/i! 100))]]
+                hlt-counter (inc (rnd/i! 100))
+                utype       (make-unit ut)]]
       {
        ; "static" properties (do not change during game)
        :max-spd        (:speed ut)
        :visibility     (:visibility ut)
        :img            (str (:image ut) p)
        :id             id
+       :name           (format "%s %s%d" (.firstName (.name (Faker.))) utype p)
        ; Unit instance (should be removed)
-       :old            (Unit. (make-unit ut)
+       :old            (Unit. utype
                               id
                               p
                               spd-counter
@@ -95,7 +98,7 @@
             ctr (.-healthCounter target)]
         (if (and (pos? damage) (pos? hp))
           (do
-            (log/debugf "%s strikes %s with %d" (pretty actor) target damage)
+            (log/debugf "%s strikes %s with %d" (pretty actor) (pretty u) damage)
             (set! (.-currentHitPoints target) new-hp)
             (when (neg-int? ctr)
               (set! (.-healthCounter target) 100))
