@@ -49,6 +49,9 @@
        :health-counter hlt-counter
        :kills          0})))
 
+(defn- pretty [unit]
+  (dissoc unit :img :max-spd :visibility))
+
 (defn- regen [ctr hp max-hp]
   (cond
     (neg-int? ctr) [ctr hp]
@@ -92,7 +95,7 @@
             ctr (.-healthCounter target)]
         (if (and (pos? damage) (pos? hp))
           (do
-            (log/debugf "%s strikes %s with %d" (dissoc actor :img :max-spd :visibility) target damage)
+            (log/debugf "%s strikes %s with %d" (pretty actor) target damage)
             (set! (.-currentHitPoints target) new-hp)
             (when (neg-int? ctr)
               (set! (.-healthCounter target) 100))
