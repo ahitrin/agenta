@@ -139,7 +139,7 @@
   (reduce apply-action! m
           (filter #(pos? (.-currentHitPoints (:old (first %)))) actions)))
 
-(defn- tick-health [objs]
+(defn tick-health [objs]
   (reduce-kv #(assoc %1 %2 (update %3 :health-counter ctr/tick)) {} objs))
 
 (defn run-game! [setting viewer]
