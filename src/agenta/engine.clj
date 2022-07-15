@@ -142,7 +142,8 @@
 (defn- on-hp-tick [m]
   (let [m1 (update m :health-counter ctr/tick)
         m2 (if (ctr/ready? (:health-counter m1))
-             (update m1 :health-counter ctr/reset)
+             (-> m1 (update :health-counter ctr/reset)
+                    (update :health inc))
              m1)]
     m2))
 
