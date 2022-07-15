@@ -104,14 +104,16 @@
             (set! (.-currentHitPoints target) new-hp)
             (when (neg-int? ctr)
               (set! (.-healthCounter target) 100))
-            (let [m1 (gm/new-map m #(update-in % [[(.getX target) (.getY target)] :health] - damage))
+            (let [tx (.getX target)
+                  ty (.getY target)
+                  m1 (gm/new-map m #(update-in % [[tx ty] :health] - damage))
                   u1 (update-in u [:health] - damage)]
               (if-not (pos-int? new-hp)
                 (do
                   (log/debugf "%s is dead" (pretty u1))
                   (-> m1
                       (gm/new-map #(update-in % [[x y] :kills] inc))
-                      (gm/new-map #(dissoc % [(.getX target) (.getY target)]))))
+                      (gm/new-map #(dissoc % [tx ty]))))
                 m1)))
           m))
       m)))
