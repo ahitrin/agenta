@@ -135,8 +135,11 @@
    "move"   perform-move!})
 
 (defn- apply-action! [m [actor action [x y]]]
-  (let [atype (.get action "type")]
-    (if (pos? (.-currentHitPoints (:old actor)))
+  (let [actual-actor (gm/obj-by-id m (:id actor))
+        atype (.get action "type")]
+    (if (and (some? actual-actor)
+             ; probably, an excessive check: actors with neg health are removed from map
+             (pos? (:health actor)))
       (apply (action-selector atype) [m actor action [x y]])
       m)))
 
