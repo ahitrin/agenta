@@ -34,6 +34,7 @@
       {
        ; "static" properties (do not change during game)
        :max-spd        (:speed ut)
+       :max-health     (:hitPoints ut)
        :visibility     (:visibility ut)
        :img            (str (:image ut) p)
        :id             id
@@ -148,9 +149,10 @@
 
 (defn- on-hp-tick [m]
   (let [m1 (update m :health-counter ctr/tick)
+        grow (if (< (:health m1) (:max-health m1)) 1 0)
         m2 (if (ctr/ready? (:health-counter m1))
              (-> m1 (update :health-counter ctr/reset)
-                    (update :health inc))
+                    (update :health + grow))
              m1)]
     m2))
 
