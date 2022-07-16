@@ -81,10 +81,11 @@
   (let [unit (:old u)
         visible-objects (gm/objects-in-radius m x y (:visibility u))]
     (let [hc (.-healthCounter unit)
-          hp (:health u)
+          hp (.-currentHitPoints unit)
           max-hp (.getHitPoints (.getType unit))
-          [new-ctr _] (regen hc hp max-hp)]
+          [new-ctr new-hp] (regen hc hp max-hp)]
       (set! (.-healthCounter unit) new-ctr)
+      (set! (.-currentHitPoints unit) new-hp)
       (do-think! unit hp max-hp))
     [u (first (.act unit (map :old visible-objects))) [x y]]))
 
