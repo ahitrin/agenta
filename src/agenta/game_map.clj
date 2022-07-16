@@ -44,6 +44,10 @@
       (.moveTo (:old unit) x y))
     (new-map m #(into % objs))))
 
+(defn obj-by-id [m oid]
+  ; TODO replace this (very ineffective) calculation with some kind of map :id -> unit
+  (first (filter #(= oid (:id %)) (vals (:objs m)))))
+
 (defn objects-in-radius [m x y r]
   (let [limit (int r)]
     (filter some?
