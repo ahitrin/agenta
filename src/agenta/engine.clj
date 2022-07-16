@@ -95,12 +95,13 @@
         target (:old u)]
     (if (some? target)
       (let [damage (.doAttack (:old actor))
-            hp (:health u)
+            hp (.-currentHitPoints target)
             new-hp (- hp damage)
             ctr (.-healthCounter target)]
         (if (and (pos? damage) (pos? hp))
           (do
             (log/debugf "%s strikes %s with %d" (pretty actor) (pretty u) damage)
+            (set! (.-currentHitPoints target) new-hp)
             (when (neg-int? ctr)
               (set! (.-healthCounter target) 100))
             (let [tx (.getX target)
