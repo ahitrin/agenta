@@ -82,7 +82,7 @@
         visible-objects (gm/objects-in-radius m x y (:visibility u))]
     (let [hc (.-healthCounter unit)
           hp (:health u)
-          max-hp (:max-health u)
+          max-hp (.getHitPoints (.getType unit))
           [new-ctr _] (regen hc hp max-hp)]
       (set! (.-healthCounter unit) new-ctr)
       (do-think! unit hp max-hp))
