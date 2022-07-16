@@ -136,11 +136,12 @@
 
 (defn- apply-action! [m [actor action [x y]]]
   (let [atype (.get action "type")]
-    (apply (action-selector atype) [m actor action [x y]])))
+    (if (pos? (.-currentHitPoints (:old actor)))
+      (apply (action-selector atype) [m actor action [x y]])
+      m)))
 
 (defn- apply-actions! [actions m]
-  (reduce apply-action! m
-          (filter #(pos? (.-currentHitPoints (:old (first %)))) actions)))
+  (reduce apply-action! m actions))
 
 (defn- on-hp-tick [m]
   (let [m1 (update m :health-counter ctr/tick)
