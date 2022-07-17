@@ -61,7 +61,7 @@ public class Unit
             if (!neighbours.isEmpty())
             {
                 List<Unit> currentNeighbours = new ArrayList<>(neighbours);
-                unitActions.add(attack(selectTargetPerk.apply(currentNeighbours)));
+                unitActions.add(attack(currentNeighbours));
             }
             break;
         case ATTACK:
@@ -69,7 +69,7 @@ public class Unit
             if (!neighbours.isEmpty())
             {
                 List<Unit> currentNeighbours = new ArrayList<>(neighbours);
-                unitActions.add(attack(selectTargetPerk.apply(currentNeighbours)));
+                unitActions.add(attack(currentNeighbours));
             }
             else
             {
@@ -114,9 +114,10 @@ public class Unit
         return Map.of("type", "move", "dx", dx, "dy", dy);
     }
 
-    private static Map<String, Object> attack(Unit other)
+    private Map<String, Object> attack(List<Unit> candidates)
     {
-        return Map.of("type", "attack", "target", other.id);
+        Unit target = selectTargetPerk.apply(candidates);
+        return Map.of("type", "attack", "target", target.id);
     }
 
     public int getPlayer()
