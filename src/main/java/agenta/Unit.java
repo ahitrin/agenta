@@ -15,13 +15,12 @@ public class Unit
     private final int id;
     public UnitState state;
     private final int player;
-    public int speedCounter;
     private int attackCounter;
     public int currentHitPoints;
     private final Random random;
     private final Function<List<Unit>, Unit> selectTargetPerk;
 
-    public Unit(UnitType type, int id, int player, int speedCounter, int attackCounter,
+    public Unit(UnitType type, int id, int player, int attackCounter,
             Random random, Function<List<Unit>, Unit> selectTargetPerk)
     {
         this.type = type;
@@ -29,7 +28,6 @@ public class Unit
         this.player = player;
         this.random = random;
         this.selectTargetPerk = selectTargetPerk;
-        this.speedCounter = speedCounter;
         this.attackCounter = attackCounter;
         currentHitPoints = type.getHitPoints();
         state = UnitState.ATTACK;
@@ -41,11 +39,7 @@ public class Unit
         {
             attackCounter--;
         }
-        if (speedCounter > 0)
-        {
-            speedCounter--;
-        }
-        if ((attackCounter > 0) && (speedCounter > 0) && !canMove)
+        if ((attackCounter > 0) && !canMove)
         {
             return List.of();
         }

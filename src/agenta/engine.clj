@@ -18,8 +18,7 @@
 
 (defn make-unit [random unit-type]
   "Create one unit dictionary from given specs"
-  (let [spd-counter (inc (rnd/i! (:speed unit-type)))
-        att-counter (inc (rnd/i! (:attackSpeed unit-type)))
+  (let [att-counter (inc (rnd/i! (:attackSpeed unit-type)))
         utype (make-old-unit-type unit-type)]
     {
      ; "static" properties (do not change during game)
@@ -36,12 +35,11 @@
      :old            (Unit. utype
                             (:id unit-type)
                             (:player unit-type)
-                            spd-counter
                             att-counter
                             random
                             ((resolve (.get (:perk unit-type) "select"))))
      ; "dynamic" properties (change during game)
-     :speed-counter  (ctr/make spd-counter (:speed unit-type))
+     :speed-counter  (ctr/make (inc (rnd/i! (:speed unit-type))) (:speed unit-type))
      :attack-counter (ctr/make att-counter (:attackSpeed unit-type))
      :health         (:hitPoints unit-type)
      :health-counter (ctr/make (inc (rnd/i! 100)) 100)
@@ -86,7 +84,7 @@
         visible-objects (gm/objects-in-radius m x y (:visibility u))]
     (set! (.-currentHitPoints unit) new-hp)
     (do-think! unit new-hp max-hp)
-    [u (first (.act unit (map :old visible-objects) Boolean/TRUE)) [x y]]))
+    [u (first (.act unit (map :old visible-objects) (ctr/ready? (:speed-counter u)))) [x y]]))
 
 (defn perform-attack! [m actor action [x y]]
   (let [target-id (int (.get action "target"))
@@ -117,12 +115,11 @@
 (defn perform-move! [m actor action [x y]]
   (let [dx (int (.get action "dx"))
         dy (int (.get action "dy"))]
-    (if (zero? (.-speedCounter (:old actor)))
+    (if (ctr/ready? (:speed-counter actor))
       (let [nx (+ x dx) ny (+ y dy)]
         (if (gm/can-place? m [nx ny])
           (do
             (.moveTo (:old actor) nx ny)
-            (set! (.-speedCounter (:old actor)) (:max-spd actor))
             (let [actor1 (update actor :speed-counter ctr/reset)]
               (gm/new-map m #(assoc (dissoc % [x y]) [nx ny] actor1))))
           m))
