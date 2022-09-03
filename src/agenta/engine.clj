@@ -7,7 +7,7 @@
   (:import (agenta Unit UnitState UnitType)
            (com.github.javafaker Faker)))
 
-(defn- make-old-unit-type [spec]
+(defn make-old-unit-type [spec]
   (proxy [UnitType] []
     (getBaseAttack [] (:baseAttack spec))
     (getRandAttack [] (:randAttack spec))
@@ -16,7 +16,7 @@
     (getHitPoints [] (:hitPoints spec))
     (toString [] (:name spec))))
 
-(defn- make-unit [random unit-type id]
+(defn make-unit [random unit-type id]
   "Create one unit dictionary from given specs"
   (let [spd-counter (inc (rnd/i! (:speed unit-type)))
         att-counter (inc (rnd/i! (:attackSpeed unit-type)))
@@ -50,7 +50,7 @@
      :kills          0}))
 
 
-(defn- into-defs [setting]
+(defn into-defs [setting]
   "Transform setting object into a list of unit defs (specs)"
   (for [ut (:unit-types setting)
         p (range 2)
@@ -59,7 +59,7 @@
                      (get (.toLowerCase (:name ut)) 0)))]
     (assoc ut :player p)))
 
-(defn- init-units [setting]
+(defn init-units [setting]
   "Create all units described by setting"
   (let [defs (into-defs setting)
         idx (range)
@@ -68,17 +68,17 @@
     (for [[ut id] defs+]
       (make-unit g ut id))))
 
-(defn- pretty [unit]
+(defn pretty [unit]
   (dissoc unit :img :max-spd :visibility))
 
-(defn- regen [ctr hp max-hp]
+(defn regen [ctr hp max-hp]
   (cond
     (neg-int? ctr) [ctr hp]
     (pos-int? ctr) [(dec ctr) hp]
     (>= hp max-hp) [-1 hp]
     :else [100 (inc hp)]))
 
-(defn- do-think! [unit hp max-hp]
+(defn do-think! [unit hp max-hp]
   (let [escape-threshold (int (/ max-hp 5))
         attack-threshold (int (/ max-hp 4))
         old-state (.-state unit)
@@ -90,7 +90,7 @@
       (log/debugf "%s will %s" (str unit) new-state)
       (set! (.-state unit) new-state))))
 
-(defn- run-unit-action! [[[x y] u] m]
+(defn run-unit-action! [[[x y] u] m]
   (let [unit (:old u)
         visible-objects (gm/objects-in-radius m x y (:visibility u))]
     (let [hc (.-healthCounter unit)
@@ -102,7 +102,7 @@
       (do-think! unit hp max-hp))
     [u (first (.act unit (map :old visible-objects))) [x y]]))
 
-(defn- perform-attack! [m actor action [x y]]
+(defn perform-attack! [m actor action [x y]]
   (let [target-id (int (.get action "target"))
         u (gm/obj-by-id m target-id)
         target (:old u)]
@@ -131,7 +131,7 @@
           m))
       m)))
 
-(defn- perform-move! [m actor action [x y]]
+(defn perform-move! [m actor action [x y]]
   (let [dx (int (.get action "dx"))
         dy (int (.get action "dy"))]
     (if (zero? (.-speedCounter (:old actor)))
@@ -148,7 +148,7 @@
   {"attack" perform-attack!
    "move"   perform-move!})
 
-(defn- apply-action! [m [actor action [x y]]]
+(defn apply-action! [m [actor action [x y]]]
   (let [actual-actor (gm/obj-by-id m (:id actor))
         atype (.get action "type")]
     (if (and (some? actual-actor)
@@ -157,10 +157,10 @@
       (apply (action-selector atype) [m actor action [x y]])
       m)))
 
-(defn- apply-actions! [actions m]
+(defn apply-actions! [actions m]
   (reduce apply-action! m actions))
 
-(defn- on-hp-tick [m]
+(defn on-hp-tick [m]
   (let [m1 (update m :health-counter ctr/tick)
         grow (if (< (:health m1) (:max-health m1)) 1 0)
         m2 (if (ctr/ready? (:health-counter m1))

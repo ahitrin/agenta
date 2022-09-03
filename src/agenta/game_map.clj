@@ -18,7 +18,7 @@
         trees (take n (distinct (repeatedly #(rnd/xy! size-x size-y))))]
     (apply assoc {} (interleave trees (repeat n :tree)))))
 
-(defn- object-at [m x y]
+(defn object-at [m x y]
   ((:objs m) [x y]))
 
 (defn cell-type [m x y]
