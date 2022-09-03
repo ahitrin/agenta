@@ -16,7 +16,7 @@
     (getHitPoints [] (:hitPoints spec))
     (toString [] (:name spec))))
 
-(defn make-unit [random unit-type id]
+(defn make-unit [random unit-type]
   "Create one unit dictionary from given specs"
   (let [spd-counter (inc (rnd/i! (:speed unit-type)))
         att-counter (inc (rnd/i! (:attackSpeed unit-type)))
@@ -28,14 +28,14 @@
      :max-health     (:hitPoints unit-type)
      :visibility     (:visibility unit-type)
      :img            (str (:image unit-type) (:player unit-type))
-     :id             id
+     :id             (:id unit-type)
      :name           (format "%s %s%d"
                              (.firstName (.name (Faker.)))
                              (:name unit-type)
                              (:player unit-type))
      ; Unit instance (should be removed)
      :old            (Unit. utype
-                            id
+                            (:id unit-type)
                             (:player unit-type)
                             spd-counter
                             att-counter
@@ -62,11 +62,9 @@
 (defn init-units [setting]
   "Create all units described by setting"
   (let [defs (into-defs setting)
-        idx (range)
         g (rnd/get-generator)
-        defs+ (map flatten (map vector defs idx))]
-    (for [[ut id] defs+]
-      (make-unit g ut id))))
+        defs+ (map-indexed #(assoc %2 :id %) defs)]
+    (map #(make-unit g %) defs+)))
 
 (defn pretty [unit]
   (dissoc unit :img :max-spd :visibility))
