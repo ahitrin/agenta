@@ -116,12 +116,8 @@ public class Unit
 
     private Map<String, Object> attack(List<Unit> candidates)
     {
-        String ids = candidates.stream()
-            .map(Unit::getId)
-            .map(i -> Integer.toString(i))
-            .collect(Collectors.joining(","));
         Unit target = selectTargetPerk.apply(candidates);
-        return Map.of("type", "attack", "target", target.id, "ids", ids);
+        return Map.of("type", "attack", "target", target.id);
     }
 
     public int getPlayer()
@@ -142,11 +138,6 @@ public class Unit
     public final int getY()
     {
         return y;
-    }
-
-    public int getId()
-    {
-        return id;
     }
 
     @Override
