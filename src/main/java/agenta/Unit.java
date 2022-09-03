@@ -17,12 +17,11 @@ public class Unit
     private final int player;
     public int speedCounter;
     private int attackCounter;
-    public int healthCounter;
     public int currentHitPoints;
     private final Random random;
     private final Function<List<Unit>, Unit> selectTargetPerk;
 
-    public Unit(UnitType type, int id, int player, int speedCounter, int attackCounter, int healthCounter,
+    public Unit(UnitType type, int id, int player, int speedCounter, int attackCounter,
             Random random, Function<List<Unit>, Unit> selectTargetPerk)
     {
         this.type = type;
@@ -32,7 +31,6 @@ public class Unit
         this.selectTargetPerk = selectTargetPerk;
         this.speedCounter = speedCounter;
         this.attackCounter = attackCounter;
-        this.healthCounter = healthCounter;
         currentHitPoints = type.getHitPoints();
         state = UnitState.ATTACK;
     }

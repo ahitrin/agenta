@@ -20,7 +20,6 @@
   "Create one unit dictionary from given specs"
   (let [spd-counter (inc (rnd/i! (:speed unit-type)))
         att-counter (inc (rnd/i! (:attackSpeed unit-type)))
-        hlt-counter (inc (rnd/i! 100))
         utype (make-old-unit-type unit-type)]
     {
      ; "static" properties (do not change during game)
@@ -39,14 +38,13 @@
                             (:player unit-type)
                             spd-counter
                             att-counter
-                            hlt-counter
                             random
                             ((resolve (.get (:perk unit-type) "select"))))
      ; "dynamic" properties (change during game)
      :speed-counter  (ctr/make spd-counter (:speed unit-type))
      :attack-counter (ctr/make att-counter (:attackSpeed unit-type))
      :health         (:hitPoints unit-type)
-     :health-counter (ctr/make hlt-counter 100)
+     :health-counter (ctr/make (inc (rnd/i! 100)) 100)
      :kills          0}))
 
 
