@@ -60,16 +60,14 @@ public class Unit
             neighbours = filterEnemies(filterInAttackRadius(visibleObjects));
             if (!neighbours.isEmpty())
             {
-                List<Unit> currentNeighbours = new ArrayList<>(neighbours);
-                unitActions.add(attack(selectTargetPerk.apply(currentNeighbours)));
+                unitActions.add(attack(selectTargetPerk.apply(neighbours)));
             }
             break;
         case ATTACK:
             neighbours = filterEnemies(filterInAttackRadius(visibleObjects));
             if (!neighbours.isEmpty())
             {
-                List<Unit> currentNeighbours = new ArrayList<>(neighbours);
-                unitActions.add(attack(selectTargetPerk.apply(currentNeighbours)));
+                unitActions.add(attack(selectTargetPerk.apply(neighbours)));
             }
             else
             {
