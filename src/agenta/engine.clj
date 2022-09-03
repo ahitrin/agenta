@@ -16,33 +16,33 @@
     (getHitPoints [] (:hitPoints spec))
     (toString [] (:name spec))))
 
-(defn- make-unit [g ut p id]
+(defn- make-unit [random unit-type player id]
   "Create one unit dictionary from given specs"
-  (let [spd-counter (inc (rnd/i! (:speed ut)))
-        att-counter (inc (rnd/i! (:attackSpeed ut)))
+  (let [spd-counter (inc (rnd/i! (:speed unit-type)))
+        att-counter (inc (rnd/i! (:attackSpeed unit-type)))
         hlt-counter (inc (rnd/i! 100))
-        utype (make-old-unit-type ut)]
+        utype (make-old-unit-type unit-type)]
     {
      ; "static" properties (do not change during game)
-     :max-spd        (:speed ut)
-     :max-health     (:hitPoints ut)
-     :visibility     (:visibility ut)
-     :img            (str (:image ut) p)
+     :max-spd        (:speed unit-type)
+     :max-health     (:hitPoints unit-type)
+     :visibility     (:visibility unit-type)
+     :img            (str (:image unit-type) player)
      :id             id
-     :name           (format "%s %s%d" (.firstName (.name (Faker.))) utype p)
+     :name           (format "%s %s%d" (.firstName (.name (Faker.))) utype player)
      ; Unit instance (should be removed)
      :old            (Unit. utype
                             id
-                            p
+                            player
                             spd-counter
                             att-counter
                             hlt-counter
-                            g
-                            ((resolve (.get (:perk ut) "select"))))
+                            random
+                            ((resolve (.get (:perk unit-type) "select"))))
      ; "dynamic" properties (change during game)
-     :speed-counter  (ctr/make spd-counter (:speed ut))
-     :attack-counter (ctr/make att-counter (:attackSpeed ut))
-     :health         (:hitPoints ut)
+     :speed-counter  (ctr/make spd-counter (:speed unit-type))
+     :attack-counter (ctr/make att-counter (:attackSpeed unit-type))
+     :health         (:hitPoints unit-type)
      :health-counter (ctr/make hlt-counter 100)
      :kills          0}))
 
