@@ -123,7 +123,8 @@
           (do
             (.moveTo (:old actor) nx ny)
             (set! (.-speedCounter (:old actor)) (:max-spd actor))
-            (gm/new-map m #(assoc (dissoc % [x y]) [nx ny] actor)))
+            (let [actor1 (update actor :speed-counter ctr/reset)]
+              (gm/new-map m #(assoc (dissoc % [x y]) [nx ny] actor1))))
           m))
       m)))
 
@@ -144,11 +145,14 @@
   (reduce apply-action! m actions))
 
 (defn on-hp-tick [m]
-  (let [m1 (update m :health-counter ctr/tick)
+  (let [m1 (-> m
+               (update :health-counter ctr/tick)
+               (update :speed-counter ctr/tick))
         grow (if (< (:health m1) (:max-health m1)) 1 0)
         m2 (if (ctr/ready? (:health-counter m1))
-             (-> m1 (update :health-counter ctr/reset)
-                    (update :health + grow))
+             (-> m1
+                 (update :health-counter ctr/reset)
+                 (update :health + grow))
              m1)]
     m2))
 
