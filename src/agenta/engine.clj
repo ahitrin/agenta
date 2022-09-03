@@ -57,7 +57,7 @@
         _ (range (-> (:placement setting)
                      (get p)
                      (get (.toLowerCase (:name ut)) 0)))]
-    [(assoc ut :player p)]))
+    (assoc ut :player p)))
 
 (defn- init-units [setting]
   "Create all units described by setting"
