@@ -16,6 +16,36 @@
     (getHitPoints [] (:hitPoints spec))
     (toString [] (:name spec))))
 
+(defn- make-unit [g ut p id]
+  "Create one unit dictionary from given specs"
+  (let [spd-counter (inc (rnd/i! (:speed ut)))
+        att-counter (inc (rnd/i! (:attackSpeed ut)))
+        hlt-counter (inc (rnd/i! 100))
+        utype (make-old-unit-type ut)]
+    {
+     ; "static" properties (do not change during game)
+     :max-spd        (:speed ut)
+     :max-health     (:hitPoints ut)
+     :visibility     (:visibility ut)
+     :img            (str (:image ut) p)
+     :id             id
+     :name           (format "%s %s%d" (.firstName (.name (Faker.))) utype p)
+     ; Unit instance (should be removed)
+     :old            (Unit. utype
+                            id
+                            p
+                            spd-counter
+                            att-counter
+                            hlt-counter
+                            g
+                            ((resolve (.get (:perk ut) "select"))))
+     ; "dynamic" properties (change during game)
+     :speed-counter  (ctr/make spd-counter (:speed ut))
+     :attack-counter (ctr/make att-counter (:attackSpeed ut))
+     :health         (:hitPoints ut)
+     :health-counter (ctr/make hlt-counter 100)
+     :kills          0}))
+
 (defn- init-units [setting]
   (let [defs (for [ut (:unit-types setting)
                    p (range 2)
@@ -26,34 +56,8 @@
         idx (range)
         g (rnd/get-generator)
         defs+ (map flatten (map vector defs idx))]
-    (for [[ut p _ id] defs+
-          :let [spd-counter (inc (rnd/i! (:speed ut)))
-                att-counter (inc (rnd/i! (:attackSpeed ut)))
-                hlt-counter (inc (rnd/i! 100))
-                utype       (make-old-unit-type ut)]]
-      {
-       ; "static" properties (do not change during game)
-       :max-spd        (:speed ut)
-       :max-health     (:hitPoints ut)
-       :visibility     (:visibility ut)
-       :img            (str (:image ut) p)
-       :id             id
-       :name           (format "%s %s%d" (.firstName (.name (Faker.))) utype p)
-       ; Unit instance (should be removed)
-       :old            (Unit. utype
-                              id
-                              p
-                              spd-counter
-                              att-counter
-                              hlt-counter
-                              g
-                              ((resolve (.get (:perk ut) "select"))))
-       ; "dynamic" properties (change during game)
-       :speed-counter  (ctr/make spd-counter (:speed ut))
-       :attack-counter (ctr/make att-counter (:attackSpeed ut))
-       :health         (:hitPoints ut)
-       :health-counter (ctr/make hlt-counter 100)
-       :kills          0})))
+    (for [[ut p _ id] defs+]
+      (make-unit g ut p id))))
 
 (defn- pretty [unit]
   (dissoc unit :img :max-spd :visibility))
