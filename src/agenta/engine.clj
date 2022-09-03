@@ -46,13 +46,19 @@
      :health-counter (ctr/make hlt-counter 100)
      :kills          0}))
 
+
+(defn into-defs [setting]
+  "Transform setting object into a list of unit defs (specs)"
+  (for [ut (:unit-types setting)
+        p (range 2)
+        c (range (-> (:placement setting)
+                     (get p)
+                     (get (.toLowerCase (:name ut)) 0)))]
+    [ut p c]))
+
 (defn- init-units [setting]
-  (let [defs (for [ut (:unit-types setting)
-                   p (range 2)
-                   c (range (-> (:placement setting)
-                                (get p)
-                                (get (.toLowerCase (:name ut)) 0)))]
-               [ut p c])
+  "Create all units described by setting"
+  (let [defs (into-defs setting)
         idx (range)
         g (rnd/get-generator)
         defs+ (map flatten (map vector defs idx))]
