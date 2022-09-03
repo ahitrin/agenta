@@ -50,7 +50,7 @@
      :kills          0}))
 
 
-(defn into-defs [setting]
+(defn- into-defs [setting]
   "Transform setting object into a list of unit defs (specs)"
   (for [ut (:unit-types setting)
         p (range 2)
