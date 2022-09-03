@@ -122,12 +122,6 @@ public class Unit
         return y;
     }
 
-    @Override
-    public String toString()
-    {
-        return String.format("(%d HP) at [%d, %d]", currentHitPoints, x, y);
-    }
-
     public int doAttack()
     {
         return random.nextInt(type.getRandAttack()) + type.getBaseAttack();
