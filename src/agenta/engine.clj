@@ -90,14 +90,11 @@
 
 (defn run-unit-action! [[[x y] u] m]
   (let [unit (:old u)
+        max-hp (:max-health u)
+        new-hp (:health u)
         visible-objects (gm/objects-in-radius m x y (:visibility u))]
-    (let [hc (.-healthCounter unit)
-          hp (.-currentHitPoints unit)
-          max-hp (.getHitPoints (.getType unit))
-          [new-ctr new-hp] (regen hc hp max-hp)]
-      (set! (.-healthCounter unit) new-ctr)
-      (set! (.-currentHitPoints unit) new-hp)
-      (do-think! unit hp max-hp))
+    (set! (.-currentHitPoints unit) new-hp)
+    (do-think! unit new-hp max-hp)
     [u (first (.act unit (map :old visible-objects))) [x y]]))
 
 (defn perform-attack! [m actor action [x y]]
@@ -107,14 +104,11 @@
     (if (some? target)
       (let [damage (.doAttack (:old actor))
             hp (.-currentHitPoints target)
-            new-hp (- hp damage)
-            ctr (.-healthCounter target)]
+            new-hp (- hp damage)]
         (if (and (pos? damage) (pos? hp))
           (do
             (log/debugf "%s strikes %s with %d" (pretty actor) (pretty u) damage)
             (set! (.-currentHitPoints target) new-hp)
-            (when (neg-int? ctr)
-              (set! (.-healthCounter target) 100))
             (let [tx (.getX target)
                   ty (.getY target)
                   m1 (gm/new-map m #(update-in % [[tx ty] :health] - damage))
