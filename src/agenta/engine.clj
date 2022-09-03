@@ -54,10 +54,10 @@
   "Transform setting object into a list of unit defs (specs)"
   (for [ut (:unit-types setting)
         p (range 2)
-        c (range (-> (:placement setting)
+        _ (range (-> (:placement setting)
                      (get p)
                      (get (.toLowerCase (:name ut)) 0)))]
-    [(assoc ut :player p) c]))
+    [(assoc ut :player p)]))
 
 (defn- init-units [setting]
   "Create all units described by setting"
@@ -65,7 +65,7 @@
         idx (range)
         g (rnd/get-generator)
         defs+ (map flatten (map vector defs idx))]
-    (for [[ut _ id] defs+]
+    (for [[ut id] defs+]
       (make-unit g ut id))))
 
 (defn- pretty [unit]
