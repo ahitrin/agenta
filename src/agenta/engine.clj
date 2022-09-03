@@ -82,10 +82,7 @@
         visible-objects (gm/objects-in-radius m x y (:visibility u))]
     (set! (.-currentHitPoints unit) new-hp)
     (do-think! unit new-hp max-hp)
-    [u (first (.act unit
-                    (map :old visible-objects)
-                    (ctr/ready? (:attack-counter u))
-                    (ctr/ready? (:speed-counter u)))) [x y]]))
+    [u (first (.act unit (map :old visible-objects))) [x y]]))
 
 (defn perform-attack! [m actor action [x y]]
   (let [target-id (int (.get action "target"))

@@ -30,13 +30,8 @@ public class Unit
         state = UnitState.ATTACK;
     }
 
-    public List<Map<String, Object>> act(List<Unit> visibleObjects, boolean canAttack, boolean canMove)
+    public List<Map<String, Object>> act(List<Unit> visibleObjects)
     {
-        if (!canAttack && !canMove)
-        {
-            return List.of();
-        }
-
         List<Unit> neighbours;
         List<Map<String, Object>> unitActions = new ArrayList<>();
         switch (state)
