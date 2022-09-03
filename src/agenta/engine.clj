@@ -29,7 +29,10 @@
      :visibility     (:visibility unit-type)
      :img            (str (:image unit-type) (:player unit-type))
      :id             id
-     :name           (format "%s %s%d" (.firstName (.name (Faker.))) utype (:player unit-type))
+     :name           (format "%s %s%d"
+                             (.firstName (.name (Faker.)))
+                             (:name unit-type)
+                             (:player unit-type))
      ; Unit instance (should be removed)
      :old            (Unit. utype
                             id
