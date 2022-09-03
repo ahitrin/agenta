@@ -15,31 +15,24 @@ public class Unit
     private final int id;
     public UnitState state;
     private final int player;
-    private int attackCounter;
     public int currentHitPoints;
     private final Random random;
     private final Function<List<Unit>, Unit> selectTargetPerk;
 
-    public Unit(UnitType type, int id, int player, int attackCounter,
-            Random random, Function<List<Unit>, Unit> selectTargetPerk)
+    public Unit(UnitType type, int id, int player, Random random, Function<List<Unit>, Unit> selectTargetPerk)
     {
         this.type = type;
         this.id = id;
         this.player = player;
         this.random = random;
         this.selectTargetPerk = selectTargetPerk;
-        this.attackCounter = attackCounter;
         currentHitPoints = type.getHitPoints();
         state = UnitState.ATTACK;
     }
 
     public List<Map<String, Object>> act(List<Unit> visibleObjects, boolean canAttack, boolean canMove)
     {
-        if (attackCounter > 0)
-        {
-            attackCounter--;
-        }
-        if ((attackCounter > 0) && !canAttack && !canMove)
+        if (!canAttack && !canMove)
         {
             return List.of();
         }
@@ -142,11 +135,6 @@ public class Unit
 
     public int doAttack()
     {
-        if (attackCounter > 0)
-        {
-            return 0;
-        }
-        attackCounter = type.getAttackSpeed();
         return random.nextInt(type.getRandAttack()) + type.getBaseAttack();
     }
 

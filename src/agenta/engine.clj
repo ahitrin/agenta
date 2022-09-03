@@ -18,8 +18,7 @@
 
 (defn make-unit [random unit-type]
   "Create one unit dictionary from given specs"
-  (let [att-counter (inc (rnd/i! (:attackSpeed unit-type)))
-        utype (make-old-unit-type unit-type)]
+  (let [utype (make-old-unit-type unit-type)]
     {
      ; "static" properties (do not change during game)
      :max-spd        (:speed unit-type)
@@ -35,12 +34,11 @@
      :old            (Unit. utype
                             (:id unit-type)
                             (:player unit-type)
-                            att-counter
                             random
                             ((resolve (.get (:perk unit-type) "select"))))
      ; "dynamic" properties (change during game)
      :speed-counter  (ctr/make (inc (rnd/i! (:speed unit-type))) (:speed unit-type))
-     :attack-counter (ctr/make att-counter (:attackSpeed unit-type))
+     :attack-counter (ctr/make (inc (rnd/i! (:attackSpeed unit-type))) (:attackSpeed unit-type))
      :health         (:hitPoints unit-type)
      :health-counter (ctr/make (inc (rnd/i! 100)) 100)
      :kills          0}))
@@ -86,7 +84,7 @@
     (do-think! unit new-hp max-hp)
     [u (first (.act unit
                     (map :old visible-objects)
-                    Boolean/TRUE
+                    (ctr/ready? (:attack-counter u))
                     (ctr/ready? (:speed-counter u)))) [x y]]))
 
 (defn perform-attack! [m actor action [x y]]
