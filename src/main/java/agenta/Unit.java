@@ -33,13 +33,13 @@ public class Unit
         state = UnitState.ATTACK;
     }
 
-    public List<Map<String, Object>> act(List<Unit> visibleObjects, boolean canMove)
+    public List<Map<String, Object>> act(List<Unit> visibleObjects, boolean canAttack, boolean canMove)
     {
         if (attackCounter > 0)
         {
             attackCounter--;
         }
-        if ((attackCounter > 0) && !canMove)
+        if ((attackCounter > 0) && !canAttack && !canMove)
         {
             return List.of();
         }

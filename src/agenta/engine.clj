@@ -84,13 +84,18 @@
         visible-objects (gm/objects-in-radius m x y (:visibility u))]
     (set! (.-currentHitPoints unit) new-hp)
     (do-think! unit new-hp max-hp)
-    [u (first (.act unit (map :old visible-objects) (ctr/ready? (:speed-counter u)))) [x y]]))
+    [u (first (.act unit
+                    (map :old visible-objects)
+                    Boolean/TRUE
+                    (ctr/ready? (:speed-counter u)))) [x y]]))
 
 (defn perform-attack! [m actor action [x y]]
   (let [target-id (int (.get action "target"))
         u (gm/obj-by-id m target-id)
         target (:old u)]
-    (if (some? target)
+    (if (and
+          (ctr/ready? (:attack-counter actor))
+          (some? target))
       (let [damage (.doAttack (:old actor))
             hp (.-currentHitPoints target)
             new-hp (- hp damage)]
@@ -100,15 +105,16 @@
             (set! (.-currentHitPoints target) new-hp)
             (let [tx (.getX target)
                   ty (.getY target)
-                  m1 (gm/new-map m #(update-in % [[tx ty] :health] - damage))
+                  m1 (gm/new-map m #(update-in % [[x y] :attack-counter] ctr/reset))
+                  m2 (gm/new-map m1 #(update-in % [[tx ty] :health] - damage))
                   u1 (update-in u [:health] - damage)]
               (if-not (pos-int? new-hp)
                 (do
                   (log/debugf "%s is dead" (pretty u1))
-                  (-> m1
+                  (-> m2
                       (gm/new-map #(update-in % [[x y] :kills] inc))
                       (gm/new-map #(dissoc % [tx ty]))))
-                m1)))
+                m2)))
           m))
       m)))
 
@@ -144,7 +150,8 @@
 (defn on-hp-tick [m]
   (let [m1 (-> m
                (update :health-counter ctr/tick)
-               (update :speed-counter ctr/tick))
+               (update :speed-counter ctr/tick)
+               (update :attack-counter ctr/tick))
         grow (if (< (:health m1) (:max-health m1)) 1 0)
         m2 (if (ctr/ready? (:health-counter m1))
              (-> m1
