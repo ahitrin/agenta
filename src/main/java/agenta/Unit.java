@@ -35,7 +35,7 @@ public class Unit
         state = UnitState.ATTACK;
     }
 
-    public List<Map<String, Object>> act(List<Unit> visibleObjects)
+    public List<Map<String, Object>> act(List<Unit> visibleObjects, boolean canMove)
     {
         if (attackCounter > 0)
         {
@@ -45,7 +45,7 @@ public class Unit
         {
             speedCounter--;
         }
-        if ((attackCounter > 0) && (speedCounter > 0))
+        if ((attackCounter > 0) && (speedCounter > 0) && !canMove)
         {
             return List.of();
         }
