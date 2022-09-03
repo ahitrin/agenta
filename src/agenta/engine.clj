@@ -63,17 +63,17 @@
 (defn pretty [unit]
   (dissoc unit :img :max-spd :visibility :attack-counter :speed-counter :health-counter :old))
 
-(defn do-think! [unit hp max-hp]
+(defn do-think! [actor hp max-hp]
   (let [escape-threshold (int (/ max-hp 5))
         attack-threshold (int (/ max-hp 4))
-        old-state (.-state unit)
+        old-state (.-state (:old actor))
         new-state (cond
                     (< hp escape-threshold) UnitState/ESCAPE
                     (>= hp attack-threshold) UnitState/ATTACK
                     :else old-state)]
     (when (not= old-state new-state)
-      (log/debugf "%s will %s" (str unit) new-state)
-      (set! (.-state unit) new-state))))
+      (log/debugf "%s will %s" (pretty actor) new-state)
+      (set! (.-state (:old actor)) new-state))))
 
 (defn run-unit-action! [[[x y] u] m]
   (let [unit (:old u)
@@ -81,7 +81,7 @@
         new-hp (:health u)
         visible-objects (gm/objects-in-radius m x y (:visibility u))]
     (set! (.-currentHitPoints unit) new-hp)
-    (do-think! unit new-hp max-hp)
+    (do-think! u new-hp max-hp)
     [u (first (.act unit (map :old visible-objects))) [x y]]))
 
 (defn perform-attack! [m actor action [x y]]
