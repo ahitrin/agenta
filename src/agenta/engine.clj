@@ -7,7 +7,7 @@
   (:import (agenta Unit UnitState UnitType)
            (com.github.javafaker Faker)))
 
-(defn- make-unit [spec]
+(defn- make-old-unit-type [spec]
   (proxy [UnitType] []
     (getBaseAttack [] (:baseAttack spec))
     (getRandAttack [] (:randAttack spec))
@@ -30,7 +30,7 @@
           :let [spd-counter (inc (rnd/i! (:speed ut)))
                 att-counter (inc (rnd/i! (:attackSpeed ut)))
                 hlt-counter (inc (rnd/i! 100))
-                utype       (make-unit ut)]]
+                utype       (make-old-unit-type ut)]]
       {
        ; "static" properties (do not change during game)
        :max-spd        (:speed ut)
