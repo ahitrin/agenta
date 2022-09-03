@@ -60,14 +60,14 @@ public class Unit
             neighbours = filterEnemies(filterInAttackRadius(visibleObjects));
             if (!neighbours.isEmpty())
             {
-                unitActions.add(attack(selectTargetPerk.apply(neighbours)));
+                unitActions.add(attack(neighbours));
             }
             break;
         case ATTACK:
             neighbours = filterEnemies(filterInAttackRadius(visibleObjects));
             if (!neighbours.isEmpty())
             {
-                unitActions.add(attack(selectTargetPerk.apply(neighbours)));
+                unitActions.add(attack(neighbours));
             }
             else
             {
@@ -112,9 +112,14 @@ public class Unit
         return Map.of("type", "move", "dx", dx, "dy", dy);
     }
 
-    private static Map<String, Object> attack(Unit other)
+    private Map<String, Object> attack(List<Unit> targets)
     {
-        return Map.of("type", "attack", "target", other.id);
+        Unit chosen = selectTargetPerk.apply(targets);
+        String ids = targets.stream()
+                .map(unit -> unit.id)
+                .map(String::valueOf)
+                .collect(Collectors.joining(","));
+        return Map.of("type", "attack", "target", chosen.id, "ids", ids);
     }
 
     public int getPlayer()
