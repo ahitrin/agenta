@@ -107,11 +107,6 @@ public class Unit
         return player;
     }
 
-    public UnitType getType()
-    {
-        return type;
-    }
-
     public final int getX()
     {
         return x;
