@@ -13,7 +13,6 @@ public class Unit
     protected int y;
     public final UnitType type;
     private final int id;
-    public UnitState state;
     private final int player;
     public int currentHitPoints;
     private final Random random;
@@ -27,14 +26,13 @@ public class Unit
         this.random = random;
         this.selectTargetPerk = selectTargetPerk;
         currentHitPoints = type.getHitPoints();
-        state = UnitState.ATTACK;
     }
 
-    public List<Map<String, Object>> act(List<Unit> visibleObjects)
+    public List<Map<String, Object>> act(UnitState externalState, List<Unit> visibleObjects)
     {
         List<Unit> neighbours;
         List<Map<String, Object>> unitActions = new ArrayList<>();
-        switch (state)
+        switch (externalState)
         {
         case STAND:
             neighbours = filterEnemies(filterInAttackRadius(visibleObjects));
