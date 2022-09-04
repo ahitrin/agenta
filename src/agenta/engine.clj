@@ -67,7 +67,7 @@
       (assoc :hp (format "%d/%d" (:health unit) (:max-health unit)))
       (dissoc :img :max-spd :visibility :attack-counter :speed-counter :health-counter :think-counter :old :health :max-health)))
 
-(defn do-think [actor hp max-hp]
+(defn update-state [actor hp max-hp]
   (let [escape-threshold (int (/ max-hp 5))
         attack-threshold (int (/ max-hp 4))
         old-state (:state actor)
@@ -84,7 +84,7 @@
         visible-objects (gm/objects-in-radius m x y (:visibility u))]
     (set! (.-currentHitPoints unit) new-hp)
     (if (ctr/ready? (:think-counter u))
-     (let [u1 (do-think (update u :think-counter ctr/reset) new-hp max-hp)
+     (let [u1 (update-state (update u :think-counter ctr/reset) new-hp max-hp)
           action (first (.act unit (str (:state u1)) (map :old visible-objects)))]
       (log/debugf "%s wants %s" (pretty u1) action)
       [u1 action [x y]])
