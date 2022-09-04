@@ -37,10 +37,11 @@
                             random
                             ((resolve (.get (:perk unit-type) "select"))))
      ; "dynamic" properties (change during game)
-     :speed-counter  (ctr/make (inc (rnd/i! (:speed unit-type))) (:speed unit-type))
      :attack-counter (ctr/make (inc (rnd/i! (:attackSpeed unit-type))) (:attackSpeed unit-type))
-     :health         (:hitPoints unit-type)
      :health-counter (ctr/make (inc (rnd/i! 100)) 100)
+     :speed-counter  (ctr/make (inc (rnd/i! (:speed unit-type))) (:speed unit-type))
+     :think-counter  (ctr/make (inc (rnd/i! 3)) 3)
+     :health         (:hitPoints unit-type)
      :state          :attack
      :kills          0}))
 
@@ -64,7 +65,7 @@
 (defn pretty [unit]
   (-> unit
       (assoc :hp (format "%d/%d" (:health unit) (:max-health unit)))
-      (dissoc :img :max-spd :visibility :attack-counter :speed-counter :health-counter :old :health :max-health)))
+      (dissoc :img :max-spd :visibility :attack-counter :speed-counter :health-counter :think-counter :old :health :max-health)))
 
 (defn do-think [actor hp max-hp]
   (let [escape-threshold (int (/ max-hp 5))
@@ -82,10 +83,12 @@
         new-hp (:health u)
         visible-objects (gm/objects-in-radius m x y (:visibility u))]
     (set! (.-currentHitPoints unit) new-hp)
-    (let [u1 (do-think u new-hp max-hp)
+    (if (ctr/ready? (:think-counter u))
+     (let [u1 (do-think (update u :think-counter ctr/reset) new-hp max-hp)
           action (first (.act unit (str (:state u1)) (map :old visible-objects)))]
       (log/debugf "%s wants %s" (pretty u1) action)
-      [u1 action [x y]])))
+      [u1 action [x y]])
+     [u nil [x y]])))
 
 (defn perform-attack! [m actor action [x y]]
   (let [target-id (int (.get action "target"))
@@ -149,7 +152,8 @@
   (let [m1 (-> m
                (update :health-counter ctr/tick)
                (update :speed-counter ctr/tick)
-               (update :attack-counter ctr/tick))
+               (update :attack-counter ctr/tick)
+               (update :think-counter ctr/tick))
         grow (if (< (:health m1) (:max-health m1)) 1 0)
         m2 (if (ctr/ready? (:health-counter m1))
              (-> m1
