@@ -34,13 +34,6 @@ public class Unit
         List<Map<String, Object>> unitActions = new ArrayList<>();
         switch (externalState)
         {
-        case ":stand":
-            neighbours = filterEnemies(filterInAttackRadius(visibleObjects));
-            if (!neighbours.isEmpty())
-            {
-                unitActions.add(attack(neighbours));
-            }
-            break;
         case ":attack":
             neighbours = filterEnemies(filterInAttackRadius(visibleObjects));
             if (!neighbours.isEmpty())
