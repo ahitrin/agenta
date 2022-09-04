@@ -32,34 +32,32 @@ public class Unit
     {
         List<Unit> neighbours;
         List<Map<String, Object>> unitActions = new ArrayList<>();
-        switch (externalState)
+        if (!":attack".equals(externalState))
         {
-        case ":attack":
-            neighbours = filterEnemies(filterInAttackRadius(visibleObjects));
+            throw new RuntimeException("Unknown action " + externalState);
+        }
+
+        neighbours = filterEnemies(filterInAttackRadius(visibleObjects));
+        if (!neighbours.isEmpty())
+        {
+            unitActions.add(attack(neighbours));
+        }
+        else
+        {
+            neighbours = filterEnemies(visibleObjects);
             if (!neighbours.isEmpty())
             {
-                unitActions.add(attack(neighbours));
+                Unit target = selectTargetPerk.apply(neighbours);
+                int dx = Integer.compare(target.x - x, 0);
+                int dy = Integer.compare(target.y - y, 0);
+                unitActions.add(move(dx, dy));
             }
             else
             {
-                neighbours = filterEnemies(visibleObjects);
-                if (!neighbours.isEmpty())
-                {
-                    Unit target = selectTargetPerk.apply(neighbours);
-                    int dx = Integer.compare(target.x - x, 0);
-                    int dy = Integer.compare(target.y - y, 0);
-                    unitActions.add(move(dx, dy));
-                }
-                else
-                {
-                    int dx = random.nextInt(3) - 1;
-                    int dy = random.nextInt(3) - 1;
-                    unitActions.add(move(dx, dy));
-                }
+                int dx = random.nextInt(3) - 1;
+                int dy = random.nextInt(3) - 1;
+                unitActions.add(move(dx, dy));
             }
-            break;
-        default:
-            throw new RuntimeException("Unknown action " + externalState);
         }
         return unitActions;
     }
