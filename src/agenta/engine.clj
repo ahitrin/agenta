@@ -77,9 +77,23 @@
                     :else old-state)]
     (assoc actor :state new-state)))
 
+(defn normalize-length [[x y]]
+  (let [r (Math/sqrt (+ (* x x) (* y y)))]
+    [(/ x r) (/ y r)]))
+
+(defn vec+ [v1 v2]
+  [(+ (first v1) (first v2)) (+ (second v1) (second v2))])
+
 (defn wrap-act! [actor visible-objects]
   "Temporary wrapper around Unit.act"
-  (first (.act (:old actor) (str (:state actor)) (map :old visible-objects))))
+  (if (= :escape (:state actor))
+    (let [enemies (filter #(not= (:player %) (:player actor)) visible-objects)
+          vectors (map #(vec [(- (.getX (:old actor)) (.getX (:old %)))
+                              (- (.getY (:old actor)) (.getY (:old %)))]) enemies)
+          norm-vecs (map normalize-length vectors)
+          total (if (seq norm-vecs) (reduce vec+ norm-vecs) [0 0])]
+      {"type" "move", "dx" (int (Math/signum (float (first total)))), "dy" (int (Math/signum (float (second total))))})
+    (first (.act (:old actor) (str (:state actor)) (map :old visible-objects)))))
 
 (defn run-unit-action! [[[x y] u] m]
   (let [unit (:old u)

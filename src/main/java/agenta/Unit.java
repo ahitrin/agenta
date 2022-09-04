@@ -58,22 +58,8 @@ public class Unit
                 }
             }
             break;
-        case ":escape":
-            neighbours = filterEnemies(visibleObjects);
-            if (!neighbours.isEmpty())
-            {
-                double dx = 0, dy = 0, r;
-                for (Unit uu : neighbours)
-                {
-                    r = Math.sqrt((uu.x - x) * (uu.x - x) + (uu.y - y) * (uu.y - y));
-                    dx += (x - uu.x) / r;
-                    dy += (y - uu.y) / r;
-                }
-                int idx = (dx > 0) ? 1 : (dx < 0) ? -1 : 0;
-                int idy = (dy > 0) ? 1 : (dy < 0) ? -1 : 0;
-                unitActions.add(move(idx, idy));
-            }
-            break;
+        default:
+            throw new RuntimeException("Unknown action " + externalState);
         }
         return unitActions;
     }
