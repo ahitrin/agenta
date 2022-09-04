@@ -62,7 +62,9 @@
     (map #(make-unit g %) defs+)))
 
 (defn pretty [unit]
-  (dissoc unit :img :max-spd :visibility :attack-counter :speed-counter :health-counter :old))
+  (-> unit
+      (assoc :hp (format "%d/%d" (:health unit) (:max-health unit)))
+      (dissoc :img :max-spd :visibility :attack-counter :speed-counter :health-counter :old :health :max-health)))
 
 (defn do-think! [actor hp max-hp]
   (let [escape-threshold (int (/ max-hp 5))
