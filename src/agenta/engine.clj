@@ -84,6 +84,10 @@
 (defn vec+ [v1 v2]
   [(+ (first v1) (first v2)) (+ (second v1) (second v2))])
 
+(defn sign [f]
+  "Return sign of a given number (1, -1, 0)"
+  (int (Math/signum (float f))))
+
 (defn wrap-act! [actor visible-objects]
   "Temporary wrapper around Unit.act"
   (if (= :escape (:state actor))
@@ -92,7 +96,7 @@
                               (- (.getY (:old actor)) (.getY (:old %)))]) enemies)
           norm-vecs (map normalize-length vectors)
           total (if (seq norm-vecs) (reduce vec+ norm-vecs) [0 0])]
-      {"type" "move", "dx" (int (Math/signum (float (first total)))), "dy" (int (Math/signum (float (second total))))})
+      {"type" "move", "dx" (sign (first total)), "dy" (sign (second total))})
     (first (.act (:old actor) (str (:state actor)) (map :old visible-objects)))))
 
 (defn run-unit-action! [[[x y] u] m]
