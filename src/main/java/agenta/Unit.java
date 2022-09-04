@@ -28,20 +28,20 @@ public class Unit
         currentHitPoints = type.getHitPoints();
     }
 
-    public List<Map<String, Object>> act(UnitState externalState, List<Unit> visibleObjects)
+    public List<Map<String, Object>> act(String externalState, List<Unit> visibleObjects)
     {
         List<Unit> neighbours;
         List<Map<String, Object>> unitActions = new ArrayList<>();
         switch (externalState)
         {
-        case STAND:
+        case ":stand":
             neighbours = filterEnemies(filterInAttackRadius(visibleObjects));
             if (!neighbours.isEmpty())
             {
                 unitActions.add(attack(neighbours));
             }
             break;
-        case ATTACK:
+        case ":attack":
             neighbours = filterEnemies(filterInAttackRadius(visibleObjects));
             if (!neighbours.isEmpty())
             {
@@ -65,7 +65,7 @@ public class Unit
                 }
             }
             break;
-        case ESCAPE:
+        case ":escape":
             neighbours = filterEnemies(visibleObjects);
             if (!neighbours.isEmpty())
             {

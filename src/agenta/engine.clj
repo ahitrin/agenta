@@ -4,7 +4,7 @@
             [agenta.perk]
             [agenta.random :as rnd]
             [clojure.tools.logging :as log])
-  (:import (agenta Unit UnitState UnitType)
+  (:import (agenta Unit UnitType)
            (com.github.javafaker Faker)))
 
 (defn make-old-unit-type [spec]
@@ -41,7 +41,7 @@
      :attack-counter (ctr/make (inc (rnd/i! (:attackSpeed unit-type))) (:attackSpeed unit-type))
      :health         (:hitPoints unit-type)
      :health-counter (ctr/make (inc (rnd/i! 100)) 100)
-     :state          UnitState/ATTACK
+     :state          :attack
      :kills          0}))
 
 
@@ -69,8 +69,8 @@
         attack-threshold (int (/ max-hp 4))
         old-state (:state actor)
         new-state (cond
-                    (< hp escape-threshold) UnitState/ESCAPE
-                    (>= hp attack-threshold) UnitState/ATTACK
+                    (< hp escape-threshold) :escape
+                    (>= hp attack-threshold) :attack
                     :else old-state)]
     (if (not= old-state new-state)
       (do
@@ -85,7 +85,7 @@
         visible-objects (gm/objects-in-radius m x y (:visibility u))]
     (set! (.-currentHitPoints unit) new-hp)
     (let [u1 (do-think! u new-hp max-hp)]
-      [u1 (first (.act unit (:state u1) (map :old visible-objects))) [x y]])))
+      [u1 (first (.act unit (str (:state u1)) (map :old visible-objects))) [x y]])))
 
 (defn perform-attack! [m actor action [x y]]
   (let [target-id (int (.get action "target"))
