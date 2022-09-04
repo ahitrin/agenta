@@ -74,11 +74,9 @@
                     (< hp escape-threshold) :escape
                     (>= hp attack-threshold) :attack
                     :else old-state)]
-    (if (not= old-state new-state)
-      (do
-        (log/debugf "%s will %s" (pretty actor) new-state)
-        (assoc actor :state new-state))
-      actor)))
+    (when (not= old-state new-state)
+      (log/debugf "%s will %s" (pretty actor) new-state))
+    (assoc actor :state new-state)))
 
 (defn run-unit-action! [[[x y] u] m]
   (let [unit (:old u)
