@@ -77,6 +77,10 @@
                     :else old-state)]
     (assoc actor :state new-state)))
 
+(defn wrap-act! [actor visible-objects]
+  "Temporary wrapper around Unit.act"
+  (first (.act (:old actor) (str (:state actor)) (map :old visible-objects))))
+
 (defn run-unit-action! [[[x y] u] m]
   (let [unit (:old u)
         max-hp (:max-health u)
@@ -84,11 +88,11 @@
         visible-objects (gm/objects-in-radius m x y (:visibility u))]
     (set! (.-currentHitPoints unit) new-hp)
     (if (ctr/ready? (:think-counter u))
-     (let [u1 (update-state (update u :think-counter ctr/reset) new-hp max-hp)
-          action (first (.act unit (str (:state u1)) (map :old visible-objects)))]
-      (log/debugf "%s wants %s" (pretty u1) action)
-      [u1 action [x y]])
-     [u nil [x y]])))
+      (let [u1 (update-state (update u :think-counter ctr/reset) new-hp max-hp)
+            action (wrap-act! u1 visible-objects)]
+        (log/debugf "%s wants %s" (pretty u1) action)
+        [u1 action [x y]])
+      [u nil [x y]])))
 
 (defn perform-attack! [m actor action [x y]]
   (let [target-id (int (.get action "target"))
