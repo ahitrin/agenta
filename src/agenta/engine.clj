@@ -9,8 +9,6 @@
 
 (defn make-old-unit-type [spec]
   (proxy [UnitType] []
-    (getBaseAttack [] (:baseAttack spec))
-    (getRandAttack [] (:randAttack spec))
     (getRange [] (:range spec))
     (getAttackSpeed [] (:attackSpeed spec))
     (getHitPoints [] (:hitPoints spec))
