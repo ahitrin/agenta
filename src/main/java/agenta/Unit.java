@@ -92,11 +92,6 @@ public class Unit
         return y;
     }
 
-    public int doAttack()
-    {
-        return random.nextInt(type.getRandAttack()) + type.getBaseAttack();
-    }
-
     public void moveTo(int newX, int newY)
     {
         x = newX;

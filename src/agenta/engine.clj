@@ -24,6 +24,8 @@
      :max-spd        (:speed unit-type)
      :max-health     (:hitPoints unit-type)
      :visibility     (:visibility unit-type)
+     :base-attack    (:baseAttack unit-type)
+     :rnd-attack     (:randAttack unit-type)
      :img            (str (:image unit-type) (:player unit-type))
      :id             (:id unit-type)
      :name           (format "%s %s%d"
@@ -65,7 +67,7 @@
 (defn pretty [unit]
   (-> unit
       (assoc :hp (format "%d/%d" (:health unit) (:max-health unit)))
-      (dissoc :img :max-spd :visibility :attack-counter :speed-counter :health-counter :think-counter :old :health :max-health)))
+      (dissoc :img :max-spd :visibility :attack-counter :speed-counter :health-counter :think-counter :old :health :max-health :base-attack :rnd-attack)))
 
 (defn update-state [actor hp max-hp]
   (let [escape-threshold (int (/ max-hp 5))
@@ -119,7 +121,7 @@
     (if (and
           (ctr/ready? (:attack-counter actor))
           (some? target))
-      (let [damage (.doAttack (:old actor))
+      (let [damage (+ (rnd/i! (:rnd-attack actor)) (:base-attack actor))
             hp (.-currentHitPoints target)
             new-hp (- hp damage)]
         (if (and (pos? damage) (pos? hp))
