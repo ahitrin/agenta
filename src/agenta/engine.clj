@@ -1,7 +1,7 @@
 (ns agenta.engine
   (:require [agenta.counter :as ctr]
             [agenta.game-map :as gm]
-            [agenta.perk]
+            [agenta.perk :as pk]
             [agenta.random :as rnd]
             [clojure.tools.logging :as log])
   (:import (agenta Unit UnitType)
@@ -35,7 +35,7 @@
                             (:id unit-type)
                             (:player unit-type)
                             random
-                            ((resolve (.get (:perk unit-type) "select"))))
+                            (pk/as-java-fn ((resolve (.get (:perk unit-type) "select")))))
      ; "dynamic" properties (change during game)
      :attack-counter (ctr/make (inc (rnd/i! (:attackSpeed unit-type))) (:attackSpeed unit-type))
      :health-counter (ctr/make (inc (rnd/i! 100)) 100)
