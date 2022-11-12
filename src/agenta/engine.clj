@@ -35,7 +35,7 @@
                             (:id unit-type)
                             (:player unit-type)
                             random
-                            (pk/as-java-fn ((resolve (.get (:perk unit-type) "select")))))
+                            (pk/as-java-fn (resolve (.get (:perk unit-type) "select"))))
      ; "dynamic" properties (change during game)
      :attack-counter (ctr/make (inc (rnd/i! (:attackSpeed unit-type))) (:attackSpeed unit-type))
      :health-counter (ctr/make (inc (rnd/i! 100)) 100)
