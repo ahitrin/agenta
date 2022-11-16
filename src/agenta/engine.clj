@@ -65,8 +65,7 @@
 (defn pretty [unit]
   (-> unit
       (assoc :hp (format "%d/%d" (:health unit) (:max-health unit)))
-      ; TODO: replace with select-keys
-      (dissoc :img :max-spd :visibility :attack-counter :speed-counter :health-counter :think-counter :old :health :max-health :base-attack :rnd-attack)))
+      (select-keys [:kills :name :state :id :hp])))
 
 (defn update-state [actor hp max-hp]
   (let [escape-threshold (int (/ max-hp 5))
