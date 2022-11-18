@@ -28,7 +28,7 @@ public class Unit
         currentHitPoints = type.getHitPoints();
     }
 
-    public List<Map<String, Object>> act(String externalState, List<Unit> visibleObjects)
+    public List<Map<String, Object>> act(String externalState, List<Unit> enemies)
     {
         List<Map<String, Object>> unitActions = new ArrayList<>();
         if (!":attack".equals(externalState))
@@ -36,7 +36,6 @@ public class Unit
             throw new RuntimeException("Unknown action " + externalState);
         }
 
-        List<Unit> enemies = filterEnemies(visibleObjects);
         List<Unit> neighbours = filterInAttackRadius(enemies);
         if (!neighbours.isEmpty())
         {
@@ -96,11 +95,6 @@ public class Unit
     {
         x = newX;
         y = newY;
-    }
-
-    private List<Unit> filterEnemies(List<Unit> units)
-    {
-        return units.stream().filter(u -> u.getPlayer() != player).collect(Collectors.toList());
     }
 
     private List<Unit> filterInAttackRadius(List<Unit> objs)

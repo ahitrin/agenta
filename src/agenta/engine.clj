@@ -26,6 +26,7 @@
      :rnd-attack     (:randAttack unit-type)
      :img            (str (:image unit-type) (:player unit-type))
      :id             (:id unit-type)
+     :player         (:player unit-type)
      :name           (format "%s %s%d"
                              (.firstName (.name (Faker.)))
                              (:name unit-type)
@@ -100,7 +101,7 @@
               total (if (seq norm-vecs) (reduce vec+ norm-vecs) [0 0])]
           {"type" "move", "dx" (sign (first total)), "dy" (sign (second total))})
         :attack
-        (first (.act (:old actor) (str state) (map :old visible-objects))))))
+        (first (.act (:old actor) (str state) (map :old enemies))))))
 
 (defn run-unit-action! [[[x y] u] m]
   (let [unit (:old u)
