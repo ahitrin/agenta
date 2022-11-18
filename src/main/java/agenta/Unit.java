@@ -30,21 +30,21 @@ public class Unit
 
     public List<Map<String, Object>> act(String externalState, List<Unit> visibleObjects)
     {
-        List<Unit> neighbours;
         List<Map<String, Object>> unitActions = new ArrayList<>();
         if (!":attack".equals(externalState))
         {
             throw new RuntimeException("Unknown action " + externalState);
         }
 
-        neighbours = filterEnemies(filterInAttackRadius(visibleObjects));
+        List<Unit> enemies = filterEnemies(visibleObjects);
+        List<Unit> neighbours = filterInAttackRadius(enemies);
         if (!neighbours.isEmpty())
         {
             unitActions.add(attack(neighbours));
         }
         else
         {
-            neighbours = filterEnemies(visibleObjects);
+            neighbours = enemies;
             if (!neighbours.isEmpty())
             {
                 Unit target = selectTargetPerk.apply(neighbours);
