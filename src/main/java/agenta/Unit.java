@@ -36,27 +36,28 @@ public class Unit
             throw new RuntimeException("Unknown action " + externalState);
         }
 
-        List<Unit> neighbours = filterInAttackRadius(enemies);
-        if (!neighbours.isEmpty())
+        List<Unit> closestEnemies = filterInAttackRadius(enemies);
+        if (!closestEnemies.isEmpty())
         {
-            unitActions.add(attack(neighbours));
+            Unit chosen = selectTargetPerk.apply(closestEnemies);
+            String ids = closestEnemies.stream()
+                    .map(unit -> unit.id)
+                    .map(String::valueOf)
+                    .collect(Collectors.joining(","));
+            unitActions.add(Map.of("type", "attack", "target", chosen.id, "ids", ids));
+        }
+        else if (!enemies.isEmpty())
+        {
+            Unit target = selectTargetPerk.apply(enemies);
+            int dx = Integer.compare(target.x - x, 0);
+            int dy = Integer.compare(target.y - y, 0);
+            unitActions.add(move(dx, dy));
         }
         else
         {
-            neighbours = enemies;
-            if (!neighbours.isEmpty())
-            {
-                Unit target = selectTargetPerk.apply(neighbours);
-                int dx = Integer.compare(target.x - x, 0);
-                int dy = Integer.compare(target.y - y, 0);
-                unitActions.add(move(dx, dy));
-            }
-            else
-            {
-                int dx = random.nextInt(3) - 1;
-                int dy = random.nextInt(3) - 1;
-                unitActions.add(move(dx, dy));
-            }
+            int dx = random.nextInt(3) - 1;
+            int dy = random.nextInt(3) - 1;
+            unitActions.add(move(dx, dy));
         }
         return unitActions;
     }
@@ -64,16 +65,6 @@ public class Unit
     private static Map<String, Object> move(int dx, int dy)
     {
         return Map.of("type", "move", "dx", dx, "dy", dy);
-    }
-
-    private Map<String, Object> attack(List<Unit> targets)
-    {
-        Unit chosen = selectTargetPerk.apply(targets);
-        String ids = targets.stream()
-                .map(unit -> unit.id)
-                .map(String::valueOf)
-                .collect(Collectors.joining(","));
-        return Map.of("type", "attack", "target", chosen.id, "ids", ids);
     }
 
     public int getPlayer()
