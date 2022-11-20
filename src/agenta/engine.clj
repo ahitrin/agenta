@@ -107,12 +107,12 @@
           (cond
             ; attack achievable enemy
             (seq closest-enemies)
-            (let [^Unit chosen (apply (:select-perk actor) [(map :old closest-enemies)])
+            (let [^Unit chosen (apply (:select-perk actor) [closest-enemies])
                   ids (clojure.string/join "," (map #(str (:id %)) closest-enemies))]
               {"type" "attack" "target" (.getId chosen) "ids" ids})
             ; approach to enemy
             (seq enemies)
-            (let [^Unit target (apply (:select-perk actor) [(map :old enemies)])
+            (let [^Unit target (apply (:select-perk actor) [enemies])
                   dx (sign (- (.getX target) x))
                   dy (sign (- (.getY target) y))]
               {"type" "move" "dx" dx "dy" dy})
