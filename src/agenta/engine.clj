@@ -106,7 +106,22 @@
           {"type" "move", "dx" (sign (first total)), "dy" (sign (second total))})
         :attack
         (let [closest-enemies (gm/objects-in-radius m x y (:range actor))]
-          (first (.act (:old actor) (str state) (map :old enemies) (map :old closest-enemies)))))))
+          (cond
+            ; attack achievable enemy
+            (seq closest-enemies)
+            (let [^Unit chosen (apply (:select-perk actor) [(map :old closest-enemies)])
+                  ids (clojure.string/join "," (map #(str (:id %)) closest-enemies))]
+              {"type" "attack" "target" (.getId chosen) "ids" ids})
+            ; approach to enemy
+            (seq enemies)
+            (let [^Unit target (apply (:select-perk actor) [(map :old enemies)])
+                  dx (sign (- (.getX target) x))
+                  dy (sign (- (.getY target) y))]
+              {"type" "move" "dx" dx "dy" dy})
+            ; random move
+            :else
+            (let [dx (dec (rnd/i! 3)) dy (dec (rnd/i! 3))]
+              {"type" "move" "dx" dx "dy" dy}))))))
 
 (defn run-unit-action! [[[x y] u] m]
   (let [unit (:old u)
