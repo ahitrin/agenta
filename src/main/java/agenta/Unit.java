@@ -51,20 +51,15 @@ public class Unit
             Unit target = selectTargetPerk.apply(enemies);
             int dx = Integer.compare(target.x - x, 0);
             int dy = Integer.compare(target.y - y, 0);
-            unitActions.add(move(dx, dy));
+            unitActions.add(Map.of("type", "move", "dx", dx, "dy", dy));
         }
         else
         {
             int dx = random.nextInt(3) - 1;
             int dy = random.nextInt(3) - 1;
-            unitActions.add(move(dx, dy));
+            unitActions.add(Map.of("type", "move", "dx", dx, "dy", dy));
         }
         return unitActions;
-    }
-
-    private static Map<String, Object> move(int dx, int dy)
-    {
-        return Map.of("type", "move", "dx", dx, "dy", dy);
     }
 
     public int getPlayer()
