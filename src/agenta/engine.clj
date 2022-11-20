@@ -90,7 +90,7 @@
   "Return sign of a given number (1, -1, 0)"
   (int (Math/signum (float f))))
 
-(defn wrap-act! [actor visible-objects]
+(defn wrap-act! [m actor visible-objects]
   "Temporary wrapper around Unit.act"
   (let [state (:state actor)
         enemies (filter #(not= (:player %) (:player actor)) visible-objects)]
@@ -112,7 +112,7 @@
     (set! (.-currentHitPoints unit) new-hp)
     (if (ctr/ready? (:think-counter u))
       (let [u1 (update-state (update u :think-counter ctr/reset) new-hp max-hp)
-            action (wrap-act! u1 visible-objects)]
+            action (wrap-act! m u1 visible-objects)]
         (log/debugf "%s wants %s" (pretty u1) action)
         [u1 action [x y]])
       [u nil [x y]])))
