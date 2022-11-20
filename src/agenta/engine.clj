@@ -93,11 +93,13 @@
 (defn wrap-act! [m actor visible-objects]
   "Temporary wrapper around Unit.act"
   (let [state (:state actor)
+        x (.getX (:old actor))
+        y (.getY (:old actor))
         enemies (filter #(not= (:player %) (:player actor)) visible-objects)]
     (case state
         :escape
-        (let [vectors (map #(vec [(- (.getX (:old actor)) (.getX (:old %)))
-                                  (- (.getY (:old actor)) (.getY (:old %)))]) enemies)
+        (let [vectors (map #(vec [(- x (.getX (:old %)))
+                                  (- y (.getY (:old %)))]) enemies)
               norm-vecs (map normalize-length vectors)
               total (if (seq norm-vecs) (reduce vec+ norm-vecs) [0 0])]
           {"type" "move", "dx" (sign (first total)), "dy" (sign (second total))})
