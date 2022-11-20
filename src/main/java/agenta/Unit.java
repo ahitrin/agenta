@@ -1,9 +1,5 @@
 package agenta;
 
-import java.util.List;
-import java.util.Random;
-import java.util.function.Function;
-
 public class Unit
 {
     protected int x;
@@ -12,16 +8,12 @@ public class Unit
     private final int id;
     private final int player;
     public int currentHitPoints;
-    private final Random random;
-    private final Function<List<Unit>, Unit> selectTargetPerk;
 
-    public Unit(UnitType type, int id, int player, Random random, Function<List<Unit>, Unit> selectTargetPerk)
+    public Unit(UnitType type, int id, int player)
     {
         this.type = type;
         this.id = id;
         this.player = player;
-        this.random = random;
-        this.selectTargetPerk = selectTargetPerk;
         currentHitPoints = type.getHitPoints();
     }
 

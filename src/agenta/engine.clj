@@ -36,9 +36,7 @@
      ; Unit instance (should be removed)
      :old            (Unit. utype
                             (:id unit-type)
-                            (:player unit-type)
-                            random
-                            (pk/as-java-fn (resolve (.get (:perk unit-type) "select"))))
+                            (:player unit-type))
      ; "dynamic" properties (change during game)
      :attack-counter (ctr/make (inc (rnd/i! (:attackSpeed unit-type))) (:attackSpeed unit-type))
      :health-counter (ctr/make (inc (rnd/i! 100)) 100)
