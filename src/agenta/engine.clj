@@ -24,6 +24,7 @@
      :visibility     (:visibility unit-type)
      :base-attack    (:baseAttack unit-type)
      :rnd-attack     (:randAttack unit-type)
+     :select-perk    (resolve (.get (:perk unit-type) "select"))
      :img            (str (:image unit-type) (:player unit-type))
      :id             (:id unit-type)
      :player         (:player unit-type)
