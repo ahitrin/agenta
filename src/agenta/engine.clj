@@ -24,6 +24,7 @@
      :visibility     (:visibility unit-type)
      :base-attack    (:baseAttack unit-type)
      :rnd-attack     (:randAttack unit-type)
+     :range          (:range unit-type)
      :select-perk    (resolve (.get (:perk unit-type) "select"))
      :img            (str (:image unit-type) (:player unit-type))
      :id             (:id unit-type)
@@ -104,7 +105,8 @@
               total (if (seq norm-vecs) (reduce vec+ norm-vecs) [0 0])]
           {"type" "move", "dx" (sign (first total)), "dy" (sign (second total))})
         :attack
-        (first (.act (:old actor) (str state) (map :old enemies))))))
+        (let [closest-enemies (gm/objects-in-radius m x y (:range actor))]
+          (first (.act (:old actor) (str state) (map :old enemies) (map :old closest-enemies)))))))
 
 (defn run-unit-action! [[[x y] u] m]
   (let [unit (:old u)

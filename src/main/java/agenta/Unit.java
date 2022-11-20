@@ -28,7 +28,7 @@ public class Unit
         currentHitPoints = type.getHitPoints();
     }
 
-    public List<Map<String, Object>> act(String externalState, List<Unit> enemies)
+    public List<Map<String, Object>> act(String externalState, List<Unit> enemies, List<Unit> closestEnemies)
     {
         List<Map<String, Object>> unitActions = new ArrayList<>();
         if (!":attack".equals(externalState))
@@ -36,7 +36,6 @@ public class Unit
             throw new RuntimeException("Unknown action " + externalState);
         }
 
-        List<Unit> closestEnemies = filterInAttackRadius(enemies);
         if (!closestEnemies.isEmpty())
         {
             Unit chosen = selectTargetPerk.apply(closestEnemies);
@@ -81,13 +80,5 @@ public class Unit
     {
         x = newX;
         y = newY;
-    }
-
-    private List<Unit> filterInAttackRadius(List<Unit> objs)
-    {
-        float limit = type.getRange() * type.getRange();
-        return objs.stream()
-                .filter(o -> (o.x - x) * (o.x - x) + (o.y - y) * (o.y - y) <= limit)
-                .collect(Collectors.toList());
     }
 }
