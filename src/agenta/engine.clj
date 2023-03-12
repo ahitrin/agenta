@@ -86,7 +86,7 @@
                                 (- y (second (first %)))]) enemies)
             norm-vecs (map normalize-length vectors)
             total (if (seq norm-vecs) (reduce vec+ norm-vecs) [0 0])]
-        {:type "move", "dx" (sign (first total)), "dy" (sign (second total))})
+        {:type "move" :dx (sign (first total)) :dy (sign (second total))})
       :attack
       (let [closest-enemies (gm/objects-in-radius m x y (:range actor))]
         (cond
@@ -103,11 +103,11 @@
                 enemy-with-xy (nth enemies chosen-idx)
                 dx (sign (- (first (first enemy-with-xy)) x))
                 dy (sign (- (second (first enemy-with-xy)) y))]
-            {:type "move" "dx" dx "dy" dy})
+            {:type "move" :dx dx :dy dy})
           ; random move
           :else
           (let [dx (dec (rnd/i! 3)) dy (dec (rnd/i! 3))]
-            {:type "move" "dx" dx "dy" dy}))))))
+            {:type "move" :dx dx :dy dy}))))))
 
 (defn run-unit-action! [[[x y] u] m]
   (let [max-hp (:max-health u)
@@ -148,8 +148,8 @@
       m)))
 
 (defn perform-move! [m actor action [x y]]
-  (let [dx (int (.get action "dx"))
-        dy (int (.get action "dy"))]
+  (let [dx (int (:dx action))
+        dy (int (:dy action))]
     (if (ctr/ready? (:speed-counter actor))
       (let [nx (+ x dx) ny (+ y dy)]
         (if (gm/can-place? m [nx ny])
