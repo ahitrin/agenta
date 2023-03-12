@@ -54,7 +54,6 @@
                 nx (+ i x)
                 ny (+ j y)
                 obj (object-at m nx ny)]
-          :when (and (<= d2 (* r r))
-                     (pos? d2)
+          :when (and (< 0 d2 (inc (* r r)))
                      (some? obj))]
       [[nx ny] obj])))
