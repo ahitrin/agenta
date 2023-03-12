@@ -48,16 +48,21 @@
   ; TODO replace this (very ineffective) calculation with some kind of map :id -> obj
   (first (filter #(= oid (:id (val %))) (:objs m))))
 
-(defn objects-in-radius [m x y r]
+(defn objects-in-radius+ [m x y r]
   (let [limit (int r)]
-    (filter some?
-            (for [i (range (- limit) (inc limit))
-                  j (range (- limit) (inc limit))
-                  :let [d2 (+ (* i i) (* j j))
-                        nx (+ i x)
-                        ny (+ j y)]
-                  :when (and (<= d2 (* r r))
-                             (pos? d2)
-                             (< -1 nx (:size-x m))
-                             (< -1 ny (:size-y m)))]
-              (object-at m nx ny)))))
+    (for [i (range (- limit) (inc limit))
+          j (range (- limit) (inc limit))
+          :let [d2 (+ (* i i) (* j j))
+                nx (+ i x)
+                ny (+ j y)
+                obj (if (and (< -1 nx (:size-x m))
+                             (< -1 ny (:size-y m)))
+                      (object-at m nx ny)
+                      nil)]
+          :when (and (<= d2 (* r r))
+                     (pos? d2)
+                     (some? obj))]
+      [[nx ny] obj])))
+
+(defn objects-in-radius [m x y r]
+  (map second (objects-in-radius+ m x y r)))
