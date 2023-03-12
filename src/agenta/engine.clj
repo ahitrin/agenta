@@ -34,8 +34,7 @@
                              (:name unit-type)
                              (:player unit-type))
      ; Unit instance (should be removed)
-     :old            (Unit. utype
-                            (:player unit-type))
+     :old            (Unit. utype)
      ; "dynamic" properties (change during game)
      :attack-counter (ctr/make (inc (rnd/i! (:attackSpeed unit-type))) (:attackSpeed unit-type))
      :health-counter (ctr/make (inc (rnd/i! 100)) 100)
@@ -220,7 +219,7 @@
           {:winner winner :steps tick}
           (let [actions (set (filter #(some? (second %)) (map #(run-unit-action! % m1) objs)))
                 new-m (apply-actions! actions m1)
-                units-per-player (group-by #(.getPlayer (:old %)) (vals (:objs new-m)))]
+                units-per-player (group-by :player (vals (:objs new-m)))]
             (recur new-m
                    (cond (empty? (units-per-player 0)) 1
                          (empty? (units-per-player 1)) 0

@@ -5,19 +5,12 @@ public class Unit
     protected int x;
     protected int y;
     public final UnitType type;
-    private final int player;
     public int currentHitPoints;
 
-    public Unit(UnitType type, int player)
+    public Unit(UnitType type)
     {
         this.type = type;
-        this.player = player;
         currentHitPoints = type.getHitPoints();
-    }
-
-    public int getPlayer()
-    {
-        return player;
     }
 
     public final int getX()
