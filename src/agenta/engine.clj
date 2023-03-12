@@ -147,7 +147,7 @@
           m))
       m)))
 
-(defn perform-move! [m actor action [x y]]
+(defn perform-move [m actor action [x y]]
   (let [dx (int (:dx action))
         dy (int (:dy action))]
     (if (ctr/ready? (:speed-counter actor))
@@ -161,7 +161,7 @@
 
 (def action-selector
   {:attack perform-attack!
-   :move   perform-move!})
+   :move   perform-move})
 
 (defn apply-action! [m [actor action [x y]]]
   (let [obj (gm/obj-by-id m (:id actor))
