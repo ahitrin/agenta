@@ -4,43 +4,34 @@
             [agenta.perk :as pk]
             [agenta.random :as rnd]
             [clojure.tools.logging :as log])
-  (:import (agenta UnitType)
-           (com.github.javafaker Faker)))
-
-(defn make-old-unit-type [spec]
-  (proxy [UnitType] []
-    (getRange [] (:range spec))
-    (getAttackSpeed [] (:attackSpeed spec))
-    (getHitPoints [] (:hitPoints spec))
-    (toString [] (:name spec))))
+  (:import (com.github.javafaker Faker)))
 
 (defn make-unit [random unit-type]
   "Create one unit dictionary from given specs"
-  (let [utype (make-old-unit-type unit-type)]
-    {
-     ; "static" properties (do not change during game)
-     :max-spd        (:speed unit-type)
-     :max-health     (:hitPoints unit-type)
-     :visibility     (:visibility unit-type)
-     :base-attack    (:baseAttack unit-type)
-     :rnd-attack     (:randAttack unit-type)
-     :range          (:range unit-type)
-     :select-perk    (resolve (.get (:perk unit-type) "select"))
-     :img            (str (:image unit-type) (:player unit-type))
-     :id             (:id unit-type)
-     :player         (:player unit-type)
-     :name           (format "%s %s%d"
-                             (.firstName (.name (Faker.)))
-                             (:name unit-type)
-                             (:player unit-type))
-     ; "dynamic" properties (change during game)
-     :attack-counter (ctr/make (inc (rnd/i! (:attackSpeed unit-type))) (:attackSpeed unit-type))
-     :health-counter (ctr/make (inc (rnd/i! 100)) 100)
-     :speed-counter  (ctr/make (inc (rnd/i! (:speed unit-type))) (:speed unit-type))
-     :think-counter  (ctr/make (inc (rnd/i! 3)) 3)
-     :health         (:hitPoints unit-type)
-     :state          :attack
-     :kills          0}))
+  {
+   ; "static" properties (do not change during game)
+   :max-spd        (:speed unit-type)
+   :max-health     (:hitPoints unit-type)
+   :visibility     (:visibility unit-type)
+   :base-attack    (:baseAttack unit-type)
+   :rnd-attack     (:randAttack unit-type)
+   :range          (:range unit-type)
+   :select-perk    (resolve (.get (:perk unit-type) "select"))
+   :img            (str (:image unit-type) (:player unit-type))
+   :id             (:id unit-type)
+   :player         (:player unit-type)
+   :name           (format "%s %s%d"
+                           (.firstName (.name (Faker.)))
+                           (:name unit-type)
+                           (:player unit-type))
+   ; "dynamic" properties (change during game)
+   :attack-counter (ctr/make (inc (rnd/i! (:attackSpeed unit-type))) (:attackSpeed unit-type))
+   :health-counter (ctr/make (inc (rnd/i! 100)) 100)
+   :speed-counter  (ctr/make (inc (rnd/i! (:speed unit-type))) (:speed unit-type))
+   :think-counter  (ctr/make (inc (rnd/i! 3)) 3)
+   :health         (:hitPoints unit-type)
+   :state          :attack
+   :kills          0})
 
 
 (defn into-defs [setting]
@@ -90,33 +81,33 @@
   (let [state (:state actor)
         enemies (filter #(not= (:player (second %)) (:player actor)) visible-objects)]
     (case state
-        :escape
-        (let [vectors (map #(vec [(- x (first (first %)))
-                                  (- y (second (first %)))]) enemies)
-              norm-vecs (map normalize-length vectors)
-              total (if (seq norm-vecs) (reduce vec+ norm-vecs) [0 0])]
-          {"type" "move", "dx" (sign (first total)), "dy" (sign (second total))})
-        :attack
-        (let [closest-enemies (gm/objects-in-radius m x y (:range actor))]
-          (cond
-            ; attack achievable enemy
-            (seq closest-enemies)
-            (let [chosen (apply (:select-perk actor) [(map second closest-enemies)])
-                  ids (clojure.string/join "," (map #(str (:id (second %))) closest-enemies))]
-              {"type" "attack" "target" (:id chosen) "ids" ids})
-            ; approach to enemy
-            (seq enemies)
-            (let [enemies-without-xy (map second enemies)
-                  chosen-enemy (apply (:select-perk actor) [enemies-without-xy])
-                  chosen-idx (.indexOf enemies-without-xy chosen-enemy)
-                  enemy-with-xy (nth enemies chosen-idx)
-                  dx (sign (- (first (first enemy-with-xy)) x))
-                  dy (sign (- (second (first enemy-with-xy)) y))]
-              {"type" "move" "dx" dx "dy" dy})
-            ; random move
-            :else
-            (let [dx (dec (rnd/i! 3)) dy (dec (rnd/i! 3))]
-              {"type" "move" "dx" dx "dy" dy}))))))
+      :escape
+      (let [vectors (map #(vec [(- x (first (first %)))
+                                (- y (second (first %)))]) enemies)
+            norm-vecs (map normalize-length vectors)
+            total (if (seq norm-vecs) (reduce vec+ norm-vecs) [0 0])]
+        {"type" "move", "dx" (sign (first total)), "dy" (sign (second total))})
+      :attack
+      (let [closest-enemies (gm/objects-in-radius m x y (:range actor))]
+        (cond
+          ; attack achievable enemy
+          (seq closest-enemies)
+          (let [chosen (apply (:select-perk actor) [(map second closest-enemies)])
+                ids (clojure.string/join "," (map #(str (:id (second %))) closest-enemies))]
+            {"type" "attack" "target" (:id chosen) "ids" ids})
+          ; approach to enemy
+          (seq enemies)
+          (let [enemies-without-xy (map second enemies)
+                chosen-enemy (apply (:select-perk actor) [enemies-without-xy])
+                chosen-idx (.indexOf enemies-without-xy chosen-enemy)
+                enemy-with-xy (nth enemies chosen-idx)
+                dx (sign (- (first (first enemy-with-xy)) x))
+                dy (sign (- (second (first enemy-with-xy)) y))]
+            {"type" "move" "dx" dx "dy" dy})
+          ; random move
+          :else
+          (let [dx (dec (rnd/i! 3)) dy (dec (rnd/i! 3))]
+            {"type" "move" "dx" dx "dy" dy}))))))
 
 (defn run-unit-action! [[[x y] u] m]
   (let [max-hp (:max-health u)
