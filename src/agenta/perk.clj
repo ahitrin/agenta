@@ -12,12 +12,16 @@
   (let [target (atom nil)
         choose (fn [cur new-units]
                  (cond
-                   (and (some? cur) (pos? (.-currentHitPoints cur)) (.contains new-units cur)) cur
-                   (false? (.isEmpty new-units)) (.get new-units (rnd/i! (count new-units)))
+                   (and (some? cur)
+                        (pos? (.-currentHitPoints (:old cur)))
+                        (.contains new-units cur))
+                   cur
+                   (false? (.isEmpty new-units))
+                   (.get new-units (rnd/i! (count new-units)))
                    :else nil))]
     (swap! target choose units)))
 
 (defn select-weakest
   "Given several units select the one who has fewer hit points"
   [units]
-  (first (sort-by #(.-currentHitPoints %) units)))
+  (first (sort-by #(.-currentHitPoints (:old %)) units)))
