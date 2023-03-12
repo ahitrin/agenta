@@ -56,7 +56,5 @@
                 obj (object-at m nx ny)]
           :when (and (<= d2 (* r r))
                      (pos? d2)
-                     (< -1 nx (:size-x m))
-                     (< -1 ny (:size-y m))
                      (some? obj))]
       [[nx ny] obj])))
