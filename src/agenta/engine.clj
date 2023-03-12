@@ -4,7 +4,7 @@
             [agenta.perk :as pk]
             [agenta.random :as rnd]
             [clojure.tools.logging :as log])
-  (:import (agenta Unit UnitType)
+  (:import (agenta UnitType)
            (com.github.javafaker Faker)))
 
 (defn make-old-unit-type [spec]
@@ -33,8 +33,6 @@
                              (.firstName (.name (Faker.)))
                              (:name unit-type)
                              (:player unit-type))
-     ; Unit instance (should be removed)
-     :old            (Unit.)
      ; "dynamic" properties (change during game)
      :attack-counter (ctr/make (inc (rnd/i! (:attackSpeed unit-type))) (:attackSpeed unit-type))
      :health-counter (ctr/make (inc (rnd/i! 100)) 100)
@@ -165,7 +163,6 @@
       (let [nx (+ x dx) ny (+ y dy)]
         (if (gm/can-place? m [nx ny])
           (do
-            (.moveTo (:old actor) nx ny)
             (let [actor1 (update actor :speed-counter ctr/reset)]
               (gm/new-map m #(assoc (dissoc % [x y]) [nx ny] actor1))))
           m))

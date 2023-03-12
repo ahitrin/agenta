@@ -40,8 +40,6 @@
         xys (filter #(can-place? m %)
                     (distinct (repeatedly #(rnd/xy! size-x size-y))))
         objs (zipmap xys units)]
-    (doseq [[[x y] unit] objs]
-      (.moveTo (:old unit) x y))
     (new-map m #(into % objs))))
 
 (defn obj-by-id [m oid]
