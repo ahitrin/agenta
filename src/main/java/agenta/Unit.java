@@ -4,12 +4,6 @@ public class Unit
 {
     protected int x;
     protected int y;
-    public final UnitType type;
-
-    public Unit(UnitType type)
-    {
-        this.type = type;
-    }
 
     public final int getX()
     {

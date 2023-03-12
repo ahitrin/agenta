@@ -34,7 +34,7 @@
                              (:name unit-type)
                              (:player unit-type))
      ; Unit instance (should be removed)
-     :old            (Unit. utype)
+     :old            (Unit.)
      ; "dynamic" properties (change during game)
      :attack-counter (ctr/make (inc (rnd/i! (:attackSpeed unit-type))) (:attackSpeed unit-type))
      :health-counter (ctr/make (inc (rnd/i! 100)) 100)
