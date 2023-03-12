@@ -108,9 +108,12 @@
               {"type" "attack" "target" (:id chosen) "ids" ids})
             ; approach to enemy
             (seq enemies)
-            (let [^Unit target (:old (apply (:select-perk actor) [(map second enemies)]))
-                  dx (sign (- (.getX target) x))
-                  dy (sign (- (.getY target) y))]
+            (let [enemies-without-xy (map second enemies)
+                  chosen-enemy (apply (:select-perk actor) [enemies-without-xy])
+                  chosen-idx (.indexOf enemies-without-xy chosen-enemy)
+                  enemy-with-xy (nth enemies chosen-idx)
+                  dx (sign (- (first (first enemy-with-xy)) x))
+                  dy (sign (- (second (first enemy-with-xy)) y))]
               {"type" "move" "dx" dx "dy" dy})
             ; random move
             :else
