@@ -132,7 +132,8 @@
 
 (defn perform-attack! [m actor action [x y]]
   (let [target-id (int (.get action "target"))
-        u (gm/obj-by-id m target-id)
+        obj (gm/obj-by-id m target-id)
+        u (if (some? obj) (val obj) {})
         target (:old u)]
     (if (and
           (ctr/ready? (:attack-counter actor))
@@ -176,9 +177,9 @@
    "move"   perform-move!})
 
 (defn apply-action! [m [actor action [x y]]]
-  (let [actual-actor (gm/obj-by-id m (:id actor))
+  (let [obj (gm/obj-by-id m (:id actor))
         atype (.get action "type")]
-    (if (and (some? actual-actor)
+    (if (and (some? obj)
              ; probably, an excessive check: actors with neg health are removed from map
              (pos? (:health actor)))
       (apply (action-selector atype) [m actor action [x y]])
