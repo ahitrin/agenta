@@ -94,7 +94,7 @@
           (seq closest-enemies)
           (let [chosen (apply (:select-perk actor) [(map second closest-enemies)])
                 ids (clojure.string/join "," (map #(str (:id (second %))) closest-enemies))]
-            {:type :attack "target" (:id chosen) "ids" ids})
+            {:type :attack :target (:id chosen) :ids ids})
           ; approach to enemy
           (seq enemies)
           (let [enemies-without-xy (map second enemies)
@@ -121,7 +121,7 @@
       [u nil [x y]])))
 
 (defn perform-attack! [m actor action [x y]]
-  (let [target-id (int (.get action "target"))
+  (let [target-id (int (:target action))
         obj (gm/obj-by-id m target-id)
         u (if (some? obj) (val obj) {})
         [tx ty] (if (some? obj) (key obj) [0 0])]
