@@ -86,7 +86,7 @@
                                 (- y (second (first %)))]) enemies)
             norm-vecs (map normalize-length vectors)
             total (if (seq norm-vecs) (reduce vec+ norm-vecs) [0 0])]
-        {:type "move" :dx (sign (first total)) :dy (sign (second total))})
+        {:type :move :dx (sign (first total)) :dy (sign (second total))})
       :attack
       (let [closest-enemies (gm/objects-in-radius m x y (:range actor))]
         (cond
@@ -94,7 +94,7 @@
           (seq closest-enemies)
           (let [chosen (apply (:select-perk actor) [(map second closest-enemies)])
                 ids (clojure.string/join "," (map #(str (:id (second %))) closest-enemies))]
-            {:type "attack" "target" (:id chosen) "ids" ids})
+            {:type :attack "target" (:id chosen) "ids" ids})
           ; approach to enemy
           (seq enemies)
           (let [enemies-without-xy (map second enemies)
@@ -103,11 +103,11 @@
                 enemy-with-xy (nth enemies chosen-idx)
                 dx (sign (- (first (first enemy-with-xy)) x))
                 dy (sign (- (second (first enemy-with-xy)) y))]
-            {:type "move" :dx dx :dy dy})
+            {:type :move :dx dx :dy dy})
           ; random move
           :else
           (let [dx (dec (rnd/i! 3)) dy (dec (rnd/i! 3))]
-            {:type "move" :dx dx :dy dy}))))))
+            {:type :move :dx dx :dy dy}))))))
 
 (defn run-unit-action! [[[x y] u] m]
   (let [max-hp (:max-health u)
@@ -160,8 +160,8 @@
       m)))
 
 (def action-selector
-  {"attack" perform-attack!
-   "move"   perform-move!})
+  {:attack perform-attack!
+   :move   perform-move!})
 
 (defn apply-action! [m [actor action [x y]]]
   (let [obj (gm/obj-by-id m (:id actor))
