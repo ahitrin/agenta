@@ -99,12 +99,12 @@
               total (if (seq norm-vecs) (reduce vec+ norm-vecs) [0 0])]
           {"type" "move", "dx" (sign (first total)), "dy" (sign (second total))})
         :attack
-        (let [closest-enemies (gm/objects-in-radius m x y (:range actor))]
+        (let [closest-enemies (gm/objects-in-radius+ m x y (:range actor))]
           (cond
             ; attack achievable enemy
             (seq closest-enemies)
-            (let [chosen (apply (:select-perk actor) [closest-enemies])
-                  ids (clojure.string/join "," (map #(str (:id %)) closest-enemies))]
+            (let [chosen (apply (:select-perk actor) [(map second closest-enemies)])
+                  ids (clojure.string/join "," (map #(str (:id (second %))) closest-enemies))]
               {"type" "attack" "target" (:id chosen) "ids" ids})
             ; approach to enemy
             (seq enemies)
