@@ -120,8 +120,7 @@
               {"type" "move" "dx" dx "dy" dy}))))))
 
 (defn run-unit-action! [[[x y] u] m]
-  (let [unit (:old u)
-        max-hp (:max-health u)
+  (let [max-hp (:max-health u)
         new-hp (:health u)
         visible-objects (gm/objects-in-radius m x y (:visibility u))]
     (if (ctr/ready? (:think-counter u))
