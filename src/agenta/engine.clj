@@ -93,8 +93,8 @@
         enemies (filter #(not= (:player (second %)) (:player actor)) visible-objects)]
     (case state
         :escape
-        (let [vectors (map #(vec [(- x (.getX (:old (second %))))
-                                  (- y (.getY (:old (second %))))]) enemies)
+        (let [vectors (map #(vec [(- x (first (first %)))
+                                  (- y (second (first %)))]) enemies)
               norm-vecs (map normalize-length vectors)
               total (if (seq norm-vecs) (reduce vec+ norm-vecs) [0 0])]
           {"type" "move", "dx" (sign (first total)), "dy" (sign (second total))})
