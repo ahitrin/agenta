@@ -5,12 +5,10 @@ public class Unit
     protected int x;
     protected int y;
     public final UnitType type;
-    public int currentHitPoints;
 
     public Unit(UnitType type)
     {
         this.type = type;
-        currentHitPoints = type.getHitPoints();
     }
 
     public final int getX()

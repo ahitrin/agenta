@@ -124,7 +124,6 @@
         max-hp (:max-health u)
         new-hp (:health u)
         visible-objects (gm/objects-in-radius m x y (:visibility u))]
-    (set! (.-currentHitPoints unit) new-hp)
     (if (ctr/ready? (:think-counter u))
       (let [u1 (update-state (update u :think-counter ctr/reset) new-hp max-hp)
             action (wrap-act! m u1 visible-objects)]
@@ -140,12 +139,11 @@
           (ctr/ready? (:attack-counter actor))
           (some? target))
       (let [damage (+ (rnd/i! (:rnd-attack actor)) (:base-attack actor))
-            hp (.-currentHitPoints target)
+            hp (:health u)
             new-hp (- hp damage)]
         (if (and (pos? damage) (pos? hp))
           (do
             (log/debugf "%s strikes %s with %d" (pretty actor) (pretty u) damage)
-            (set! (.-currentHitPoints target) new-hp)
             (let [tx (.getX target)
                   ty (.getY target)
                   m1 (gm/new-map m #(update-in % [[x y] :attack-counter] ctr/reset))
