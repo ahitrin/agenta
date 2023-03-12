@@ -13,7 +13,7 @@
         choose (fn [cur new-units]
                  (cond
                    (and (some? cur)
-                        (pos? (.-currentHitPoints (:old cur)))
+                        (pos? (:health cur))
                         (.contains new-units cur))
                    cur
                    (false? (.isEmpty new-units))
@@ -24,4 +24,4 @@
 (defn select-weakest
   "Given several units select the one who has fewer hit points"
   [units]
-  (first (sort-by #(.-currentHitPoints (:old %)) units)))
+  (first (sort-by :health units)))
