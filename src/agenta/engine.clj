@@ -99,7 +99,7 @@
               total (if (seq norm-vecs) (reduce vec+ norm-vecs) [0 0])]
           {"type" "move", "dx" (sign (first total)), "dy" (sign (second total))})
         :attack
-        (let [closest-enemies (gm/objects-in-radius+ m x y (:range actor))]
+        (let [closest-enemies (gm/objects-in-radius m x y (:range actor))]
           (cond
             ; attack achievable enemy
             (seq closest-enemies)
@@ -120,7 +120,7 @@
 (defn run-unit-action! [[[x y] u] m]
   (let [max-hp (:max-health u)
         new-hp (:health u)
-        visible-objects (gm/objects-in-radius+ m x y (:visibility u))]
+        visible-objects (gm/objects-in-radius m x y (:visibility u))]
     (if (ctr/ready? (:think-counter u))
       (let [u1 (update-state (update u :think-counter ctr/reset) new-hp max-hp)
             action (wrap-act! m x y u1 visible-objects)]
