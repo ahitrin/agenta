@@ -55,12 +55,11 @@
           :let [d2 (+ (* i i) (* j j))
                 nx (+ i x)
                 ny (+ j y)
-                obj (if (and (< -1 nx (:size-x m))
-                             (< -1 ny (:size-y m)))
-                      (object-at m nx ny)
-                      nil)]
+                obj (object-at m nx ny)]
           :when (and (<= d2 (* r r))
                      (pos? d2)
+                     (< -1 nx (:size-x m))
+                     (< -1 ny (:size-y m))
                      (some? obj))]
       [[nx ny] obj])))
 
