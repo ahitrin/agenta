@@ -35,7 +35,6 @@
                              (:player unit-type))
      ; Unit instance (should be removed)
      :old            (Unit. utype
-                            (:id unit-type)
                             (:player unit-type))
      ; "dynamic" properties (change during game)
      :attack-counter (ctr/make (inc (rnd/i! (:attackSpeed unit-type))) (:attackSpeed unit-type))
@@ -107,9 +106,9 @@
           (cond
             ; attack achievable enemy
             (seq closest-enemies)
-            (let [^Unit chosen (:old (apply (:select-perk actor) [closest-enemies]))
+            (let [chosen (apply (:select-perk actor) [closest-enemies])
                   ids (clojure.string/join "," (map #(str (:id %)) closest-enemies))]
-              {"type" "attack" "target" (.getId chosen) "ids" ids})
+              {"type" "attack" "target" (:id chosen) "ids" ids})
             ; approach to enemy
             (seq enemies)
             (let [^Unit target (:old (apply (:select-perk actor) [enemies]))
