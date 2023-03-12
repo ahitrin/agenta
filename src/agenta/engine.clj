@@ -134,19 +134,17 @@
   (let [target-id (int (.get action "target"))
         obj (gm/obj-by-id m target-id)
         u (if (some? obj) (val obj) {})
-        target (:old u)]
+        [tx ty] (if (some? obj) (key obj) [0 0])]
     (if (and
           (ctr/ready? (:attack-counter actor))
-          (some? target))
+          (some? obj))
       (let [damage (+ (rnd/i! (:rnd-attack actor)) (:base-attack actor))
             hp (:health u)
             new-hp (- hp damage)]
         (if (and (pos? damage) (pos? hp))
           (do
             (log/debugf "%s strikes %s with %d" (pretty actor) (pretty u) damage)
-            (let [tx (.getX target)
-                  ty (.getY target)
-                  m1 (gm/new-map m #(update-in % [[x y] :attack-counter] ctr/reset))
+            (let [m1 (gm/new-map m #(update-in % [[x y] :attack-counter] ctr/reset))
                   m2 (gm/new-map m1 #(update-in % [[tx ty] :health] - damage))
                   u1 (update-in u [:health] - damage)]
               (if-not (pos-int? new-hp)
