@@ -1,6 +1,8 @@
 (ns agenta.perk
   (:require [agenta.random :as rnd]))
 
+; ---- Select perks ----
+
 (defn select-random
   "Given several units select one of them absolutely randomly"
   [units]
@@ -26,7 +28,17 @@
   [units]
   (first (sort-by :health units)))
 
-(defn move-randomly [actor visible-objects]
+; ---- Move perks ----
+
+(defn move-randomly [x y actor visible-objects]
   "Ignore visible objects and current actor state, always move randomly"
   (let [dx (dec (rnd/i! 3)) dy (dec (rnd/i! 3))]
+    {:type :move :dx dx :dy dy}))
+
+(defn move-to-friends [x y actor visible-objects]
+  "Move towards the center of friendly units of any type"
+  (let [player (:player actor)
+        friends (filter #(= player (:player (second %))) visible-objects)
+        dx (->> friends (map first) (map first) (map #(- % x)) (reduce +) float Math/signum int)
+        dy (->> friends (map first) (map second) (map #(- % y)) (reduce +) float Math/signum int)]
     {:type :move :dx dx :dy dy}))

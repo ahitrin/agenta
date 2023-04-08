@@ -17,7 +17,7 @@
                 :image       "footman"
                 :perk        {
                               :select agenta.perk/select-random-memoized
-                              :move   agenta.perk/move-randomly
+                              :move   agenta.perk/move-to-friends
                               }}
                {:name        "Archer"
                 :baseAttack  3
