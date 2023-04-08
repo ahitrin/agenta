@@ -88,7 +88,7 @@
             total (if (seq norm-vecs) (reduce vec+ norm-vecs) [0 0])]
         {:type :move :dx (sign (first total)) :dy (sign (second total))})
       :attack
-      (let [closest-enemies (gm/objects-in-radius m x y (:range actor))]
+      (let [closest-enemies (filter #(gm/in-radius? [x y] (:range actor) (first %)) enemies)]
         (cond
           ; attack achievable enemy
           (seq closest-enemies)
