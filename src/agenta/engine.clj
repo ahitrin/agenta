@@ -79,7 +79,8 @@
 (defn wrap-act! [m x y actor visible-objects]
   "Temporary replacement for Unit.act"
   (let [state (:state actor)
-        enemies (filter #(not= (:player (second %)) (:player actor)) visible-objects)]
+        enemies (filter #(not= (:player (second %)) (:player actor)) visible-objects)
+        closest-enemies (filter #(gm/in-radius? [x y] (:range actor) (first %)) enemies)]
     (case state
       :escape
       (let [vectors (map #(vec [(- x (first (first %)))
@@ -88,26 +89,25 @@
             total (if (seq norm-vecs) (reduce vec+ norm-vecs) [0 0])]
         {:type :move :dx (sign (first total)) :dy (sign (second total))})
       :attack
-      (let [closest-enemies (filter #(gm/in-radius? [x y] (:range actor) (first %)) enemies)]
-        (cond
-          ; attack achievable enemy
-          (seq closest-enemies)
-          (let [chosen (apply (:select-perk actor) [(map second closest-enemies)])
-                ids (clojure.string/join "," (map #(str (:id (second %))) closest-enemies))]
-            {:type :attack :target (:id chosen) :ids ids})
-          ; approach to enemy
-          (seq enemies)
-          (let [enemies-without-xy (map second enemies)
-                chosen-enemy (apply (:select-perk actor) [enemies-without-xy])
-                chosen-idx (.indexOf enemies-without-xy chosen-enemy)
-                enemy-with-xy (nth enemies chosen-idx)
-                dx (sign (- (first (first enemy-with-xy)) x))
-                dy (sign (- (second (first enemy-with-xy)) y))]
-            {:type :move :dx dx :dy dy})
-          ; random move
-          :else
-          (let [dx (dec (rnd/i! 3)) dy (dec (rnd/i! 3))]
-            {:type :move :dx dx :dy dy}))))))
+      (cond
+        ; attack achievable enemy
+        (seq closest-enemies)
+        (let [chosen (apply (:select-perk actor) [(map second closest-enemies)])
+              ids (clojure.string/join "," (map #(str (:id (second %))) closest-enemies))]
+          {:type :attack :target (:id chosen) :ids ids})
+        ; approach to enemy
+        (seq enemies)
+        (let [enemies-without-xy (map second enemies)
+              chosen-enemy (apply (:select-perk actor) [enemies-without-xy])
+              chosen-idx (.indexOf enemies-without-xy chosen-enemy)
+              enemy-with-xy (nth enemies chosen-idx)
+              dx (sign (- (first (first enemy-with-xy)) x))
+              dy (sign (- (second (first enemy-with-xy)) y))]
+          {:type :move :dx dx :dy dy})
+        ; random move
+        :else
+        (let [dx (dec (rnd/i! 3)) dy (dec (rnd/i! 3))]
+          {:type :move :dx dx :dy dy})))))
 
 (defn run-unit-action! [[[x y] u] m]
   (let [max-hp (:max-health u)
