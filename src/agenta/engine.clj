@@ -76,6 +76,10 @@
   "Return sign of a given number (1, -1, 0)"
   (int (Math/signum (float f))))
 
+(defn move-randomly-perk! [actor visible-objects]
+  (let [dx (dec (rnd/i! 3)) dy (dec (rnd/i! 3))]
+    {:type :move :dx dx :dy dy}))
+
 (defn act! [x y actor visible-objects]
   (let [enemies (filter #(not= (:player (second %)) (:player actor)) visible-objects)
         closest-enemies (filter #(gm/in-radius? [x y] (:range actor) (first %)) enemies)]
@@ -104,8 +108,7 @@
           {:type :move :dx dx :dy dy})
         ; random move
         :else
-        (let [dx (dec (rnd/i! 3)) dy (dec (rnd/i! 3))]
-          {:type :move :dx dx :dy dy})))))
+        (move-randomly-perk! actor visible-objects)))))
 
 (defn unit-action! [[[x y] u] m]
   (let [max-hp (:max-health u)
