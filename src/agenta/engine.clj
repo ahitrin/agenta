@@ -6,7 +6,7 @@
             [clojure.tools.logging :as log])
   (:import (com.github.javafaker Faker)))
 
-(defn make-unit [random unit-type]
+(defn make-unit [unit-type]
   "Create one unit dictionary from given specs"
   {
    ; "static" properties (do not change during game)
@@ -47,9 +47,8 @@
 (defn init-units [setting]
   "Create all units described by setting"
   (let [defs (into-defs setting)
-        g (rnd/get-generator)
         defs+ (map-indexed #(assoc %2 :id %) defs)]
-    (map #(make-unit g %) defs+)))
+    (map make-unit defs+)))
 
 (defn pretty [unit]
   (-> unit
