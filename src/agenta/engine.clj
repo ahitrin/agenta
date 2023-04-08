@@ -77,10 +77,9 @@
   (int (Math/signum (float f))))
 
 (defn act [x y actor visible-objects]
-  (let [state (:state actor)
-        enemies (filter #(not= (:player (second %)) (:player actor)) visible-objects)
+  (let [enemies (filter #(not= (:player (second %)) (:player actor)) visible-objects)
         closest-enemies (filter #(gm/in-radius? [x y] (:range actor) (first %)) enemies)]
-    (case state
+    (case (:state actor)
       :escape
       (let [vectors (map #(vec [(- x (first (first %)))
                                 (- y (second (first %)))]) enemies)
