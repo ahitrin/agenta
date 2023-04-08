@@ -76,8 +76,7 @@
   "Return sign of a given number (1, -1, 0)"
   (int (Math/signum (float f))))
 
-(defn wrap-act! [x y actor visible-objects]
-  "Temporary replacement for Unit.act"
+(defn act [x y actor visible-objects]
   (let [state (:state actor)
         enemies (filter #(not= (:player (second %)) (:player actor)) visible-objects)
         closest-enemies (filter #(gm/in-radius? [x y] (:range actor) (first %)) enemies)]
@@ -115,7 +114,7 @@
         visible-objects (gm/objects-in-radius m x y (:visibility u))]
     (if (ctr/ready? (:think-counter u))
       (let [u1 (update-state (update u :think-counter ctr/reset) new-hp max-hp)
-            action (wrap-act! x y u1 visible-objects)]
+            action (act x y u1 visible-objects)]
         (log/debugf "%s wants %s" (pretty u1) action)
         [u1 action [x y]])
       [u nil [x y]])))
