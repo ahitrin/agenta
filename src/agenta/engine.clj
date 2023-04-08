@@ -108,7 +108,7 @@
         (let [dx (dec (rnd/i! 3)) dy (dec (rnd/i! 3))]
           {:type :move :dx dx :dy dy})))))
 
-(defn run-unit-action! [[[x y] u] m]
+(defn unit-action [[[x y] u] m]
   (let [max-hp (:max-health u)
         new-hp (:health u)
         visible-objects (gm/objects-in-radius m x y (:visibility u))]
@@ -201,7 +201,7 @@
         (viewer m1 objs)
         (if (or (<= 0 winner) (<= limit tick))
           {:winner winner :steps tick}
-          (let [actions (set (filter #(some? (second %)) (map #(run-unit-action! % m1) objs)))
+          (let [actions (set (filter #(some? (second %)) (map #(unit-action % m1) objs)))
                 new-m (apply-actions! actions m1)
                 units-per-player (group-by :player (vals (:objs new-m)))]
             (recur new-m
