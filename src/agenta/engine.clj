@@ -104,7 +104,7 @@
           {:type :move :dx dx :dy dy})
         ; random move
         :else
-        (pk/move-randomly actor visible-objects)))))
+        (apply (:move-perk actor) [actor visible-objects])))))
 
 (defn unit-action! [[[x y] u] m]
   (let [max-hp (:max-health u)
