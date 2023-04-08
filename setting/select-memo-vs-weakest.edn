@@ -17,6 +17,7 @@
                 :image       "footman"
                 :perk        {
                               :select agenta.perk/select-weakest
+                              :move   agenta.perk/move-randomly
                               }}
                {:name        "Warrior"
                 :attackSpeed 3
@@ -29,6 +30,7 @@
                 :image       "footman"
                 :perk        {
                               :select agenta.perk/select-random-memoized
+                              :move   agenta.perk/move-randomly
                               }}
                ]
  :placement   {

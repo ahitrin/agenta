@@ -17,6 +17,7 @@
                 :image       "footman"
                 :perk        {
                               :select agenta.perk/select-random-memoized
+                              :move   agenta.perk/move-randomly
                               }}
                ]
  :placement   {

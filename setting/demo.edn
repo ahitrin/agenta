@@ -17,6 +17,7 @@
                 :image       "footman"
                 :perk        {
                               :select agenta.perk/select-random-memoized
+                              :move   agenta.perk/move-randomly
                               }}
                {:name        "Archer"
                 :baseAttack  3
@@ -29,6 +30,7 @@
                 :image       "archer"
                 :perk        {
                               :select agenta.perk/select-weakest
+                              :move   agenta.perk/move-randomly
                               }}
                {:name        "Knight"
                 :baseAttack  9
@@ -41,6 +43,7 @@
                 :image       "knight"
                 :perk        {
                               :select agenta.perk/select-random-memoized
+                              :move   agenta.perk/move-randomly
                               }}
                ]
  :placement   {

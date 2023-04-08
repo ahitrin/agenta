@@ -17,6 +17,7 @@
    :rnd-attack     (:randAttack unit-type)
    :range          (:range unit-type)
    :select-perk    (resolve (.get (:perk unit-type) :select))
+   :move-perk      (resolve (.get (:perk unit-type) :move))
    :img            (str (:image unit-type) (:player unit-type))
    :id             (:id unit-type)
    :player         (:player unit-type)
