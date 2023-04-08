@@ -46,18 +46,6 @@
   ; TODO replace this (very ineffective) calculation with some kind of map :id -> obj
   (first (filter #(= oid (:id (val %))) (:objs m))))
 
-(defn objects-in-radius [m x y r]
-  (let [limit (int r)]
-    (for [i (range (- limit) (inc limit))
-          j (range (- limit) (inc limit))
-          :let [d2 (+ (* i i) (* j j))
-                nx (+ i x)
-                ny (+ j y)
-                obj (object-at m nx ny)]
-          :when (and (< 0 d2 (inc (* r r)))
-                     (some? obj))]
-      [[nx ny] obj])))
-
 (defn in-radius? [[x y] r [nx ny]]
   "Check whether 2d vector [x y]->[nx ny] has length less or equal to r"
   (let [dx (- x nx)
@@ -65,3 +53,14 @@
         d2 (+ (* dx dx) (* dy dy))
         r2 (* r r)]
     (<= d2 r2)))
+
+(defn objects-in-radius [m x y r]
+  (let [limit (int r)]
+    (for [i (range (- limit) (inc limit))
+          j (range (- limit) (inc limit))
+          :let [nx (+ i x)
+                ny (+ j y)
+                obj (object-at m nx ny)]
+          :when (and (in-radius? [x y] r [nx ny])
+                     (some? obj))]
+      [[nx ny] obj])))
