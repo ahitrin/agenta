@@ -25,3 +25,8 @@
   "Given several units select the one who has fewer hit points"
   [units]
   (first (sort-by :health units)))
+
+(defn move-randomly [actor visible-objects]
+  "Ignore visible objects and current actor state, always move randomly"
+  (let [dx (dec (rnd/i! 3)) dy (dec (rnd/i! 3))]
+    {:type :move :dx dx :dy dy}))
