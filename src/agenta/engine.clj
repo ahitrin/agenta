@@ -76,7 +76,7 @@
   "Return sign of a given number (1, -1, 0)"
   (int (Math/signum (float f))))
 
-(defn act [x y actor visible-objects]
+(defn act! [x y actor visible-objects]
   (let [enemies (filter #(not= (:player (second %)) (:player actor)) visible-objects)
         closest-enemies (filter #(gm/in-radius? [x y] (:range actor) (first %)) enemies)]
     (case (:state actor)
@@ -107,13 +107,13 @@
         (let [dx (dec (rnd/i! 3)) dy (dec (rnd/i! 3))]
           {:type :move :dx dx :dy dy})))))
 
-(defn unit-action [[[x y] u] m]
+(defn unit-action! [[[x y] u] m]
   (let [max-hp (:max-health u)
         new-hp (:health u)
         visible-objects (gm/objects-in-radius m x y (:visibility u))]
     (if (ctr/ready? (:think-counter u))
       (let [u1 (update-state (update u :think-counter ctr/reset) new-hp max-hp)
-            action (act x y u1 visible-objects)]
+            action (act! x y u1 visible-objects)]
         (log/debugf "%s wants %s" (pretty u1) action)
         [u1 action [x y]])
       [u nil [x y]])))
@@ -200,7 +200,7 @@
         (viewer m1 objs)
         (if (or (<= 0 winner) (<= limit tick))
           {:winner winner :steps tick}
-          (let [actions (set (filter #(some? (second %)) (map #(unit-action % m1) objs)))
+          (let [actions (set (filter #(some? (second %)) (map #(unit-action! % m1) objs)))
                 new-m (apply-actions! actions m1)
                 units-per-player (group-by :player (vals (:objs new-m)))]
             (recur new-m
