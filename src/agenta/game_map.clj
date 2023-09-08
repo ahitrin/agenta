@@ -4,7 +4,8 @@
 (defrecord GameMap [size-x size-y cells objs])
 
 (defn new-map [^GameMap m objs-fn]
-  (GameMap. (:size-x m) (:size-y m) (:cells m) (-> (:objs m) objs-fn)))
+  (let [objs (-> (:objs m) objs-fn)]
+    (GameMap. (:size-x m) (:size-y m) (:cells m) objs)))
 
 (defn plane
   "Fill given rectangle with grass solely"
