@@ -195,13 +195,13 @@
         limit (:max-ticks (:experiment setting))]
     (loop [m start-map winner -1 tick 0]
       (let [m1 (gm/new-map m tick-health)
-            objs (:objs m1)]
+            objs (gm/xy-to-unit m1)]
         (viewer m1 objs)
         (if (or (<= 0 winner) (<= limit tick))
           {:winner winner :steps tick}
           (let [actions (set (filter #(some? (second %)) (map #(unit-action! % m1) objs)))
                 new-m (apply-actions! actions m1)
-                units-per-player (group-by :player (vals (:objs new-m)))]
+                units-per-player (group-by :player (vals (gm/xy-to-unit new-m)))]
             (recur new-m
                    (cond (empty? (units-per-player 0)) 1
                          (empty? (units-per-player 1)) 0

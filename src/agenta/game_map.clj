@@ -19,6 +19,9 @@
         trees (take n (distinct (repeatedly #(rnd/xy! size-x size-y))))]
     (apply assoc {} (interleave trees (repeat n :tree)))))
 
+(defn xy-to-unit [^GameMap m]
+  (:objs m))
+
 (defn object-at [m x y]
   ((:objs m) [x y]))
 
