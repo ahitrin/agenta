@@ -1,12 +1,11 @@
 (ns agenta.game-map
   (:require [agenta.random :as rnd]))
 
-(defrecord GameMap [size-x size-y cells objs idx])
+(defrecord GameMap [size-x size-y cells objs])
 
 (defn new-map [^GameMap m objs-fn]
-  (let [objs (-> (:objs m) objs-fn)
-        idx (into {} (map #(vector (:id (val %)) (key %)) objs))]
-    (GameMap. (:size-x m) (:size-y m) (:cells m) objs idx)))
+  (let [objs (-> (:objs m) objs-fn)]
+    (GameMap. (:size-x m) (:size-y m) (:cells m) objs)))
 
 (defn plane
   "Fill given rectangle with grass solely"
@@ -41,15 +40,15 @@
   (let [size-x (:size-x map-spec)
         size-y (:size-y map-spec)
         type (resolve (:type map-spec))
-        m (GameMap. size-x size-y (apply type [size-x size-y]) {} {})
+        m (GameMap. size-x size-y (apply type [size-x size-y]) {})
         xys (filter #(can-place? m %)
                     (distinct (repeatedly #(rnd/xy! size-x size-y))))
         objs (zipmap xys units)]
     (new-map m #(into % objs))))
 
 (defn obj-by-id [m oid]
-  (let [xy ((:idx m) oid)]
-    ((:objs m) xy)))
+  ; TODO replace this (very ineffective) calculation with some kind of map :id -> obj
+  (first (filter #(= oid (:id (val %))) (:objs m))))
 
 (defn in-radius? [[x y] r [nx ny]]
   "Check whether 2d vector [x y]->[nx ny] has length less or equal to r"
