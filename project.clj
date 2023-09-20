@@ -6,7 +6,8 @@
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [org.clojure/tools.logging "1.1.0"]
                  [com.github.javafaker/javafaker "1.0.2"]
-                 [ch.qos.logback/logback-classic "1.1.2"]]
+                 [ch.qos.logback/logback-classic "1.1.2"]
+                 [com.clojure-goes-fast/clj-async-profiler "1.0.5"]]
   :java-source-paths ["src/main/java"
                       "src/test/java"]
   :resource-paths ["resources"]
