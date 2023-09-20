@@ -13,4 +13,5 @@
   :resource-paths ["resources"]
   :main agenta.core
   :aot [agenta.ImagePanel]
+  :jvm-opts ["-Djdk.attach.allowAttachSelf"]
   :repl-options {:init-ns agenta.core})
