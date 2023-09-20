@@ -16,6 +16,11 @@
   (prof/profile
     (agenta.engine/run-game! setting (fn [m u] ())))
 
+  ; looks like records perform faster than vectors in comparison
+  (defrecord XY [x y])
+  (prof/profile (dotimes [_ 1000000] (= [1 2] [1 2]) (= (XY. 1 2) (XY. 1 2))))
+
+
   (prof/serve-ui 8080)
 
   ;; various
