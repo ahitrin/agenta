@@ -10,6 +10,14 @@
   (def start-units (agenta.engine/init-units setting))
   (def start-map (agenta.game-map/make-map (:map setting) start-units))
 
+  ;; profiling
+  (require '[clj-async-profiler.core :as prof])
+
+  (prof/profile
+    (agenta.engine/run-game! setting (fn [m u] ())))
+
+  (prof/serve-ui 8080)
+
   ;; various
   (def u {:kills 0,
           :speed-counter [19 40],
