@@ -53,13 +53,11 @@
 (defn obj-by-id [m oid]
   (find (:objs m) (get (:id-to-xy m) oid)))
 
-(defn in-radius? [[x y] r [nx ny]]
+(defn in-radius?
   "Check whether 2d vector [x y]->[nx ny] has length less or equal to r"
-  (let [dx (- x nx)
-        dy (- y ny)
-        d2 (+ (* dx dx) (* dy dy))
-        r2 (* r r)]
-    (<= d2 r2)))
+  ([r [dx dy]] (<= (+ (* dx dx) (* dy dy))
+                   (* r r)))
+  ([[x y] r [nx ny]] (in-radius? r [(- x nx) (- y ny)])))
 
 (defn objects-in-radius [m x y r]
   (let [limit (int r)]
@@ -68,6 +66,6 @@
           :let [nx (+ i x)
                 ny (+ j y)
                 obj (object-at m nx ny)]
-          :when (and (in-radius? [x y] r [nx ny])
+          :when (and (in-radius? r [i j])
                      (some? obj))]
       [[nx ny] obj])))
