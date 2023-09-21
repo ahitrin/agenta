@@ -55,11 +55,11 @@
 
 (defn in-radius?
   "Check whether 2d vector [x y]->[nx ny] has length less or equal to r"
-  ([r [dx dy]] (<= (+ (* dx dx) (* dy dy))
-                   (* r r)))
-  ([[x y] r [nx ny]] (in-radius? r [(- x nx) (- y ny)])))
+  ([^double r [^long dx ^long dy]] (<= (+ (* dx dx) (* dy dy))
+                                       (* r r)))
+  ([[^long x ^long y] ^double r [^long nx ^long ny]] (in-radius? r [(- x nx) (- y ny)])))
 
-(defn objects-in-radius [m x y r]
+(defn objects-in-radius [m ^long x ^long y ^double r]
   (let [limit (int r)]
     (for [i (range (- limit) (inc limit))
           j (range (- limit) (inc limit))
