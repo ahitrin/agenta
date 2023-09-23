@@ -65,8 +65,7 @@
     (for [i (range (- limit) (inc limit))
           j (range (- limit) (inc limit))
           :let [nx (+ i x)
-                ny (+ j y)
-                obj (object-at m nx ny)]
+                ny (+ j y)]
           :when (and (in-radius? r [i j])
-                     (some? obj))]
-      [[nx ny] obj])))
+                     (contains? (:objs m) (rnd/xy nx ny)))]
+      [[nx ny] (object-at m nx ny)])))
