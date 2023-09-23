@@ -74,5 +74,7 @@
   (let [ks (circle-of-keys-memoized r)]
     (for [[dx dy] ks
           :let [nx (+ x dx) ny (+ y dy)]
-          :when (contains? (:objs m) (rnd/xy nx ny))]
+          :when (and (< -1 nx (:size-x m))
+                     (< -1 ny (:size-y m))
+                     (contains? (:objs m) (rnd/xy nx ny)))]
       [[nx ny] (object-at m nx ny)])))
