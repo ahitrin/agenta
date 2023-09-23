@@ -110,10 +110,10 @@
   (let [x (:x xy)
         y (:y xy)
         max-hp (:max-health u)
-        new-hp (:health u)
-        visible-objects (gm/objects-in-radius m x y (:visibility u))]
+        new-hp (:health u)]
     (if (ctr/ready? (:think-counter u))
       (let [u1 (update-state (update u :think-counter ctr/reset) new-hp max-hp)
+            visible-objects (gm/objects-in-radius m x y (:visibility u))
             action (act! x y u1 visible-objects)]
         (log/debugf "%s wants %s" (pretty u1) action)
         [u1 action [x y]])
