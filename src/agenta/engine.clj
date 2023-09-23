@@ -106,8 +106,10 @@
         :else
         (apply (:move-perk actor) [x y actor visible-objects])))))
 
-(defn unit-action! [[[x y] u] m]
-  (let [max-hp (:max-health u)
+(defn unit-action! [[xy u] m]
+  (let [x (:x xy)
+        y (:y xy)
+        max-hp (:max-health u)
         new-hp (:health u)
         visible-objects (gm/objects-in-radius m x y (:visibility u))]
     (if (ctr/ready? (:think-counter u))
@@ -121,7 +123,8 @@
   (let [target-id (int (:target action))
         obj (gm/obj-by-id m target-id)
         u (if (some? obj) (val obj) {})
-        [tx ty] (if (some? obj) (key obj) [0 0])]
+        my-xy (rnd/xy x y)
+        target-xy (if (some? obj) (key obj) (rnd/xy 0 0))]
     (if (and
           (ctr/ready? (:attack-counter actor))
           (some? obj))
@@ -131,15 +134,15 @@
         (if (and (pos? damage) (pos? hp))
           (do
             (log/debugf "%s strikes %s with %d" (pretty actor) (pretty u) damage)
-            (let [m1 (gm/new-map m #(update-in % [[x y] :attack-counter] ctr/reset))
-                  m2 (gm/new-map m1 #(update-in % [[tx ty] :health] - damage))
+            (let [m1 (gm/new-map m #(update-in % [my-xy :attack-counter] ctr/reset))
+                  m2 (gm/new-map m1 #(update-in % [target-xy :health] - damage))
                   u1 (update-in u [:health] - damage)]
               (if-not (pos-int? new-hp)
                 (do
                   (log/debugf "%s is dead" (pretty u1))
                   (-> m2
-                      (gm/new-map #(update-in % [[x y] :kills] inc))
-                      (gm/new-map #(dissoc % [tx ty]))))
+                      (gm/new-map #(update-in % [my-xy :kills] inc))
+                      (gm/new-map #(dissoc % target-xy))))
                 m2)))
           m))
       m)))
@@ -148,11 +151,11 @@
   (let [dx (int (:dx action))
         dy (int (:dy action))]
     (if (ctr/ready? (:speed-counter actor))
-      (let [nx (+ x dx) ny (+ y dy)]
-        (if (gm/can-place? m [nx ny])
+      (let [nx (+ x dx) ny (+ y dy) xy (rnd/xy nx ny)]
+        (if (gm/can-place? m xy)
           (do
             (let [actor1 (update actor :speed-counter ctr/reset)]
-              (gm/new-map m #(assoc (dissoc % [x y]) [nx ny] actor1))))
+              (gm/new-map m #(assoc (dissoc % (rnd/xy x y)) (rnd/xy nx ny) actor1))))
           m))
       m)))
 

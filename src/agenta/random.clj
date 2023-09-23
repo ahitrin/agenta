@@ -17,10 +17,15 @@
   []
   generator)
 
+; Two coordinates on a game map
+(defrecord XY [^long x ^long y])
+
+(defn xy [x y] (XY. x y))
+
 (defn xy!
   "Makes a random pair of coordinates within given boundaries"
   [mx my]
-  (vec [(.nextInt generator mx) (.nextInt generator my)]))
+  (xy (.nextInt generator mx) (.nextInt generator my)))
 
 (defn i!
   "Makes a random integer between 0 (inclusive) and n (exclusive)"

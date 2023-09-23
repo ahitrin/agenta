@@ -54,9 +54,9 @@
         (let [image (-copy-image @bg)
               currentGraph (.createGraphics image)]
           (doseq [o objs
-                  :let [[x y] (key o)
+                  :let [xy (key o)
                         u (val o)]]
-            (draw-image currentGraph image-cache (:img u) x y))
+            (draw-image currentGraph image-cache (:img u) (:x xy) (:y xy)))
           (.setImage p image)
           (.repaint p))))))
 

@@ -27,16 +27,17 @@
   (:objs m))
 
 (defn object-at [m x y]
-  ((:objs m) [x y]))
+  ((:objs m) (rnd/xy x y)))
 
 (defn cell-type [m x y]
-  (get (:cells m) [x y] :grass))
+  (get (:cells m) (rnd/xy x y) :grass))
 
-(defn can-place? [m [x y]]
-  (and (< -1 x (:size-x m))
-       (< -1 y (:size-y m))
-       (= :grass (cell-type m x y))
-       (nil? (object-at m x y))))
+(defn can-place? [m xy]
+  (let [x (:x xy) y (:y xy)]
+    (and (< -1 x (:size-x m))
+         (< -1 y (:size-y m))
+         (= :grass (cell-type m x y))
+         (nil? (object-at m x y)))))
 
 (defn make-map
   "Build game map with given map spec"
