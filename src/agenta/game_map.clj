@@ -60,12 +60,17 @@
                                        (* r r)))
   ([[^long x ^long y] ^double r [^long nx ^long ny]] (in-radius? r [(- x nx) (- y ny)])))
 
-(defn objects-in-radius [m ^long x ^long y ^double r]
+(defn- circle-of-keys [^double r]
   (let [limit (int r)]
     (for [i (range (- limit) (inc limit))
           j (range (- limit) (inc limit))
-          :let [nx (+ i x)
-                ny (+ j y)]
           :when (and (in-radius? r [i j])
-                     (contains? (:objs m) (rnd/xy nx ny)))]
+                     (not= 0 i j))]
+      [i j])))
+
+(defn objects-in-radius [m ^long x ^long y ^double r]
+  (let [ks (circle-of-keys r)]
+    (for [[dx dy] ks
+          :let [nx (+ x dx) ny (+ y dy)]
+          :when (contains? (:objs m) (rnd/xy nx ny))]
       [[nx ny] (object-at m nx ny)])))
