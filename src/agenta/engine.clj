@@ -76,8 +76,11 @@
   "Return sign of a given number (1, -1, 0)"
   (int (Math/signum (float f))))
 
+(defn friends? [u u']
+  (= (:player u) (:player u')))
+
 (defn act! [x y actor visible-objects]
-  (let [enemies (filter #(not= (:player (second %)) (:player actor)) visible-objects)
+  (let [enemies (filter #(not (friends? actor (second %))) visible-objects)
         closest-enemies (filter #(gm/in-radius? [x y] (:range actor) (first %)) enemies)]
     (case (:state actor)
       :escape
