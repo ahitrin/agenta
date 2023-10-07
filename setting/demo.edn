@@ -13,6 +13,7 @@
                 :attackSpeed 25
                 :visibility  7
                 :speed       40
+                :thinkSpeed  25
                 :hitPoints   70
                 :image       "footman"
                 :perk        {
@@ -26,6 +27,7 @@
                 :attackSpeed 40
                 :visibility  7
                 :speed       40
+                :thinkSpeed  25
                 :hitPoints   55
                 :image       "archer"
                 :perk        {
@@ -39,6 +41,7 @@
                 :attackSpeed 40
                 :visibility  7
                 :speed       25
+                :thinkSpeed  25
                 :hitPoints   110
                 :image       "knight"
                 :perk        {

@@ -12,6 +12,7 @@
                 :randAttack  4
                 :hitPoints   10
                 :speed       3
+                :thinkSpeed  3
                 :visibility  10
                 :range       1.45
                 :image       "footman"
@@ -25,6 +26,7 @@
                 :randAttack  4
                 :hitPoints   10
                 :speed       3
+                :thinkSpeed  3
                 :visibility  10
                 :range       1.45
                 :image       "footman"

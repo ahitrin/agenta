@@ -27,7 +27,7 @@
    :attack-counter (ctr/make (inc (rnd/i! (:attackSpeed unit-type))) (:attackSpeed unit-type))
    :health-counter (ctr/make (inc (rnd/i! 100)) 100)
    :speed-counter  (ctr/make (inc (rnd/i! (:speed unit-type))) (:speed unit-type))
-   :think-counter  (ctr/make (inc (rnd/i! 3)) 3)
+   :think-counter  (ctr/make (inc (rnd/i! (:thinkSpeed unit-type))) (:thinkSpeed unit-type))
    :health         (:hitPoints unit-type)
    :state          :attack
    :kills          0})
