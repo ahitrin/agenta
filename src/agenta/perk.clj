@@ -5,12 +5,12 @@
 
 (defn select-random
   "Given several units select one of them absolutely randomly"
-  [units]
+  [actor units]
   (.get units (rnd/i! (count units))))
 
 (defn select-random-memoized
   "Remember previously selected unit and try to select it when possible; else do it randomly"
-  [units]
+  [actor units]
   (let [target (atom nil)
         choose (fn [cur new-units]
                  (cond
@@ -25,7 +25,7 @@
 
 (defn select-weakest
   "Given several units select the one who has fewer hit points"
-  [units]
+  [actor units]
   (first (sort-by :health units)))
 
 ; ---- Move perks ----
