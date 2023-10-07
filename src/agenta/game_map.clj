@@ -73,12 +73,10 @@
 
 (defn objects-in-radius' [m oid ^double r]
   (let [match-vecs (filter #(.contains (key %) oid) (:vecs m))
-        keys-in-range (for [[k [dx dy]] match-vecs
-                            :let [len (+ (* dx dx) (* dy dy))]
-                            :when (<= len (* r r))]
-                        k)
-        found (->> keys-in-range flatten (remove #(= % oid)) (select-keys (:id-to-xy m)) (map second))]
-    (map #(vector [(:x (key %)) (:y (key %))] (val %)) (select-keys (:objs m) found))))
+        vecs-in-range (filter #(m/in-radius? r (val %)) match-vecs)
+        ids-in-range (->> vecs-in-range (map key) flatten (remove #(= oid %)))
+        xy-to-obj (map #(obj-by-id m %) ids-in-range)]
+    (map #(vector [(:x (first %)) (:y (first %))] (second %)) xy-to-obj)))
 
 (comment
 
@@ -86,18 +84,10 @@
         oid 10
         r 5.0
         match-vecs (filter #(.contains (key %) oid) (:vecs m))
-        keys-in-range (for [[k [dx dy]] match-vecs
-                            :let [len (+ (* dx dx) (* dy dy))]
-                            :when (<= len (* r r))]
-                        k)
-        found (->> keys-in-range flatten (remove #(= % oid)) (select-keys (:id-to-xy m)) (map second))]
-    (map #(vector [(:x (key %)) (:y (key %))] (val %)) (select-keys (:objs m) found)))
+        vecs-in-range (filter #(m/in-radius? r (val %)) match-vecs)
+        ids-in-range (->> vecs-in-range (map key) flatten (remove #(= oid %)))
+        xy-to-obj (map #(obj-by-id m %) ids-in-range)]
+    (map #(vector [(:x (first %)) (:y (first %))] (second %)) xy-to-obj))
 
-(let [m start-map
-        oid 10
-        r 5.0
-        match-keys (->> m :vecs keys (filter #(.contains % oid)) seq)
-        match-vecs (-> m :vecs (select-keys match-keys))
-        match-vecs' (filter #(.contains (key %) oid) (:vecs m))]
-    (= (set match-vecs) (set match-vecs')))
+;;
   )
