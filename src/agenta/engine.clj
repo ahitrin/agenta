@@ -34,7 +34,7 @@
 
 (defn act! [x y actor visible-objects]
   (let [enemies (filter #(not (u/friends? actor (second %))) visible-objects)
-        closest-enemies (filter #(gm/in-radius? [x y] (:range actor) (first %)) enemies)]
+        closest-enemies (filter #(m/in-radius? [x y] (:range actor) (first %)) enemies)]
     (case (:state actor)
       :escape
       (let [vectors (map #(vec [(- x (first (first %)))

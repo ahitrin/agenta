@@ -55,24 +55,8 @@
 (defn obj-by-id [m oid]
   (find (:objs m) (get (:id-to-xy m) oid)))
 
-(defn in-radius?
-  "Check whether 2d vector [x y]->[nx ny] has length less or equal to r"
-  ([^double r [^long dx ^long dy]] (<= (+ (* dx dx) (* dy dy))
-                                       (* r r)))
-  ([[^long x ^long y] ^double r [^long nx ^long ny]] (in-radius? r [(- x nx) (- y ny)])))
-
-(defn- circle-of-keys [^double r]
-  (let [limit (int r)]
-    (for [i (range (- limit) (inc limit))
-          j (range (- limit) (inc limit))
-          :when (and (in-radius? r [i j])
-                     (not= 0 i j))]
-      [i j])))
-
-(def circle-of-keys-memoized (memoize circle-of-keys))
-
 (defn objects-in-radius [m oid ^double r]
-  (let [ks (circle-of-keys-memoized r)
+  (let [ks (m/circle-of-keys r)
         xy (get (:id-to-xy m) oid)]
     (for [[dx dy] ks
           :let [nx (+ (:x xy) dx) ny (+ (:y xy) dy)]
