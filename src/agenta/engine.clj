@@ -32,6 +32,9 @@
   "Return sign of a given number (1, -1, 0)"
   (int (Math/signum (float f))))
 
+(defn choose-enemy [actor enemies]
+  (apply (:select-perk actor) actor [(map second enemies)]))
+
 (defn act! [x y actor visible-objects]
   (let [enemies (filter #(not (u/friends? actor (second %))) visible-objects)
         closest-enemies (filter #(m/in-radius? [x y] (:range actor) (first %)) enemies)]
@@ -46,13 +49,13 @@
       (cond
         ; attack achievable enemy
         (seq closest-enemies)
-        (let [chosen (apply (:select-perk actor) actor [(map second closest-enemies)])
+        (let [chosen (choose-enemy actor closest-enemies)
               ids (clojure.string/join "," (map #(str (:id (second %))) closest-enemies))]
           {:type :attack :target (:id chosen) :ids ids})
         ; approach to enemy
         (seq enemies)
         (let [enemies-without-xy (map second enemies)
-              chosen-enemy (apply (:select-perk actor) actor [enemies-without-xy])
+              chosen-enemy (choose-enemy actor enemies)
               chosen-idx (.indexOf enemies-without-xy chosen-enemy)
               enemy-with-xy (nth enemies chosen-idx)
               dx (sign (- (:x (first enemy-with-xy)) x))
