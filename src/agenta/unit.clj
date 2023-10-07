@@ -31,3 +31,8 @@
    :health         (:hitPoints unit-type)
    :state          :attack
    :kills          0})
+
+(defn pretty [unit]
+  (-> unit
+      (assoc :hp (format "%d/%d" (:health unit) (:max-health unit)))
+      (select-keys [:kills :name :state :id :hp])))

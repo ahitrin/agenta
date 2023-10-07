@@ -21,11 +21,6 @@
         defs+ (map-indexed #(assoc %2 :id %) defs)]
     (map u/make-unit defs+)))
 
-(defn pretty [unit]
-  (-> unit
-      (assoc :hp (format "%d/%d" (:health unit) (:max-health unit)))
-      (select-keys [:kills :name :state :id :hp])))
-
 (defn update-state [actor hp max-hp]
   (let [escape-threshold (int (/ max-hp 5))
         attack-threshold (int (/ max-hp 4))
@@ -89,7 +84,7 @@
       (let [u1 (update-state (update u :think-counter ctr/reset) new-hp max-hp)
             visible-objects (gm/objects-in-radius m x y (:visibility u))
             action (act! x y u1 visible-objects)]
-        (log/debugf "%s wants %s" (pretty u1) action)
+        (log/debugf "%s wants %s" (u/pretty u1) action)
         [u1 action [x y]])
       [u nil [x y]])))
 
@@ -107,13 +102,13 @@
             new-hp (- hp damage)]
         (if (and (pos? damage) (pos? hp))
           (do
-            (log/debugf "%s strikes %s with %d" (pretty actor) (pretty u) damage)
+            (log/debugf "%s strikes %s with %d" (u/pretty actor) (u/pretty u) damage)
             (let [m1 (gm/new-map m #(update-in % [my-xy :attack-counter] ctr/reset))
                   m2 (gm/new-map m1 #(update-in % [target-xy :health] - damage))
                   u1 (update-in u [:health] - damage)]
               (if-not (pos-int? new-hp)
                 (do
-                  (log/debugf "%s is dead" (pretty u1))
+                  (log/debugf "%s is dead" (u/pretty u1))
                   (-> m2
                       (gm/new-map #(update-in % [my-xy :kills] inc))
                       (gm/new-map #(dissoc % target-xy))))
