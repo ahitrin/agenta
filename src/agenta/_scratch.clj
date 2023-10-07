@@ -18,11 +18,9 @@
   (require '[clj-async-profiler.core :as prof])
 
   (prof/profile
-    (agenta.engine/run-game! setting (fn [m u] ())))
-
+   (agenta.engine/run-game! setting (fn [m u] ())))
 
   (prof/serve-ui 8080)
 
   ;; various
-
   )

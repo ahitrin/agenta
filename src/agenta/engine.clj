@@ -6,7 +6,6 @@
             [agenta.unit :as u]
             [clojure.tools.logging :as log]))
 
-
 (defn into-defs [setting]
   "Transform setting object into a list of unit defs (specs)"
   (for [ut (:unit-types setting)
@@ -83,8 +82,8 @@
         my-xy (m/xy x y)
         target-xy (if (some? obj) (key obj) (m/xy 0 0))]
     (if (and
-          (ctr/ready? (:attack-counter actor))
-          (some? obj))
+         (ctr/ready? (:attack-counter actor))
+         (some? obj))
       (let [damage (+ (rnd/i! (:rnd-attack actor)) (:base-attack actor))
             hp (:health u)
             new-hp (- hp damage)]

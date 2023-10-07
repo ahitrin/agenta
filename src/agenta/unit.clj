@@ -6,8 +6,7 @@
 
 (defn make-unit [unit-type]
   "Create one unit dictionary from given specs"
-  {
-   ; "static" properties (do not change during game)
+  {; "static" properties (do not change during game)
    :max-spd        (:speed unit-type)
    :max-health     (:hitPoints unit-type)
    :visibility     (:visibility unit-type)

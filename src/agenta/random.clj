@@ -7,11 +7,11 @@
 
 (defn init! []
   (alter-var-root
-    (var generator)
-    (fn [_]
-      (let [seed (.nextLong (Random.))]
-        (log/infof "Seed: %d" seed)
-        (Random. seed)))))
+   (var generator)
+   (fn [_]
+     (let [seed (.nextLong (Random.))]
+       (log/infof "Seed: %d" seed)
+       (Random. seed)))))
 
 (defn get-generator
   "Returns an Random instance"

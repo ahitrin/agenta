@@ -1,9 +1,9 @@
 (ns agenta.ImagePanel
   (:gen-class
-    :extends javax.swing.JPanel
-    :init init
-    :state state
-    :methods [[setImage [java.awt.image.BufferedImage] void]])
+   :extends javax.swing.JPanel
+   :init init
+   :state state
+   :methods [[setImage [java.awt.image.BufferedImage] void]])
   (:import (java.awt Graphics)))
 
 (defn -init []
