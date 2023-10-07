@@ -37,8 +37,8 @@
         closest-enemies (filter #(m/in-radius? [x y] (:range actor) (first %)) enemies)]
     (case (:state actor)
       :escape
-      (let [vectors (map #(vec [(- x (first (first %)))
-                                (- y (second (first %)))]) enemies)
+      (let [vectors (map #(vec [(- x (:x (first %)))
+                                (- y (:y (first %)))]) enemies)
             norm-vecs (map normalize-length vectors)
             total (if (seq norm-vecs) (reduce vec+ norm-vecs) [0 0])]
         {:type :move :dx (sign (first total)) :dy (sign (second total))})
@@ -55,8 +55,8 @@
               chosen-enemy (apply (:select-perk actor) [enemies-without-xy])
               chosen-idx (.indexOf enemies-without-xy chosen-enemy)
               enemy-with-xy (nth enemies chosen-idx)
-              dx (sign (- (first (first enemy-with-xy)) x))
-              dy (sign (- (second (first enemy-with-xy)) y))]
+              dx (sign (- (:x (first enemy-with-xy)) x))
+              dy (sign (- (:y (first enemy-with-xy)) y))]
           {:type :move :dx dx :dy dy})
         ; random move
         :else

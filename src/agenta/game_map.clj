@@ -65,4 +65,4 @@
           :when (and (< -1 nx (:size-x m))
                      (< -1 ny (:size-y m))
                      (contains? (:objs m) nxy))]
-      [[nx ny] (object-at m nx ny)])))
+      [nxy (object-at m nx ny)])))

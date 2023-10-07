@@ -39,6 +39,6 @@
   "Move towards the center of friendly units of any type"
   (let [player (:player actor)
         friends (filter #(= player (:player (second %))) visible-objects)
-        dx (->> friends (map first) (map first) (map #(- % x)) (reduce +) float Math/signum int)
-        dy (->> friends (map first) (map second) (map #(- % y)) (reduce +) float Math/signum int)]
+        dx (->> friends (map first) (map :x) (map #(- % x)) (reduce +) float Math/signum int)
+        dy (->> friends (map first) (map :y) (map #(- % y)) (reduce +) float Math/signum int)]
     {:type :move :dx dx :dy dy}))
