@@ -1,6 +1,7 @@
 (ns agenta.engine
   (:require [agenta.counter :as ctr]
             [agenta.game-map :as gm]
+            [agenta.math :as m]
             [agenta.random :as rnd]
             [agenta.unit :as u]
             [clojure.tools.logging :as log]))
@@ -79,8 +80,8 @@
   (let [target-id (int (:target action))
         obj (gm/obj-by-id m target-id)
         u (if (some? obj) (val obj) {})
-        my-xy (rnd/xy x y)
-        target-xy (if (some? obj) (key obj) (rnd/xy 0 0))]
+        my-xy (m/xy x y)
+        target-xy (if (some? obj) (key obj) (m/xy 0 0))]
     (if (and
           (ctr/ready? (:attack-counter actor))
           (some? obj))
@@ -107,11 +108,11 @@
   (let [dx (int (:dx action))
         dy (int (:dy action))]
     (if (ctr/ready? (:speed-counter actor))
-      (let [nx (+ x dx) ny (+ y dy) xy (rnd/xy nx ny)]
+      (let [nx (+ x dx) ny (+ y dy) xy (m/xy nx ny)]
         (if (gm/can-place? m xy)
           (do
             (let [actor1 (update actor :speed-counter ctr/reset)]
-              (gm/new-map m #(assoc (dissoc % (rnd/xy x y)) (rnd/xy nx ny) actor1))))
+              (gm/new-map m #(assoc (dissoc % (m/xy x y)) (m/xy nx ny) actor1))))
           m))
       m)))
 

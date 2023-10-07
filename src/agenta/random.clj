@@ -1,5 +1,6 @@
 (ns agenta.random
-  (:require [clojure.tools.logging :as log])
+  (:require [clojure.tools.logging :as log]
+            [agenta.math :as m])
   (:import (java.util Random)))
 
 (def generator nil)
@@ -17,15 +18,10 @@
   []
   generator)
 
-; Two coordinates on a game map
-(defrecord XY [^long x ^long y])
-
-(defn xy [x y] (XY. x y))
-
 (defn xy!
   "Makes a random pair of coordinates within given boundaries"
   [mx my]
-  (xy (.nextInt generator mx) (.nextInt generator my)))
+  (m/xy (.nextInt generator mx) (.nextInt generator my)))
 
 (defn i!
   "Makes a random integer between 0 (inclusive) and n (exclusive)"

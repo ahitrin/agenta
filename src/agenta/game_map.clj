@@ -1,5 +1,6 @@
 (ns agenta.game-map
-  (:require [agenta.random :as rnd]))
+  (:require [agenta.math :as m]
+            [agenta.random :as rnd]))
 
 (defrecord GameMap [size-x size-y cells objs id-to-xy])
 
@@ -27,10 +28,10 @@
   (:objs m))
 
 (defn object-at [m x y]
-  ((:objs m) (rnd/xy x y)))
+  ((:objs m) (m/xy x y)))
 
 (defn cell-type [m x y]
-  (get (:cells m) (rnd/xy x y) :grass))
+  (get (:cells m) (m/xy x y) :grass))
 
 (defn can-place? [m xy]
   (let [x (:x xy) y (:y xy)]
@@ -76,5 +77,5 @@
           :let [nx (+ x dx) ny (+ y dy)]
           :when (and (< -1 nx (:size-x m))
                      (< -1 ny (:size-y m))
-                     (contains? (:objs m) (rnd/xy nx ny)))]
+                     (contains? (:objs m) (m/xy nx ny)))]
       [[nx ny] (object-at m nx ny)])))
