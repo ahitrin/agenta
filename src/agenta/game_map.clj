@@ -2,15 +2,21 @@
   (:require [agenta.math :as m]
             [agenta.random :as rnd]))
 
-(defrecord GameMap [size-x size-y cells objs id-to-xy])
+(defrecord GameMap [size-x size-y cells objs id-to-xy vecs])
 
 (defn- into-xy [old-obj]
   (hash-map (:id (second old-obj)) (first old-obj)))
 
+(defn- vectors [id-to-xy]
+  (into {} (for [[id-a xy-a] id-to-xy
+                 [id-b xy-b] id-to-xy
+                 :when (< id-a id-b)]
+             [[id-a id-b] [(- (:x xy-a) (:x xy-b)) (- (:y xy-a) (:y xy-b))]])))
+
 (defn new-map [^GameMap m objs-fn]
   (let [objs (-> (:objs m) objs-fn)
         idx  (reduce merge (map into-xy objs))]
-    (GameMap. (:size-x m) (:size-y m) (:cells m) objs idx)))
+    (GameMap. (:size-x m) (:size-y m) (:cells m) objs idx (vectors idx))))
 
 (defn plane
   "Fill given rectangle with grass solely"
@@ -46,7 +52,7 @@
   (let [size-x (:size-x map-spec)
         size-y (:size-y map-spec)
         type (resolve (:type map-spec))
-        m (GameMap. size-x size-y (apply type [size-x size-y]) {} {})
+        m (GameMap. size-x size-y (apply type [size-x size-y]) {} {} {})
         xys (filter #(can-place? m %)
                     (distinct (repeatedly #(rnd/xy! size-x size-y))))
         objs (zipmap xys units)]
