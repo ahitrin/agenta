@@ -1,4 +1,4 @@
-.PHONY: all smoke test baseline demo
+.PHONY: all smoke test baseline demo format
 
 all: smoke
 
@@ -13,3 +13,6 @@ baseline:
 
 test:
 	lein test
+
+format:
+	lein cljfmt fix
