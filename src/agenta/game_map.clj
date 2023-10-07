@@ -71,10 +71,11 @@
 
 (def circle-of-keys-memoized (memoize circle-of-keys))
 
-(defn objects-in-radius [m ^long x ^long y ^double r]
-  (let [ks (circle-of-keys-memoized r)]
+(defn objects-in-radius [m oid ^double r]
+  (let [ks (circle-of-keys-memoized r)
+        xy (get (:id-to-xy m) oid)]
     (for [[dx dy] ks
-          :let [nx (+ x dx) ny (+ y dy)]
+          :let [nx (+ (:x xy) dx) ny (+ (:y xy) dy)]
           :when (and (< -1 nx (:size-x m))
                      (< -1 ny (:size-y m))
                      (contains? (:objs m) (m/xy nx ny)))]
