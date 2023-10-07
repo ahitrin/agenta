@@ -36,3 +36,13 @@
   (-> unit
       (assoc :hp (format "%d/%d" (:health unit) (:max-health unit)))
       (select-keys [:kills :name :state :id :hp])))
+
+(defn update-state [actor hp max-hp]
+  (let [escape-threshold (int (/ max-hp 5))
+        attack-threshold (int (/ max-hp 4))
+        old-state (:state actor)
+        new-state (cond
+                    (< hp escape-threshold) :escape
+                    (>= hp attack-threshold) :attack
+                    :else old-state)]
+    (assoc actor :state new-state)))

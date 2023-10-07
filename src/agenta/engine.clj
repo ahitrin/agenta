@@ -21,16 +21,6 @@
         defs+ (map-indexed #(assoc %2 :id %) defs)]
     (map u/make-unit defs+)))
 
-(defn update-state [actor hp max-hp]
-  (let [escape-threshold (int (/ max-hp 5))
-        attack-threshold (int (/ max-hp 4))
-        old-state (:state actor)
-        new-state (cond
-                    (< hp escape-threshold) :escape
-                    (>= hp attack-threshold) :attack
-                    :else old-state)]
-    (assoc actor :state new-state)))
-
 (defn normalize-length [[x y]]
   (let [r (Math/sqrt (+ (* x x) (* y y)))]
     [(/ x r) (/ y r)]))
@@ -81,7 +71,7 @@
         max-hp (:max-health u)
         new-hp (:health u)]
     (if (ctr/ready? (:think-counter u))
-      (let [u1 (update-state (update u :think-counter ctr/reset) new-hp max-hp)
+      (let [u1 (u/update-state (update u :think-counter ctr/reset) new-hp max-hp)
             visible-objects (gm/objects-in-radius m x y (:visibility u))
             action (act! x y u1 visible-objects)]
         (log/debugf "%s wants %s" (u/pretty u1) action)
