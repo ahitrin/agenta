@@ -59,8 +59,10 @@
   (let [ks (m/circle-of-keys r)
         xy (get (:id-to-xy m) oid)]
     (for [[dx dy] ks
-          :let [nx (+ (:x xy) dx) ny (+ (:y xy) dy)]
+          :let [nx (+ (:x xy) dx)
+                ny (+ (:y xy) dy)
+                nxy (m/xy nx ny)]
           :when (and (< -1 nx (:size-x m))
                      (< -1 ny (:size-y m))
-                     (contains? (:objs m) (m/xy nx ny)))]
+                     (contains? (:objs m) nxy))]
       [[nx ny] (object-at m nx ny)])))
