@@ -46,3 +46,6 @@
                     (>= hp attack-threshold) :attack
                     :else old-state)]
     (assoc actor :state new-state)))
+
+(defn friends? [u u']
+  (= (:player u) (:player u')))
