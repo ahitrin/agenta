@@ -21,9 +21,9 @@
         defs+ (map-indexed #(assoc %2 :id %) defs)]
     (map u/make-unit defs+)))
 
-(defn normalize-length [[x y]]
-  (let [r (Math/sqrt (+ (* x x) (* y y)))]
-    [(/ x r) (/ y r)]))
+(defn normalize-length [xy]
+  (let [r (Math/sqrt (m/len2 xy))]
+    [(/ (:x xy) r) (/ (:y xy) r)]))
 
 (defn vec+ [v1 v2]
   [(+ (first v1) (first v2)) (+ (second v1) (second v2))])
@@ -37,8 +37,8 @@
         closest-enemies (filter #(m/in-radius? [x y] (:range actor) (first %)) enemies)]
     (case (:state actor)
       :escape
-      (let [vectors (map #(vec [(- x (:x (first %)))
-                                (- y (:y (first %)))]) enemies)
+      (let [vectors (map #(m/xy (- x (:x (first %)))
+                                (- y (:y (first %)))) enemies)
             norm-vecs (map normalize-length vectors)
             total (if (seq norm-vecs) (reduce vec+ norm-vecs) [0 0])]
         {:type :move :dx (sign (first total)) :dy (sign (second total))})
