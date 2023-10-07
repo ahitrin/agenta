@@ -16,9 +16,9 @@
                  (cond
                    (and (some? cur)
                         (pos? (:health cur))
-                        (.contains new-units cur))
+                        (contains? new-units cur))
                    cur
-                   (false? (.isEmpty new-units))
+                   (seq new-units)
                    (.get new-units (rnd/i! (count new-units)))
                    :else nil))]
     (swap! target choose units)))
