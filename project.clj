@@ -3,6 +3,7 @@
   :url "https://github.com/ahitrin/agenta"
   :license {:name "EPL-2.0 OR GPL-2.0-or-later WITH Classpath-exception-2.0"
             :url "https://www.eclipse.org/legal/epl-2.0/"}
+  :plugins [[dev.weavejester/lein-cljfmt "0.11.2"]]
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [org.clojure/tools.logging "1.1.0"]
                  [com.github.javafaker/javafaker "1.0.2"]
