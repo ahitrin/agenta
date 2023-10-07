@@ -4,6 +4,7 @@
   ;; reload modules after changes
   (use 'agenta.engine :reload)
   (use 'agenta.game-map :reload)
+  (use 'agenta.math :reload)
   (use 'agenta.random :reload)
 
   ;; init randomizer before start
