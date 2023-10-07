@@ -21,6 +21,11 @@
   (prof/profile
    (agenta.engine/run-game! setting (fn [m u] ())))
 
+  (prof/profile (dotimes [_ 100000]
+    (let [x (agenta.game-map/objects-in-radius start-map 10 5.0)
+          y (agenta.game-map/objects-in-radius' start-map 10 5.0)]
+        (= x y))))
+
   (prof/serve-ui 8080)
 
   ;; various

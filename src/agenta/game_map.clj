@@ -71,12 +71,22 @@
                      (contains? (:objs m) (m/xy nx ny)))]
       [[nx ny] (object-at m nx ny)])))
 
+(defn f1 [m oid] (filter #(contains? (key %) oid) (:vecs m)))
+
+(defn f2 [match-vecs r] (filter #(m/in-radius? r (val %)) match-vecs))
+
+(defn f3 [vecs-in-range oid] (->> vecs-in-range (map key) flatten (remove #(= oid %))))
+
+(defn f4 [m ids-in-range] (map #(obj-by-id m %) ids-in-range))
+
+(defn f5 [xy-to-obj] (map #(vector [(:x (first %)) (:y (first %))] (second %)) xy-to-obj))
+
 (defn objects-in-radius' [m oid ^double r]
-  (let [match-vecs (filter #(.contains (key %) oid) (:vecs m))
-        vecs-in-range (filter #(m/in-radius? r (val %)) match-vecs)
-        ids-in-range (->> vecs-in-range (map key) flatten (remove #(= oid %)))
-        xy-to-obj (map #(obj-by-id m %) ids-in-range)]
-    (map #(vector [(:x (first %)) (:y (first %))] (second %)) xy-to-obj)))
+  (let [match-vecs (f1 m oid)
+        vecs-in-range (f2 match-vecs r)
+        ids-in-range (f3 vecs-in-range oid)
+        xy-to-obj (f4 m ids-in-range)]
+    (f5 xy-to-obj)))
 
 (comment
 
