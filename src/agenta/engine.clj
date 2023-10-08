@@ -47,8 +47,9 @@
               chosen-enemy (choose-enemy actor enemies)
               chosen-idx (.indexOf enemies-without-xy chosen-enemy)
               enemy-with-xy (nth enemies chosen-idx)
-              dx (m/sign (- (:x (first enemy-with-xy)) (:x xy)))
-              dy (m/sign (- (:y (first enemy-with-xy)) (:y xy)))]
+              v (m/v-> (first enemy-with-xy) xy)
+              dx (m/sign (:dx v))
+              dy (m/sign (:dy v))]
           {:type :move :dx dx :dy dy})
         ; random move
         :else
