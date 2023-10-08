@@ -55,11 +55,8 @@
 (def circle-of-keys (memoize circle-of-keys-raw))
 
 (defn normalize-length [^V v]
-  (let [r (len v)]
-    [(/ (:dx v) r) (/ (:dy v) r)]))
-
-(defn vec+ [v1 v2]
-  [(+ (first v1) (first v2)) (+ (second v1) (second v2))])
+  "Transform 2d vector into vector of the same direction and length 1"
+  (v* (/ 1 (len v)) v))
 
 (defn sign [f]
   "Return sign of a given number (1, -1, 0)"
