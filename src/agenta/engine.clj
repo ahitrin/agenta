@@ -24,8 +24,9 @@
 (defn choose-enemy [actor enemies]
   (:target (apply (:select-perk actor) actor [(map second enemies)])))
 
-(defn act! [x y actor visible-objects]
+(defn act! [xy actor visible-objects]
   (let [enemies (filter #(not (u/friends? actor (second %))) visible-objects)
+        x (:x xy) y (:y xy)
         closest-enemies (filter #(m/in-radius? [x y] (:range actor) (first %)) enemies)]
     (case (:state actor)
       :escape
@@ -62,7 +63,7 @@
     (if (ctr/ready? (:think-counter u))
       (let [u1 (u/update-state (update u :think-counter ctr/reset) new-hp max-hp)
             visible-objects (gm/objects-in-radius m (:id u) (:visibility u))
-            action (act! x y u1 visible-objects)]
+            action (act! xy u1 visible-objects)]
         (log/debugf "%s wants %s" (u/pretty u1) action)
         [u1 action [x y]])
       [u nil [x y]])))
