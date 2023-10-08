@@ -16,7 +16,7 @@
 (defn in-radius?
   "Check whether 2d vector [x y]->[nx ny] has length less or equal to r"
   ([^double r [^long dx ^long dy]] (<= (len2 dx dy) (sqr r)))
-  ([[^long x ^long y] ^double r ^XY nxy] (in-radius? r [(- x (:x nxy)) (- y (:y nxy))])))
+  ([^XY xy ^double r ^XY nxy] (in-radius? r [(- (:x xy) (:x nxy)) (- (:y xy) (:y nxy))])))
 
 (defn- circle-of-keys-raw [^double r]
   (let [limit (int r)]
