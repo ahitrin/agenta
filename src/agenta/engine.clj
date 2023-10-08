@@ -65,14 +65,13 @@
             visible-objects (gm/objects-in-radius m (:id u) (:visibility u))
             action (act! xy u1 visible-objects)]
         (log/debugf "%s wants %s" (u/pretty u1) action)
-        [u1 action [x y]])
-      [u nil [x y]])))
+        [u1 action xy])
+      [u nil xy])))
 
-(defn perform-attack! [m actor action [x y]]
+(defn perform-attack! [m actor action xy]
   (let [target-id (int (:target action))
         obj (gm/obj-by-id m target-id)
         u (if (some? obj) (val obj) {})
-        my-xy (m/xy x y)
         target-xy (if (some? obj) (key obj) (m/xy 0 0))]
     (if (and
          (ctr/ready? (:attack-counter actor))
@@ -83,28 +82,30 @@
         (if (and (pos? damage) (pos? hp))
           (do
             (log/debugf "%s strikes %s with %d" (u/pretty actor) (u/pretty u) damage)
-            (let [m1 (gm/new-map m #(update-in % [my-xy :attack-counter] ctr/reset))
+            (let [m1 (gm/new-map m #(update-in % [xy :attack-counter] ctr/reset))
                   m2 (gm/new-map m1 #(update-in % [target-xy :health] - damage))
                   u1 (update-in u [:health] - damage)]
               (if-not (pos-int? new-hp)
                 (do
                   (log/debugf "%s is dead" (u/pretty u1))
                   (-> m2
-                      (gm/new-map #(update-in % [my-xy :kills] inc))
+                      (gm/new-map #(update-in % [xy :kills] inc))
                       (gm/new-map #(dissoc % target-xy))))
                 m2)))
           m))
       m)))
 
-(defn perform-move [m actor action [x y]]
+(defn perform-move [m actor action xy]
   (let [dx (int (:dx action))
         dy (int (:dy action))]
     (if (ctr/ready? (:speed-counter actor))
-      (let [nx (+ x dx) ny (+ y dy) xy (m/xy nx ny)]
-        (if (gm/can-place? m xy)
+      (let [nx  (+ (:x xy) dx)
+            ny  (+ (:y xy) dy)
+            xy' (m/xy nx ny)]
+        (if (gm/can-place? m xy')
           (do
             (let [actor1 (update actor :speed-counter ctr/reset)]
-              (gm/new-map m #(assoc (dissoc % (m/xy x y)) (m/xy nx ny) actor1))))
+              (gm/new-map m #(assoc (dissoc % xy) xy' actor1))))
           m))
       m)))
 
@@ -112,13 +113,13 @@
   {:attack perform-attack!
    :move   perform-move})
 
-(defn apply-action! [m [actor action [x y]]]
+(defn apply-action! [m [actor action xy]]
   (let [obj (gm/obj-by-id m (:id actor))
         atype (:type action)]
     (if (and (some? obj)
              ; probably, an excessive check: actors with neg health are removed from map
              (pos? (:health actor)))
-      (apply (action-selector atype) [m actor action [x y]])
+      (apply (action-selector atype) [m actor action xy])
       m)))
 
 (defn apply-actions! [actions m]
