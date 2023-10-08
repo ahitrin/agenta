@@ -29,10 +29,11 @@
         closest-enemies (filter #(m/in-radius? xy (:range actor) (first %)) enemies)]
     (case (:state actor)
       :escape
-      (let [vectors (map #(m/v-> (first %) xy) enemies)
-            norm-vecs (map m/normalize-length vectors)
-            total (reduce m/v+v (m/v 0 0) norm-vecs)]
-        {:type :move :dx (m/sign (:dx total)) :dy (m/sign (:dy total))})
+      (let [direction (->> enemies
+                           (map #(m/v-> (first %) xy))
+                           (map m/normalize-length)
+                           (reduce m/v+v (m/v 0 0)))]
+        {:type :move :dx (m/sign (:dx direction)) :dy (m/sign (:dy direction))})
       :attack
       (cond
         ; attack achievable enemy
