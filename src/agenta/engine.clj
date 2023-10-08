@@ -56,9 +56,7 @@
         (apply (:move-perk actor) [xy actor visible-objects])))))
 
 (defn unit-action! [[xy u] m]
-  (let [x (:x xy)
-        y (:y xy)
-        max-hp (:max-health u)
+  (let [max-hp (:max-health u)
         new-hp (:health u)]
     (if (ctr/ready? (:think-counter u))
       (let [u1 (u/update-state (update u :think-counter ctr/reset) new-hp max-hp)
