@@ -6,6 +6,7 @@
   :plugins [[dev.weavejester/lein-cljfmt "0.11.2"]]
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [org.clojure/tools.logging "1.1.0"]
+                 [cljfx "1.7.24"]
                  [com.github.javafaker/javafaker "1.0.2"]
                  [ch.qos.logback/logback-classic "1.1.2"]
                  [com.clojure-goes-fast/clj-async-profiler "1.0.5"]]
