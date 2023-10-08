@@ -26,12 +26,11 @@
 
 (defn act! [xy actor visible-objects]
   (let [enemies (filter #(not (u/friends? actor (second %))) visible-objects)
-        x (:x xy) y (:y xy)
         closest-enemies (filter #(m/in-radius? xy (:range actor) (first %)) enemies)]
     (case (:state actor)
       :escape
-      (let [vectors (map #(m/xy (- x (:x (first %)))
-                                (- y (:y (first %)))) enemies)
+      (let [vectors (map #(m/xy (- (:x xy) (:x (first %)))
+                                (- (:y xy) (:y (first %)))) enemies)
             norm-vecs (map m/normalize-length vectors)
             total (if (seq norm-vecs) (reduce m/vec+ norm-vecs) [0 0])]
         {:type :move :dx (m/sign (first total)) :dy (m/sign (second total))})
@@ -48,8 +47,8 @@
               chosen-enemy (choose-enemy actor enemies)
               chosen-idx (.indexOf enemies-without-xy chosen-enemy)
               enemy-with-xy (nth enemies chosen-idx)
-              dx (m/sign (- (:x (first enemy-with-xy)) x))
-              dy (m/sign (- (:y (first enemy-with-xy)) y))]
+              dx (m/sign (- (:x (first enemy-with-xy)) (:x xy)))
+              dy (m/sign (- (:y (first enemy-with-xy)) (:y xy)))]
           {:type :move :dx dx :dy dy})
         ; random move
         :else
