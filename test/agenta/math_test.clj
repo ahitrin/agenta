@@ -15,4 +15,8 @@
     (let [vc (v 4 5)]
       (is (= (v 8 10)    (v* 2 vc)))
       (is (= (v 0 0)     (v* 0 vc)))
-      (is (= (v 2.0 2.5) (v* 0.5 vc))))))
+      (is (= (v 2.0 2.5) (v* 0.5 vc)))))
+
+  (testing "vector length"
+    (let [vc (v 3 4)]
+      (is (= 5.0 (len vc))))))

@@ -29,6 +29,11 @@
 
 (defn sqr [x] (* x x))
 
+(defn len [^V v]
+  "Length of a given 2d vector"
+  (let [dx (:dx v) dy (:dy v)]
+    (Math/sqrt (+ (* dx dx) (* dy dy)))))
+
 (defn len2
   "Squared length of a given 2d vector"
   ([^long dx ^long dy] (+ (sqr dx) (sqr dy)))
@@ -50,7 +55,7 @@
 (def circle-of-keys (memoize circle-of-keys-raw))
 
 (defn normalize-length [^V v]
-  (let [r (Math/sqrt (len2 (:dx v) (:dy v)))]
+  (let [r (len v)]
     [(/ (:dx v) r) (/ (:dy v) r)]))
 
 (defn vec+ [v1 v2]
