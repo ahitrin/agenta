@@ -49,9 +49,9 @@
 
 (def circle-of-keys (memoize circle-of-keys-raw))
 
-(defn normalize-length [xy]
-  (let [r (Math/sqrt (len2 xy))]
-    [(/ (:x xy) r) (/ (:y xy) r)]))
+(defn normalize-length [^V v]
+  (let [r (Math/sqrt (len2 (:dx v) (:dy v)))]
+    [(/ (:dx v) r) (/ (:dy v) r)]))
 
 (defn vec+ [v1 v2]
   [(+ (first v1) (first v2)) (+ (second v1) (second v2))])
