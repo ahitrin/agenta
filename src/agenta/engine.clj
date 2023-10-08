@@ -21,17 +21,6 @@
         defs+ (map-indexed #(assoc %2 :id %) defs)]
     (map u/make-unit defs+)))
 
-(defn normalize-length [xy]
-  (let [r (Math/sqrt (m/len2 xy))]
-    [(/ (:x xy) r) (/ (:y xy) r)]))
-
-(defn vec+ [v1 v2]
-  [(+ (first v1) (first v2)) (+ (second v1) (second v2))])
-
-(defn sign [f]
-  "Return sign of a given number (1, -1, 0)"
-  (int (Math/signum (float f))))
-
 (defn choose-enemy [actor enemies]
   (apply (:select-perk actor) actor [(map second enemies)]))
 
@@ -42,9 +31,9 @@
       :escape
       (let [vectors (map #(m/xy (- x (:x (first %)))
                                 (- y (:y (first %)))) enemies)
-            norm-vecs (map normalize-length vectors)
-            total (if (seq norm-vecs) (reduce vec+ norm-vecs) [0 0])]
-        {:type :move :dx (sign (first total)) :dy (sign (second total))})
+            norm-vecs (map m/normalize-length vectors)
+            total (if (seq norm-vecs) (reduce m/vec+ norm-vecs) [0 0])]
+        {:type :move :dx (m/sign (first total)) :dy (m/sign (second total))})
       :attack
       (cond
         ; attack achievable enemy
@@ -58,8 +47,8 @@
               chosen-enemy (choose-enemy actor enemies)
               chosen-idx (.indexOf enemies-without-xy chosen-enemy)
               enemy-with-xy (nth enemies chosen-idx)
-              dx (sign (- (:x (first enemy-with-xy)) x))
-              dy (sign (- (:y (first enemy-with-xy)) y))]
+              dx (m/sign (- (:x (first enemy-with-xy)) x))
+              dy (m/sign (- (:y (first enemy-with-xy)) y))]
           {:type :move :dx dx :dy dy})
         ; random move
         :else

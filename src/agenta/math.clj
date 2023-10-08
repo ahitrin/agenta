@@ -27,3 +27,14 @@
       [i j])))
 
 (def circle-of-keys (memoize circle-of-keys-raw))
+
+(defn normalize-length [xy]
+  (let [r (Math/sqrt (len2 xy))]
+    [(/ (:x xy) r) (/ (:y xy) r)]))
+
+(defn vec+ [v1 v2]
+  [(+ (first v1) (first v2)) (+ (second v1) (second v2))])
+
+(defn sign [f]
+  "Return sign of a given number (1, -1, 0)"
+  (int (Math/signum (float f))))
