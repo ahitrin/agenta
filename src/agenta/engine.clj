@@ -31,7 +31,7 @@
       :escape
       (let [vectors (map #(m/v-> (first %) xy) enemies)
             norm-vecs (map m/normalize-length vectors)
-            total (if (seq norm-vecs) (reduce m/v+v norm-vecs) (m/v 0 0))]
+            total (reduce m/v+v (m/v 0 0) norm-vecs)]
         {:type :move :dx (m/sign (:dx total)) :dy (m/sign (:dy total))})
       :attack
       (cond
