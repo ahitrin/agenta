@@ -22,7 +22,7 @@
     (map u/make-unit defs+)))
 
 (defn choose-enemy [actor enemies]
-  (apply (:select-perk actor) actor [(map second enemies)]))
+  (:target (apply (:select-perk actor) actor [(map second enemies)])))
 
 (defn act! [x y actor visible-objects]
   (let [enemies (filter #(not (u/friends? actor (second %))) visible-objects)
