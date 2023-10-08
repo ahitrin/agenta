@@ -30,15 +30,15 @@
 
 ; ---- Move perks ----
 
-(defn move-randomly [x y actor visible-objects]
+(defn move-randomly [xy actor visible-objects]
   "Ignore visible objects and current actor state, always move randomly"
   (let [dx (dec (rnd/i! 3)) dy (dec (rnd/i! 3))]
     {:type :move :dx dx :dy dy}))
 
-(defn move-to-friends [x y actor visible-objects]
+(defn move-to-friends [xy actor visible-objects]
   "Move towards the center of friendly units of any type"
   (let [player (:player actor)
         friends (filter #(= player (:player (second %))) visible-objects)
-        dx (->> friends (map first) (map :x) (map #(- % x)) (reduce +) float Math/signum int)
-        dy (->> friends (map first) (map :y) (map #(- % y)) (reduce +) float Math/signum int)]
+        dx (->> friends (map first) (map :x) (map #(- % (:x xy))) (reduce +) float Math/signum int)
+        dy (->> friends (map first) (map :y) (map #(- % (:y xy))) (reduce +) float Math/signum int)]
     {:type :move :dx dx :dy dy}))

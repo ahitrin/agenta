@@ -53,7 +53,7 @@
           {:type :move :dx dx :dy dy})
         ; random move
         :else
-        (apply (:move-perk actor) [x y actor visible-objects])))))
+        (apply (:move-perk actor) [xy actor visible-objects])))))
 
 (defn unit-action! [[xy u] m]
   (let [x (:x xy)
