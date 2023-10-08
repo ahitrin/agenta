@@ -1,5 +1,6 @@
 (ns agenta.ui
-  (:require [agenta.game-map :as gm])
+  (:require [agenta.game-map :as gm]
+            [agenta.math :as m])
   (:import (agenta ImagePanel)
            (javax.swing JFrame JOptionPane JPanel)
            (java.awt Graphics Component)
@@ -48,7 +49,7 @@
                 graphics (.createGraphics new-bg)]
             (doseq [i (range size-x)
                     j (range size-y)
-                    :let [tile-name (-tiles (gm/cell-type m i j))]]
+                    :let [tile-name (-tiles (gm/cell-type m (m/xy i j)))]]
               (draw-image graphics image-cache tile-name i j))
             (reset! bg new-bg)))
         (let [image (-copy-image @bg)

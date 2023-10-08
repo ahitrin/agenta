@@ -30,14 +30,14 @@
 (defn object-at [m xy]
   ((:objs m) xy))
 
-(defn cell-type [m x y]
-  (get (:cells m) (m/xy x y) :grass))
+(defn cell-type [m xy]
+  (get (:cells m) xy :grass))
 
 (defn can-place? [m xy]
   (let [x (:x xy) y (:y xy)]
     (and (< -1 x (:size-x m))
          (< -1 y (:size-y m))
-         (= :grass (cell-type m x y))
+         (= :grass (cell-type m xy))
          (nil? (object-at m xy)))))
 
 (defn make-map
