@@ -6,6 +6,27 @@
 
 (defn xy [x y] (XY. x y))
 
+; 2d vector (directed distance) between two XY points
+(defrecord V [dx dy])
+
+(defn v [dx dy] (V. dx dy))
+
+(defn v-> [^XY xy ^XY xy']
+  "Create a vector from xy to xy'"
+  (V. (- (:x xy') (:x xy)) (- (:y xy') (:y xy))))
+
+(defn xy+v [^XY xy ^V v]
+  "Add vector v to the given point"
+  (XY. (+ (:x xy) (:dx v)) (+ (:y xy) (:dy v))))
+
+(defn v+v [^V v ^V v']
+  "Add two vectors"
+  (V. (+ (:dx v) (:dx v')) (+ (:dy v) (:dy v'))))
+
+(defn v* [mult ^V v]
+  "Multiply a vector to the given multiplier"
+  (V. (* mult (:dx v)) (* mult (:dy v))))
+
 (defn sqr [x] (* x x))
 
 (defn len2
