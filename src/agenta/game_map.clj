@@ -27,8 +27,8 @@
 (defn xy-to-unit [^GameMap m]
   (:objs m))
 
-(defn object-at [m x y]
-  ((:objs m) (m/xy x y)))
+(defn object-at [m xy]
+  ((:objs m) xy))
 
 (defn cell-type [m x y]
   (get (:cells m) (m/xy x y) :grass))
@@ -38,7 +38,7 @@
     (and (< -1 x (:size-x m))
          (< -1 y (:size-y m))
          (= :grass (cell-type m x y))
-         (nil? (object-at m x y)))))
+         (nil? (object-at m xy)))))
 
 (defn make-map
   "Build game map with given map spec"
@@ -65,4 +65,4 @@
           :when (and (< -1 nx (:size-x m))
                      (< -1 ny (:size-y m))
                      (contains? (:objs m) nxy))]
-      [nxy (object-at m nx ny)])))
+      [nxy (object-at m nxy)])))
