@@ -2,8 +2,13 @@
   (:require [clojure.java.io :as io]
             [cljfx.api :as fx]))
 
+(def player-as-text
+  {-1 "Undefined"
+   0  "Player 0"
+   1  "Player 1"})
+
 (def *state
- (atom {}))
+ (atom {:winner -1 :tick 0}))
 
 (defmulti event-handler :event/type)
 
@@ -11,7 +16,7 @@
   (let [file-name (str "Pictures/" img-name ".gif")]
     (str "file://" (.getAbsolutePath (io/file file-name)))))
 
-(def props-pane
+(defn props-pane [tick winner]
   {:fx/type :grid-pane
    :children [{:fx/type :label
                :text "Properties"
@@ -23,7 +28,7 @@
                :grid-pane/row 1
                :grid-pane/column 0}
               {:fx/type :text-field
-               :text "0"
+               :text (str tick)
                :editable false
                :grid-pane/row 1
                :grid-pane/column 1}
@@ -32,7 +37,7 @@
                :grid-pane/row 2
                :grid-pane/column 0}
               {:fx/type :text-field
-               :text "Undefined"
+               :text (get player-as-text winner)
                :editable false
                :grid-pane/row 2
                :grid-pane/column 1}]})
@@ -46,12 +51,12 @@
                :grid-pane/column j
                :image {:url (img-url "tree0")}})})
 
-(defn root-view [{{:keys []} :state}]
+(defn root-view [{{:keys [tick winner]} :state}]
   {:fx/type :stage
    :showing true
    :scene {:fx/type :scene
            :root {:fx/type :h-box
-                  :children [grid-pane props-pane]}}})
+                  :children [grid-pane (props-pane tick winner)]}}})
 
 (def renderer
   (fx/create-renderer
