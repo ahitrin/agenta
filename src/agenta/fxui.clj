@@ -11,6 +11,30 @@
   (let [file-name (str "Pictures/" img-name ".gif")]
     (str "file://" (.getAbsolutePath (io/file file-name)))))
 
+(def props-pane
+  {:fx/type :grid-pane
+   :children [{:fx/type :label
+               :text "Properties"
+               :grid-pane/row 0
+               :grid-pane/column 0
+               :grid-pane/column-span 2}
+              {:fx/type :label
+               :text "Tick"
+               :grid-pane/row 1
+               :grid-pane/column 0}
+              {:fx/type :text-field
+               :text "0"
+               :grid-pane/row 1
+               :grid-pane/column 1}
+              {:fx/type :label
+               :text "Winner"
+               :grid-pane/row 2
+               :grid-pane/column 0}
+              {:fx/type :text-field
+               :text "Undefined"
+               :grid-pane/row 2
+               :grid-pane/column 1}]})
+
 (def grid-pane
   {:fx/type :grid-pane
   :children (for [i (range 10)
@@ -25,7 +49,7 @@
    :showing true
    :scene {:fx/type :scene
            :root {:fx/type :h-box
-                  :children [grid-pane]}}})
+                  :children [grid-pane props-pane]}}})
 
 (def renderer
   (fx/create-renderer
