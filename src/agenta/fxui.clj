@@ -1,5 +1,6 @@
 (ns agenta.fxui
-  (:require [cljfx.api :as fx]))
+  (:require [clojure.java.io :as io]
+            [cljfx.api :as fx]))
 
 (def *state
  (atom {}))
@@ -10,10 +11,10 @@
   {:fx/type :grid-pane
   :children (for [i (range 10)
                   j (range 10)]
-              {:fx/type :label
+              {:fx/type :image-view
                :grid-pane/row i
                :grid-pane/column j
-               :text (str "[" i "/" j "]")})})
+               :image {:url (str "file://" (.getAbsolutePath (io/file "Pictures/tree0.gif")))}})})
 
 (defn root-view [{{:keys []} :state}]
   {:fx/type :stage
