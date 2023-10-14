@@ -7,6 +7,10 @@
 
 (defmulti event-handler :event/type)
 
+(defn img-url [img-name]
+  (let [file-name (str "Pictures/" img-name ".gif")]
+    (str "file://" (.getAbsolutePath (io/file file-name)))))
+
 (def grid-pane
   {:fx/type :grid-pane
   :children (for [i (range 10)
@@ -14,7 +18,7 @@
               {:fx/type :image-view
                :grid-pane/row i
                :grid-pane/column j
-               :image {:url (str "file://" (.getAbsolutePath (io/file "Pictures/tree0.gif")))}})})
+               :image {:url (img-url "tree0")}})})
 
 (defn root-view [{{:keys []} :state}]
   {:fx/type :stage
