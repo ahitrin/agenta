@@ -24,6 +24,7 @@
                :grid-pane/column 0}
               {:fx/type :text-field
                :text "0"
+               :editable false
                :grid-pane/row 1
                :grid-pane/column 1}
               {:fx/type :label
@@ -32,6 +33,7 @@
                :grid-pane/column 0}
               {:fx/type :text-field
                :text "Undefined"
+               :editable false
                :grid-pane/row 2
                :grid-pane/column 1}]})
 
