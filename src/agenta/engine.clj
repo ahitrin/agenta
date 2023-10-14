@@ -147,7 +147,7 @@
     (loop [m start-map winner -1 tick 0]
       (let [m1 (gm/new-map m tick-health)
             objs (gm/xy-to-unit m1)]
-        (viewer m1)
+        (viewer m1 {:winner winner :tick tick})
         (if (or (<= 0 winner) (<= limit tick))
           {:winner winner :steps tick}
           (let [actions (set (filter #(some? (second %)) (map #(unit-action! % m1) objs)))
