@@ -67,5 +67,21 @@
 
 (fx/mount-renderer *state renderer)
 
+(defn game-viewer []
+  (fn [m opts]
+    (swap! *state assoc :tick (:tick opts) :winner (:winner opts))))
+
 (comment
-    (renderer))
+    (renderer)
+
+(require '[agenta.random :as rnd])
+(require '[agenta.engine :as eng])
+(rnd/init!)
+(let [s (clojure.edn/read-string (slurp "setting/demo.edn"))
+      v (game-viewer)]
+   (eng/run-game! s v))
+
+(swap! *state assoc :tick 1 :winner -1)
+
+
+)
