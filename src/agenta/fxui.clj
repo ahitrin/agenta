@@ -13,7 +13,7 @@
              :tree  "tree0"})
 
 (def *state
- (atom {:winner -1 :tick 0 :game-map nil}))
+  (atom {:winner -1 :tick 0 :game-map nil}))
 
 (defmulti event-handler :event/type)
 
@@ -56,12 +56,12 @@
 
 (defn grid-pane [m]
   {:fx/type :grid-pane
-  :children (for [i (range (:size-y m))
-                  j (range (:size-x m))]
-              {:fx/type :image-view
-               :grid-pane/row i
-               :grid-pane/column j
-               :image {:url (img-url (image-at m j i))}})})
+   :children (for [i (range (:size-y m))
+                   j (range (:size-x m))]
+               {:fx/type :image-view
+                :grid-pane/row i
+                :grid-pane/column j
+                :image {:url (img-url (image-at m j i))}})})
 
 (defn root-view [{{:keys [game-map tick winner]} :state}]
   {:fx/type :stage
@@ -72,10 +72,10 @@
 
 (def renderer
   (fx/create-renderer
-    :middleware (fx/wrap-map-desc (fn [state]
-                                    {:fx/type root-view
-                                     :state state}))
-    :opts {:fx.opt/map-event-handler event-handler}))
+   :middleware (fx/wrap-map-desc (fn [state]
+                                   {:fx/type root-view
+                                    :state state}))
+   :opts {:fx.opt/map-event-handler event-handler}))
 
 (fx/mount-renderer *state renderer)
 
@@ -84,16 +84,13 @@
     (swap! *state assoc :tick (:tick opts) :winner (:winner opts) :game-map m)))
 
 (comment
-    (renderer)
+  (renderer)
 
-(require '[agenta.random :as rnd])
-(require '[agenta.engine :as eng])
-(rnd/init!)
-(let [s (clojure.edn/read-string (slurp "setting/demo.edn"))
-      v (game-viewer)]
-   (eng/run-game! s v))
+  (require '[agenta.random :as rnd])
+  (require '[agenta.engine :as eng])
+  (rnd/init!)
+  (let [s (clojure.edn/read-string (slurp "setting/demo.edn"))
+        v (game-viewer)]
+    (eng/run-game! s v))
 
-(swap! *state assoc :tick 1 :winner -1)
-
-
-)
+  (swap! *state assoc :tick 1 :winner -1))
