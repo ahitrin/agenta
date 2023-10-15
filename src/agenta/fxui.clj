@@ -1,14 +1,19 @@
 (ns agenta.fxui
   (:require [clojure.java.io :as io]
-            [cljfx.api :as fx]))
+            [cljfx.api :as fx]
+            [agenta.game-map :as gm]
+            [agenta.math :as m]))
 
 (def player-as-text
   {-1 "Undefined"
    0  "Player 0"
    1  "Player 1"})
 
+(def -tiles {:grass "grass0"
+             :tree  "tree0"})
+
 (def *state
- (atom {:winner -1 :tick 0}))
+ (atom {:winner -1 :tick 0 :game-map nil}))
 
 (defmulti event-handler :event/type)
 
@@ -42,21 +47,28 @@
                :grid-pane/row 2
                :grid-pane/column 1}]})
 
-(def grid-pane
+(defn image-at [m x y]
+  (let [xy (m/xy x y)
+        obj (gm/object-at m xy)]
+    (if (some? obj)
+      (:img obj)
+      (-tiles (gm/cell-type m xy)))))
+
+(defn grid-pane [m]
   {:fx/type :grid-pane
-  :children (for [i (range 10)
-                  j (range 10)]
+  :children (for [i (range (:size-y m))
+                  j (range (:size-x m))]
               {:fx/type :image-view
                :grid-pane/row i
                :grid-pane/column j
-               :image {:url (img-url "tree0")}})})
+               :image {:url (img-url (image-at m j i))}})})
 
-(defn root-view [{{:keys [tick winner]} :state}]
+(defn root-view [{{:keys [game-map tick winner]} :state}]
   {:fx/type :stage
    :showing true
    :scene {:fx/type :scene
            :root {:fx/type :h-box
-                  :children [grid-pane (props-pane tick winner)]}}})
+                  :children [(grid-pane game-map) (props-pane tick winner)]}}})
 
 (def renderer
   (fx/create-renderer
@@ -69,7 +81,7 @@
 
 (defn game-viewer []
   (fn [m opts]
-    (swap! *state assoc :tick (:tick opts) :winner (:winner opts))))
+    (swap! *state assoc :tick (:tick opts) :winner (:winner opts) :game-map m)))
 
 (comment
     (renderer)
