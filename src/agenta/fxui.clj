@@ -55,13 +55,21 @@
       (-tiles (gm/cell-type m xy)))))
 
 (defn grid-pane [m]
-  {:fx/type :grid-pane
-   :children (for [i (range (:size-y m))
-                   j (range (:size-x m))]
-               {:fx/type :image-view
-                :grid-pane/row i
-                :grid-pane/column j
-                :image {:url (img-url (image-at m j i))}})})
+  (if (some? m)
+    {:fx/type :grid-pane
+     :children (for [i (range (:size-y m))
+                     j (range (:size-x m))]
+                 {:fx/type :image-view
+                  :grid-pane/row i
+                  :grid-pane/column j
+                  :image {:url (img-url (image-at m j i))}})}
+    {:fx/type :grid-pane
+     :children (for [i (range 16)
+                     j (range 24)]
+                 {:fx/type :image-view
+                  :grid-pane/row i
+                  :grid-pane/column j
+                  :image {:url (img-url "tree0")}})}))
 
 (defn root-view [{{:keys [game-map tick winner]} :state}]
   {:fx/type :stage
