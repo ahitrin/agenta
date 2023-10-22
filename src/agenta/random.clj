@@ -5,13 +5,14 @@
 
 (def generator nil)
 
-(defn init! []
-  (alter-var-root
-   (var generator)
-   (fn [_]
-     (let [seed (.nextLong (Random.))]
-       (log/infof "Seed: %d" seed)
-       (Random. seed)))))
+(defn init!
+  ([] (init! (.nextLong (Random.))))
+  ([^long seed]
+    (alter-var-root
+      (var generator)
+      (fn [_]
+        (log/infof "Seed: %d" seed)
+          (Random. seed)))))
 
 (defn get-generator
   "Returns an Random instance"
