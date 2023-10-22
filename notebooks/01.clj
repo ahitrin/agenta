@@ -76,12 +76,13 @@
 
 ;; This is a `:select-perk`.
 ;; It receieves a current actor and a list of _pre-filtered_ enemies.
-;; It return `:target` value which is then transformed into action by engine.
+;; It returns `:target` value which is then transformed into action by engine.
 
 (clerk/code (clojure.repl/source-fn 'agenta.perk/move-to-friends))
 
 ;; This is a `:move-perk`.
 ;; It receives current coordinates, a current user, and **all** visible objects (both friends and enemies).
 ;; It perform selection of friends and calculates vectors to them by itself.
+;; It returns already "baked" action.
 
 ;; We need to use common format in these perk types, both for input and for output.
