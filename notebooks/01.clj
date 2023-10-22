@@ -66,3 +66,22 @@
                         :displayLogo false}})
 
 ;; _The same table as above, but in 2d form._
+
+;; ## Road to generalized perks form
+
+;; Currently, all unit perks are separated into various types, and each type one has its own interface.
+;; Just compare:
+
+(clerk/code (clojure.repl/source-fn 'agenta.perk/select-random))
+
+;; This is a `:select-perk`.
+;; It receieves a current actor and a list of _pre-filtered_ enemies.
+;; It return `:target` value which is then transformed into action by engine.
+
+(clerk/code (clojure.repl/source-fn 'agenta.perk/move-to-friends))
+
+;; This is a `:move-perk`.
+;; It receives current coordinates, a current user, and **all** visible objects (both friends and enemies).
+;; It perform selection of friends and calculates vectors to them by itself.
+
+;; We need to use common format in these perk types, both for input and for output.
