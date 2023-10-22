@@ -52,3 +52,17 @@
 ;; There could also be other sources of actions, like internal state of unit (is it too wounded? if yes, it could decline to attack) or commands from commander (to be re-implemented yet).
 ;; We could ignore these sources for now.
 ;; A simple table above is the only important thing for now.
+
+(clerk/plotly {:data [{:x [4 -2 6 3 -2 5] :y [-4 -4 -1 2 1 -4]
+                       :mode "markers+text" :type "scatter"
+                       :name "Friends" :textposition "top center"
+                       :text ["#1 (70)" "#7 (70)" "#24 (55)" "#25 (55)" "#29 (55)" "#40 (110)"]}
+                      {:x [-1 5 -2 5] :y [-3 -3 -1 1]
+                       :mode "markers+text" :type "scatter"
+                       :name "Enemies" :textposition "top center"
+                       :text ["#11 (70)" "#15 (70)" "#31 (55)" "#37 (55)"]}
+                      {:x [0] :y [0] :mode "markers" :type "scatter" :name "Self"}]
+               :config {:displayModeBar false
+                        :displayLogo false}})
+
+;; _The same table as above, but in 2d form._
