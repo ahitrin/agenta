@@ -4,3 +4,4 @@ profiles.clj
 /.lein-*
 /.nrepl-port
 *.iml
+.clerk
