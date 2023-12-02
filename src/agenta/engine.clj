@@ -139,9 +139,9 @@
 (defn tick-health [objs]
   (reduce-kv #(assoc %1 %2 (on-hp-tick %3)) {} objs))
 
-(defn run-loop! [viewer m winner tick end-tick]
+(defn run-loop! [viewer m winner tick end-tick stopper]
   (viewer m {:winner winner :tick tick})
-  (if (or (<= 0 winner) (<= end-tick tick))
+  (if (or (<= 0 winner) (<= end-tick tick) (stopper))
     {:winner winner :steps tick}
     (let [m1 (gm/new-map m tick-health)
           objs (gm/xy-to-unit m1)
@@ -154,11 +154,13 @@
                    (empty? (units-per-player 1)) 0
                    :else -1)
              (inc tick)
-             end-tick))))
+             end-tick
+             stopper))))
 
 (defn run-game! [setting viewer]
   (let [u (init-units setting)
         start-map (gm/make-map (:map setting) u)
         start-tick 0
-        end-tick (:max-ticks (:experiment setting))]
-    (run-loop! viewer start-map -1 start-tick end-tick)))
+        end-tick (:max-ticks (:experiment setting))
+        stopper (fn [] false)]
+    (run-loop! viewer start-map -1 start-tick end-tick stopper)))
