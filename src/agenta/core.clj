@@ -7,6 +7,6 @@
   (rnd/init!)
   (let [i (if (seq? args) (first args) "demo")
         s (clojure.edn/read-string (slurp (format "setting/%s.edn" i)))
-        v (ui/game-viewer)]
+        v (ui/update-state!)]
     (ui/show)
     (eng/run-game! s v)))

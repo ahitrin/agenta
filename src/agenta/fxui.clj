@@ -98,7 +98,7 @@
 (defn show []
   (fx/mount-renderer *state renderer))
 
-(defn game-viewer []
+(defn update-state! []
   (fn [m opts]
     (swap! *state assoc :tick (:tick opts) :winner (:winner opts) :game-map m)))
 
