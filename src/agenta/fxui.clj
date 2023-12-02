@@ -45,6 +45,16 @@
                :text (get player-as-text winner)
                :editable false
                :grid-pane/row 2
+               :grid-pane/column 1}
+              {:fx/type :button
+               :text "▶ / Ⅱ"
+               :on-action (fn [_] ())
+               :grid-pane/row 3
+               :grid-pane/column 0}
+              {:fx/type :button
+               :text "Exit"
+               :on-action (fn [_] ())
+               :grid-pane/row 3
                :grid-pane/column 1}]})
 
 (defn image-at [m x y]
