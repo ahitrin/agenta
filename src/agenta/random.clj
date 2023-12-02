@@ -8,11 +8,11 @@
 (defn init!
   ([] (init! (.nextLong (Random.))))
   ([^long seed]
-    (alter-var-root
-      (var generator)
-      (fn [_]
-        (log/infof "Seed: %d" seed)
-          (Random. seed)))))
+   (alter-var-root
+    (var generator)
+    (fn [_]
+      (log/infof "Seed: %d" seed)
+      (Random. seed)))))
 
 (defn get-generator
   "Returns an Random instance"
