@@ -158,8 +158,7 @@
              stopper))))
 
 (defn run-game! [setting viewer]
-  (let [u (init-units setting)
-        start-map (gm/make-map (:map setting) u)
+  (let [start-map (gm/make-map (:map setting) (init-units setting))
         start-tick 0
         end-tick (:max-ticks (:experiment setting))
         stopper (fn [] false)]
