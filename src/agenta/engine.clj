@@ -139,21 +139,26 @@
 (defn tick-health [objs]
   (reduce-kv #(assoc %1 %2 (on-hp-tick %3)) {} objs))
 
+(defn run-loop! [viewer m winner tick end-tick]
+  (let [m1 (gm/new-map m tick-health)
+        objs (gm/xy-to-unit m1)]
+    (viewer m1 {:winner winner :tick tick})
+    (if (or (<= 0 winner) (<= end-tick tick))
+      {:winner winner :steps tick}
+      (let [actions (set (filter #(some? (second %)) (map #(unit-action! % m1) objs)))
+            new-m (apply-actions! actions m1)
+            units-per-player (group-by :player (vals (gm/xy-to-unit new-m)))]
+        (recur viewer
+               new-m
+               (cond (empty? (units-per-player 0)) 1
+                     (empty? (units-per-player 1)) 0
+                     :else -1)
+               (inc tick)
+               end-tick)))))
+
 (defn run-game! [setting viewer]
   (let [u (init-units setting)
         start-map (gm/make-map (:map setting) u)
-        limit (:max-ticks (:experiment setting))]
-    (loop [m start-map winner -1 tick 0]
-      (let [m1 (gm/new-map m tick-health)
-            objs (gm/xy-to-unit m1)]
-        (viewer m1 {:winner winner :tick tick})
-        (if (or (<= 0 winner) (<= limit tick))
-          {:winner winner :steps tick}
-          (let [actions (set (filter #(some? (second %)) (map #(unit-action! % m1) objs)))
-                new-m (apply-actions! actions m1)
-                units-per-player (group-by :player (vals (gm/xy-to-unit new-m)))]
-            (recur new-m
-                   (cond (empty? (units-per-player 0)) 1
-                         (empty? (units-per-player 1)) 0
-                         :else -1)
-                   (inc tick))))))))
+        start-tick 0
+        end-tick (:max-ticks (:experiment setting))]
+    (run-loop! viewer start-map -1 start-tick end-tick)))
