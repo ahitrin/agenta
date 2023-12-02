@@ -100,14 +100,3 @@
 
 (defn update-state! [m opts]
   (swap! *state assoc :tick (:tick opts) :winner (:winner opts) :game-map m))
-
-(comment
-  (renderer)
-
-  (require '[agenta.random :as rnd])
-  (require '[agenta.engine :as eng])
-  (rnd/init!)
-  (let [s (clojure.edn/read-string (slurp "setting/demo.edn"))]
-    (eng/run-game! s update-state!))
-
-  (swap! *state assoc :tick 1 :winner -1))
