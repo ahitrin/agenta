@@ -85,4 +85,7 @@
 ;; It perform selection of friends and calculates vectors to them by itself.
 ;; It returns already "baked" action.
 
-;; We need to use common format in these perk types, both for input and for output.
+;; Next steps here are the following:
+;; 1. We need to use common format in these perk types, both for input and for output.
+;; 2. We need to convert existing out-of-perk pieces of AI into new perks.
+;; 3. A procedure to select decision from all perks must be introduced.
