@@ -6,7 +6,6 @@
 (defn -main [& args]
   (rnd/init!)
   (let [i (if (seq? args) (first args) "demo")
-        s (clojure.edn/read-string (slurp (format "setting/%s.edn" i)))
-        v (ui/update-state!)]
+        s (clojure.edn/read-string (slurp (format "setting/%s.edn" i)))]
     (ui/show)
-    (eng/run-game! s v)))
+    (eng/run-game! s ui/update-state!)))

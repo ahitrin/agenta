@@ -98,9 +98,8 @@
 (defn show []
   (fx/mount-renderer *state renderer))
 
-(defn update-state! []
-  (fn [m opts]
-    (swap! *state assoc :tick (:tick opts) :winner (:winner opts) :game-map m)))
+(defn update-state! [m opts]
+  (swap! *state assoc :tick (:tick opts) :winner (:winner opts) :game-map m))
 
 (comment
   (renderer)
@@ -108,8 +107,7 @@
   (require '[agenta.random :as rnd])
   (require '[agenta.engine :as eng])
   (rnd/init!)
-  (let [s (clojure.edn/read-string (slurp "setting/demo.edn"))
-        v (game-viewer)]
-    (eng/run-game! s v))
+  (let [s (clojure.edn/read-string (slurp "setting/demo.edn"))]
+    (eng/run-game! s update-state!))
 
   (swap! *state assoc :tick 1 :winner -1))
