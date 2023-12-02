@@ -85,7 +85,8 @@
                                     :state state}))
    :opts {:fx.opt/map-event-handler event-handler}))
 
-(fx/mount-renderer *state renderer)
+(defn show []
+  (fx/mount-renderer *state renderer))
 
 (defn game-viewer []
   (fn [m opts]
