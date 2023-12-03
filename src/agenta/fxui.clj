@@ -103,8 +103,15 @@
 (defn update-state! [m opts]
   (swap! *state assoc :tick (:tick opts) :winner (:winner opts) :game-map m))
 
+(defn next-stage [s]
+  ":init -> :run <-> :pause"
+  (case (:stage s)
+    :init   (assoc s :stage :run)
+    :run    (assoc s :stage :pause)
+    :pause  (assoc s :stage :run)))
+
 (defmethod event-handler ::start-pause [e]
-  (swap! *state assoc :stage :run)
+  (swap! *state next-stage)
   (.start
     (Thread. #((:run-fn @*state)
                  update-state!
