@@ -53,7 +53,7 @@
                :grid-pane/column 0}
               {:fx/type :button
                :text "Exit"
-               :on-action (fn [_] ())
+               :on-action {:event/type ::exit}
                :grid-pane/row 3
                :grid-pane/column 1}]})
 
@@ -125,3 +125,6 @@
                   (:tick @*state)
                   (:end-tick @*state)
                   pause-game))))))
+
+(defmethod event-handler ::exit [e]
+  (System/exit 0))
