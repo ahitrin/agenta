@@ -147,12 +147,13 @@
           objs (gm/xy-to-unit m1)
           actions (set (filter #(some? (second %)) (map #(unit-action! % m1) objs)))
           new-m (apply-actions! actions m1)
-          units-per-player (group-by :player (vals (gm/xy-to-unit new-m)))]
+          units-per-player (group-by :player (vals (gm/xy-to-unit new-m)))
+          new-winner (cond (empty? (units-per-player 0)) 1
+                           (empty? (units-per-player 1)) 0
+                           :else -1)]
       (recur viewer
              new-m
-             (cond (empty? (units-per-player 0)) 1
-                   (empty? (units-per-player 1)) 0
-                   :else -1)
+             new-winner
              (inc tick)
              end-tick
              stopper))))
