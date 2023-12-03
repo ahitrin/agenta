@@ -97,9 +97,8 @@
           ny    (+ (:y xy) (int (:dy action)))
           xy'   (m/xy nx ny)]
       (if (gm/can-place? m xy')
-        (do
-          (let [actor1 (update actor :speed-counter ctr/reset)]
-            (gm/new-map m #(assoc (dissoc % xy) xy' actor1))))
+        (let [actor1 (update actor :speed-counter ctr/reset)]
+          (gm/new-map m #(assoc (dissoc % xy) xy' actor1)))
         m))
     m))
 
