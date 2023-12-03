@@ -93,18 +93,16 @@
       m)))
 
 (defn perform-move [m actor action xy]
-  (let [dx (int (:dx action))
-        dy (int (:dy action))]
-    (if (ctr/ready? (:speed-counter actor))
-      (let [nx  (+ (:x xy) dx)
-            ny  (+ (:y xy) dy)
-            xy' (m/xy nx ny)]
-        (if (gm/can-place? m xy')
-          (do
-            (let [actor1 (update actor :speed-counter ctr/reset)]
-              (gm/new-map m #(assoc (dissoc % xy) xy' actor1))))
-          m))
-      m)))
+  (if (ctr/ready? (:speed-counter actor))
+    (let [nx    (+ (:x xy) (int (:dx action)))
+          ny    (+ (:y xy) (int (:dy action)))
+          xy'   (m/xy nx ny)]
+      (if (gm/can-place? m xy')
+        (do
+          (let [actor1 (update actor :speed-counter ctr/reset)]
+            (gm/new-map m #(assoc (dissoc % xy) xy' actor1))))
+        m))
+    m))
 
 (def action-selector
   {:attack perform-attack!
