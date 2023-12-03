@@ -49,7 +49,6 @@
               {:fx/type :button
                :text "▶ / Ⅱ"
                :on-action {:event/type ::start-pause}
-               :disable (not= :init stage)
                :grid-pane/row 3
                :grid-pane/column 0}
               {:fx/type :button
@@ -110,13 +109,19 @@
     :run    (assoc s :stage :pause)
     :pause  (assoc s :stage :run)))
 
+(defn pause-game []
+  "Return true when current stage is :pause."
+  (= :pause (:stage @*state)))
+
 (defmethod event-handler ::start-pause [e]
-  (swap! *state next-stage)
-  (.start
-    (Thread. #((:run-fn @*state)
-                 update-state!
-                 (:game-map @*state)
-                 (:winner @*state)
-                 (:tick @*state)
-                 (:end-tick @*state)
-                 (fn [] false)))))
+  (let [s   (swap! *state next-stage)
+        stg (:stage s)]
+    (when (= :run stg)
+      (.start
+       (Thread. #((:run-fn @*state)
+                  update-state!
+                  (:game-map @*state)
+                  (:winner @*state)
+                  (:tick @*state)
+                  (:end-tick @*state)
+                  pause-game))))))
