@@ -66,8 +66,7 @@
       [u nil xy])))
 
 (defn perform-attack! [m actor action xy]
-  (let [target-id (int (:target action))
-        obj (gm/obj-by-id m target-id)]
+  (let [obj (gm/obj-by-id m (:target action))]
     (if (and
          (ctr/ready? (:attack-counter actor))
          (some? obj))
