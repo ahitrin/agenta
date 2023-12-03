@@ -13,7 +13,7 @@
              :tree  "tree0"})
 
 (def *state
-  (atom {:winner -1 :tick 0 :game-map nil}))
+  (atom {:winner -1 :tick 0 :end-tick 0 :game-map nil}))
 
 (defmulti event-handler :event/type)
 
@@ -95,7 +95,8 @@
                                     :state state}))
    :opts {:fx.opt/map-event-handler event-handler}))
 
-(defn show []
+(defn show [g]
+  (swap! *state assoc :tick (:tick g) :game-map (:map g) :end-tick (:end-tick g))
   (fx/mount-renderer *state renderer))
 
 (defn update-state! [m opts]
