@@ -67,13 +67,13 @@
 
 (defn perform-attack! [m actor action xy]
   (let [target-id (int (:target action))
-        obj (gm/obj-by-id m target-id)
-        u (if (some? obj) (val obj) {})
-        target-xy (if (some? obj) (key obj) (m/xy 0 0))]
+        obj (gm/obj-by-id m target-id)]
     (if (and
          (ctr/ready? (:attack-counter actor))
          (some? obj))
-      (let [damage (+ (rnd/i! (:rnd-attack actor)) (:base-attack actor))
+      (let [u (if (some? obj) (val obj) {})
+            target-xy (if (some? obj) (key obj) (m/xy 0 0))
+            damage (+ (rnd/i! (:rnd-attack actor)) (:base-attack actor))
             hp (:health u)
             new-hp (- hp damage)]
         (if (and (pos? damage) (pos? hp))
