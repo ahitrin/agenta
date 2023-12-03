@@ -13,7 +13,7 @@
              :tree  "tree0"})
 
 (def *state
-  (atom {:winner -1 :tick 0 :end-tick 0 :game-map nil}))
+  (atom {:stage :init :winner -1 :tick 0 :end-tick 0 :game-map nil :run-fn nil}))
 
 (defmulti event-handler :event/type)
 
@@ -21,7 +21,7 @@
   (let [file-name (str "Pictures/" img-name ".gif")]
     (str "file://" (.getAbsolutePath (io/file file-name)))))
 
-(defn props-pane [tick winner]
+(defn props-pane [tick winner stage]
   {:fx/type :grid-pane
    :children [{:fx/type :label
                :text "Properties"
@@ -48,7 +48,8 @@
                :grid-pane/column 1}
               {:fx/type :button
                :text "▶ / Ⅱ"
-               :on-action (fn [_] ())
+               :on-action {:event/type ::start-pause}
+               :disable (not= :init stage)
                :grid-pane/row 3
                :grid-pane/column 0}
               {:fx/type :button
@@ -81,12 +82,12 @@
                   :grid-pane/column j
                   :image {:url (img-url "tree0")}})}))
 
-(defn root-view [{{:keys [game-map tick winner]} :state}]
+(defn root-view [{{:keys [game-map tick winner stage]} :state}]
   {:fx/type :stage
    :showing true
    :scene {:fx/type :scene
            :root {:fx/type :h-box
-                  :children [(grid-pane game-map) (props-pane tick winner)]}}})
+                  :children [(grid-pane game-map) (props-pane tick winner stage)]}}})
 
 (def renderer
   (fx/create-renderer
@@ -95,9 +96,20 @@
                                     :state state}))
    :opts {:fx.opt/map-event-handler event-handler}))
 
-(defn show [g]
-  (swap! *state assoc :tick (:tick g) :game-map (:map g) :end-tick (:end-tick g))
+(defn show [g run-fn]
+  (swap! *state assoc :tick (:tick g) :game-map (:map g) :end-tick (:end-tick g) :run-fn run-fn)
   (fx/mount-renderer *state renderer))
 
 (defn update-state! [m opts]
   (swap! *state assoc :tick (:tick opts) :winner (:winner opts) :game-map m))
+
+(defmethod event-handler ::start-pause [e]
+  (swap! *state assoc :stage :run)
+  (.start
+    (Thread. #((:run-fn @*state)
+                 update-state!
+                 (:game-map @*state)
+                 (:winner @*state)
+                 (:tick @*state)
+                 (:end-tick @*state)
+                 (fn [] false)))))
