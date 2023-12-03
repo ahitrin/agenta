@@ -8,24 +8,24 @@
 
 (defn into-defs [setting]
   "Transform setting object into a list of unit defs (specs)"
-  (for [ut (:unit-types setting)
-        p (range 2)
-        _ (range (-> (:placement setting)
-                     (get p)
-                     (get (.toLowerCase (:name ut)) 0)))]
+  (for [ut  (:unit-types setting)
+        p   (range 2)
+        _   (range (-> (:placement setting)
+                       (get p)
+                       (get (.toLowerCase (:name ut)) 0)))]
     (assoc ut :player p)))
 
 (defn init-units [setting]
   "Create all units described by setting"
-  (let [defs (into-defs setting)
-        defs+ (map-indexed #(assoc %2 :id %) defs)]
+  (let [defs    (into-defs setting)
+        defs+   (map-indexed #(assoc %2 :id %) defs)]
     (map u/make-unit defs+)))
 
 (defn choose-enemy [actor enemies]
   (:target (apply (:select-perk actor) actor [(map second enemies)])))
 
 (defn act! [xy actor visible-objects]
-  (let [enemies (filter #(not (u/friends? actor (second %))) visible-objects)
+  (let [enemies         (filter #(not (u/friends? actor (second %))) visible-objects)
         closest-enemies (filter #(m/in-radius? xy (:range actor) (first %)) enemies)]
     (case (:state actor)
       :escape
@@ -43,12 +43,12 @@
           {:type :attack :target (:id chosen) :ids ids})
         ; approach to enemy
         (seq enemies)
-        (let [enemies-without-xy (map second enemies)
-              chosen-enemy (choose-enemy actor enemies)
-              chosen-idx (.indexOf enemies-without-xy chosen-enemy)
-              enemy-with-xy (nth enemies chosen-idx)
-              dx (m/sign (- (:x (first enemy-with-xy)) (:x xy)))
-              dy (m/sign (- (:y (first enemy-with-xy)) (:y xy)))]
+        (let [enemies-without-xy    (map second enemies)
+              chosen-enemy          (choose-enemy actor enemies)
+              chosen-idx            (.indexOf enemies-without-xy chosen-enemy)
+              enemy-with-xy         (nth enemies chosen-idx)
+              dx                    (m/sign (- (:x (first enemy-with-xy)) (:x xy)))
+              dy                    (m/sign (- (:y (first enemy-with-xy)) (:y xy)))]
           {:type :move :dx dx :dy dy})
         ; random move
         :else
@@ -58,9 +58,9 @@
   (let [max-hp (:max-health u)
         new-hp (:health u)]
     (if (ctr/ready? (:think-counter u))
-      (let [u1 (u/update-state (update u :think-counter ctr/reset) new-hp max-hp)
+      (let [u1              (u/update-state (update u :think-counter ctr/reset) new-hp max-hp)
             visible-objects (gm/objects-in-radius m (:id u) (:visibility u))
-            action (act! xy u1 visible-objects)]
+            action          (act! xy u1 visible-objects)]
         (log/debugf "%s wants %s" (u/pretty u1) action)
         [u1 action xy])
       [u nil xy])))
@@ -70,11 +70,11 @@
     (if (and
          (ctr/ready? (:attack-counter actor))
          (some? obj))
-      (let [u (if (some? obj) (val obj) {})
-            target-xy (if (some? obj) (key obj) (m/xy 0 0))
-            damage (+ (rnd/i! (:rnd-attack actor)) (:base-attack actor))
-            hp (:health u)
-            new-hp (- hp damage)]
+      (let [u           (if (some? obj) (val obj) {})
+            target-xy   (if (some? obj) (key obj) (m/xy 0 0))
+            damage      (+ (rnd/i! (:rnd-attack actor)) (:base-attack actor))
+            hp          (:health u)
+            new-hp      (- hp damage)]
         (if (and (pos? damage) (pos? hp))
           (do
             (log/debugf "%s strikes %s with %d" (u/pretty actor) (u/pretty u) damage)
@@ -108,8 +108,8 @@
    :move   perform-move})
 
 (defn apply-action! [m [actor action xy]]
-  (let [obj (gm/obj-by-id m (:id actor))
-        atype (:type action)]
+  (let [obj     (gm/obj-by-id m (:id actor))
+        atype   (:type action)]
     (if (and (some? obj)
              ; probably, an excessive check: actors with neg health are removed from map
              (pos? (:health actor)))
@@ -145,14 +145,14 @@
   (viewer m {:winner winner :tick tick})
   (if (or (<= 0 winner) (<= end-tick tick) (stopper))
     {:winner winner :steps tick}
-    (let [m1 (gm/new-map m tick-health)
-          objs (gm/xy-to-unit m1)
-          actions (set (filter #(some? (second %)) (map #(unit-action! % m1) objs)))
-          new-m (apply-actions! actions m1)
-          units-per-player (group-by :player (vals (gm/xy-to-unit new-m)))
-          new-winner (cond (empty? (units-per-player 0)) 1
-                           (empty? (units-per-player 1)) 0
-                           :else -1)]
+    (let [m1                (gm/new-map m tick-health)
+          objs              (gm/xy-to-unit m1)
+          actions           (set (filter #(some? (second %)) (map #(unit-action! % m1) objs)))
+          new-m             (apply-actions! actions m1)
+          units-per-player  (group-by :player (vals (gm/xy-to-unit new-m)))
+          new-winner        (cond (empty? (units-per-player 0)) 1
+                                  (empty? (units-per-player 1)) 0
+                                  :else -1)]
       (recur viewer
              new-m
              new-winner
@@ -161,6 +161,6 @@
              stopper))))
 
 (defn run-game! [setting viewer]
-  (let [game (init-game setting)
+  (let [game    (init-game setting)
         stopper (fn [] false)]
     (run-loop! viewer (:map game) -1 (:tick game) (:end-tick game) stopper)))
