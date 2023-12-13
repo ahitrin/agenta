@@ -1,6 +1,8 @@
 (require '[nextjournal.clerk :as clerk])
 ;; # Agent's model of the world
 
+;; Status: in progress
+
 ;; ## Rationale
 ;; One of initial goals of this project is to develop a "human-like" approach to AI.
 ;; Every agent (the same as "unit", currently) should behave only on some _local_ information it has.
