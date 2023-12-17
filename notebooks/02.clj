@@ -1,4 +1,3 @@
-^{::clerk/visibility {:code :hide}}
 (require '[nextjournal.clerk :as clerk]
          '[agenta.counter :as ctr])
 ;; # Standartization of internal API
