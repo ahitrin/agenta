@@ -110,8 +110,51 @@
 ;; ### engine.clj
 
 ;; Uses all data types and structures from above.
+;; Also, the following structure from setting file is used.
 
-;; TODO
+{
+ :description "Scenario description"
+ :map         {
+               :size-x 18
+               :size-y 18
+               :type   "agenta.game-map/plane"
+               }
+ :unit-types  [
+               {:name        "Warrior"
+                :attackSpeed 3
+                :baseAttack  1
+                :randAttack  4
+                :hitPoints   10
+                :speed       3
+                :thinkSpeed  3
+                :visibility  10
+                :range       1.45
+                :image       "footman"
+                :perk        {
+                              :select "agenta.perk/select-random-memoized"
+                              :move   "agenta.perk/move-randomly"
+                              }}
+               ]
+ :placement   {
+               0 {"warrior" 10}
+               1 {"warrior" 10}
+               }
+ :experiment  {
+               :max-ticks 500
+               :total     100
+               }
+ }
+
+;; This structure would be mentioned below as a "setting".
+
+;; Functions:
+
+^{::clerk/visibility {:code :hide}}
+(clerk/table {
+  :head ["name" "arguments" "output"]
+  :rows [
+    ["TODO" [] ""]
+    ]})
 
 ;; ## Observations and Hypotheses
 
