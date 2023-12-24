@@ -31,6 +31,21 @@
    :state          :attack
    :kills          0})
 
+(defn into-defs [setting]
+  "Transform setting object into a list of unit defs (specs)"
+  (for [ut  (:unit-types setting)
+        p   (range 2)
+        _   (range (-> (:placement setting)
+                       (get p)
+                       (get (.toLowerCase (:name ut)) 0)))]
+    (assoc ut :player p)))
+
+(defn init-units [setting]
+  "Create all units described by setting"
+  (let [defs    (into-defs setting)
+        defs+   (map-indexed #(assoc %2 :id %) defs)]
+    (map make-unit defs+)))
+
 (defn pretty [unit]
   (-> unit
       (assoc :hp (format "%d/%d" (:health unit) (:max-health unit)))

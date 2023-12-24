@@ -6,21 +6,6 @@
             [agenta.unit :as u]
             [clojure.tools.logging :as log]))
 
-(defn into-defs [setting]
-  "Transform setting object into a list of unit defs (specs)"
-  (for [ut  (:unit-types setting)
-        p   (range 2)
-        _   (range (-> (:placement setting)
-                       (get p)
-                       (get (.toLowerCase (:name ut)) 0)))]
-    (assoc ut :player p)))
-
-(defn init-units [setting]
-  "Create all units described by setting"
-  (let [defs    (into-defs setting)
-        defs+   (map-indexed #(assoc %2 :id %) defs)]
-    (map u/make-unit defs+)))
-
 (defn choose-enemy [actor enemies]
   (:target (apply (:select-perk actor) actor [(map second enemies)])))
 
@@ -136,7 +121,7 @@
   (reduce-kv #(assoc %1 %2 (on-hp-tick %3)) {} objs))
 
 (defn init-game [setting]
-  {:map         (gm/make-map (:map setting) (init-units setting))
+  {:map         (gm/make-map (:map setting) (u/init-units setting))
    :tick        0
    :end-tick    (:max-ticks (:experiment setting))})
 
