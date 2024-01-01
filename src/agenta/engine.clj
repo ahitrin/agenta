@@ -121,7 +121,7 @@
   (reduce-kv #(assoc %1 %2 (on-hp-tick %3)) {} objs))
 
 (defn init-game [setting]
-  {:map         (gm/make-map setting (u/init-units setting))
+  {:map         (gm/make-map setting)
    :tick        0
    :end-tick    (:max-ticks (:experiment setting))})
 

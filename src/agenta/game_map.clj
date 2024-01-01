@@ -1,6 +1,7 @@
 (ns agenta.game-map
   (:require [agenta.math :as m]
-            [agenta.random :as rnd]))
+            [agenta.random :as rnd]
+            [agenta.unit :as u]))
 
 (defrecord GameMap [size-x size-y cells objs id-to-xy])
 
@@ -40,16 +41,17 @@
        (nil? (object-at m xy))))
 
 (defn make-map
-  "Build game map with given map spec"
-  [setting units]
-  (let [map-spec (:map setting)
-        size-x (:size-x map-spec)
-        size-y (:size-y map-spec)
-        type (resolve (:type map-spec))
-        m (GameMap. size-x size-y (apply type [size-x size-y]) {} {})
-        xys (filter #(can-place? m %)
-                    (distinct (repeatedly #(rnd/xy! size-x size-y))))
-        objs (zipmap xys units)]
+  "Build game map from given setting."
+  [setting]
+  (let [map-spec    (:map setting)
+        units       (u/init-units setting)
+        size-x      (:size-x map-spec)
+        size-y      (:size-y map-spec)
+        type        (resolve (:type map-spec))
+        m           (GameMap. size-x size-y (apply type [size-x size-y]) {} {})
+        xys         (filter #(can-place? m %)
+                            (distinct (repeatedly #(rnd/xy! size-x size-y))))
+        objs        (zipmap xys units)]
     (new-map m #(into % objs))))
 
 (defn obj-by-id [m oid]

@@ -99,7 +99,7 @@
 ;; ### perk.clj
 
 ;; Does not explicitly depend on `unit` or `engine`.
-;; Nevertheless, it relies on some data from `unit` implcitly.
+;; Nevertheless, it relies on some data from `unit` implicitly.
 
 ;; There are two classes of functions here (look like candidates for `defprotocol`).
 
@@ -111,6 +111,8 @@
     ["move-XX"      ['xy 'unit '[unit]] {:type :move :dx 'int :dy 'int}]]})
 
 ;; ### game_map.clj
+
+;; Uses `unit.clj` to build units and place them onto map.
 
 ;; Do not depend on any structures from above, but keep them within `GameMap` record.
 
@@ -144,7 +146,7 @@
     ["object-at"        ['GameMap 'xy]                              'unit]
     ["cell-type"        ['GameMap 'xy]                              ":grass/:tree"]
     ["can-place?"       ['GameMap 'xy]                              'boolean]
-    ["make-map"         ['setting '[unit]]                          'GameMap]
+    ["make-map"         ['setting]                                  'GameMap]
     ["obj-by-id"        ['GameMap 'int]                             'unit]
     ["objects-in-raius" ['GameMap 'int 'double]                     '[unit]]
     ]})
