@@ -127,8 +127,6 @@
     ['objs      "{xy -> unit}"]
     ['id-to-xy  "{int -> xy}"]]})
 
-;; Also, it uses so-called `map-spec` structure that's read from setting file.
-
 {:size-x    16
  :size-y    16
  :type      'agenta.game-map/forest}
@@ -146,7 +144,7 @@
     ["object-at"        ['GameMap 'xy]                              'unit]
     ["cell-type"        ['GameMap 'xy]                              ":grass/:tree"]
     ["can-place?"       ['GameMap 'xy]                              'boolean]
-    ["make-map"         ['map-spec '[unit]]                         'GameMap]
+    ["make-map"         ['setting '[unit]]                          'GameMap]
     ["obj-by-id"        ['GameMap 'int]                             'unit]
     ["objects-in-raius" ['GameMap 'int 'double]                     '[unit]]
     ]})

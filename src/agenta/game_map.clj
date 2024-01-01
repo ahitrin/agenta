@@ -41,8 +41,9 @@
 
 (defn make-map
   "Build game map with given map spec"
-  [map-spec units]
-  (let [size-x (:size-x map-spec)
+  [setting units]
+  (let [map-spec (:map setting)
+        size-x (:size-x map-spec)
         size-y (:size-y map-spec)
         type (resolve (:type map-spec))
         m (GameMap. size-x size-y (apply type [size-x size-y]) {} {})
