@@ -47,8 +47,8 @@
         units       (u/init-units setting)
         size-x      (:size-x map-spec)
         size-y      (:size-y map-spec)
-        type        (resolve (:type map-spec))
-        m           (GameMap. size-x size-y (apply type [size-x size-y]) {} {})
+        map-type    (resolve (:type map-spec))
+        m           (GameMap. size-x size-y (apply map-type [size-x size-y]) {} {})
         xys         (filter #(can-place? m %)
                             (distinct (repeatedly #(rnd/xy! size-x size-y))))
         objs        (zipmap xys units)]
