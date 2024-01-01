@@ -51,14 +51,14 @@
                ]
  :placement   {
                0 {
-                  "footman" 10
-                  "archer"  10
-                  "knight"  4
+                  "footman" {:count 10}
+                  "archer"  {:count 10}
+                  "knight"  {:count 4}
                   }
                1 {
-                  "footman" 10
-                  "archer"  10
-                  "knight"  4
+                  "footman" {:count 10}
+                  "archer"  {:count 10}
+                  "knight"  {:count 4}
                   }
                }
  :experiment  {

@@ -36,8 +36,8 @@
                               }}
                ]
  :placement   {
-               0 {"recruit" 10}
-               1 {"warrior" 10}
+               0 {"recruit" {:count 10}}
+               1 {"warrior" {:count 10}}
                }
  :experiment  {
                :max-ticks 500

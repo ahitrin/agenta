@@ -37,7 +37,8 @@
         p   (range 2)
         _   (range (-> (:placement setting)
                        (get p)
-                       (get (.toLowerCase (:name ut)) 0)))]
+                       (get (.toLowerCase (:name ut)) 0)
+                       :count))]
     (assoc ut :player p)))
 
 (defn init-units [setting]
