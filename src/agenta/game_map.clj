@@ -44,11 +44,11 @@
   "Build game map from given setting."
   [setting]
   (let [map-spec    (:map setting)
-        units       (u/init-units setting)
         size-x      (:size-x map-spec)
         size-y      (:size-y map-spec)
         map-type    (resolve (:type map-spec))
         m           (GameMap. size-x size-y (apply map-type [size-x size-y]) {} {})
+        units       (u/init-units setting)
         xys         (filter #(can-place? m %)
                             (distinct (repeatedly #(rnd/xy! size-x size-y))))
         objs        (zipmap xys units)]
