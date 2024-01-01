@@ -16,7 +16,6 @@
    :select-perk    (resolve (.get (:perk unit-type) :select))
    :move-perk      (resolve (.get (:perk unit-type) :move))
    :img            (str (:image unit-type) (:player unit-type))
-   :id             (:id unit-type)
    :player         (:player unit-type)
    :name           (format "%s %s%d"
                            (.firstName (.name (Faker.)))
@@ -44,8 +43,9 @@
 (defn init-units [setting]
   "Create all units described by setting"
   (let [defs    (into-defs setting)
-        defs+   (map-indexed #(assoc %2 :id %) defs)]
-    (map make-unit defs+)))
+        units   (map make-unit defs)
+        units+  (map-indexed #(assoc %2 :id %) units)]
+    units+))
 
 (defn pretty [unit]
   (-> unit
