@@ -43,8 +43,12 @@
 (defn choose-xys
   "Choose locations for units respecting to the free space and location rules."
   [^GameMap m setting units]
-  (let [map-spec (:map setting)
-        location [0 (:size-x map-spec) 0 (:size-y map-spec)]
+  (let [def-loc  [0 (:size-x m) 0 (:size-y m)]
+        locs     (into {}
+                       (for [p  (range 2)
+                             ut (get (:placement setting) p)
+                             :let [loc (get (val ut) :location def-loc)]]
+                         [[p (key ut)] loc]))
         free     (into #{}
                        (for [x (range (:size-x m))
                              y (range (:size-y m))
@@ -55,7 +59,8 @@
       (if (empty? not-placed)
         placed
         (let [next-unit (first not-placed)
-              next-xy   (->> (repeatedly #(apply rnd/xy! location))
+              loc-key   [(:player next-unit) (:type next-unit)]
+              next-xy   (->> (repeatedly #(apply rnd/xy! (get locs loc-key)))
                              (filter #(contains? free-cells %))
                              first)]
           (recur (assoc placed next-xy next-unit)
