@@ -17,6 +17,7 @@
    :move-perk      (resolve (.get (:perk unit-type) :move))
    :img            (str (:image unit-type) (:player unit-type))
    :player         (:player unit-type)
+   :type           (.toLowerCase (:name unit-type))
    :name           (format "%s %s%d"
                            (.firstName (.name (Faker.)))
                            (:name unit-type)
@@ -36,7 +37,7 @@
         p   (range 2)
         _   (range (-> (:placement setting)
                        (get p)
-                       (get (.toLowerCase (:name ut)) 0)
+                       (get (.toLowerCase (:name ut)))
                        :count))]
     (assoc ut :player p)))
 
