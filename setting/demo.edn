@@ -51,14 +51,32 @@
                ]
  :placement   {
                0 {
-                  "footman" {:count 10}
-                  "archer"  {:count 10}
-                  "knight"  {:count 4}
+                  "footman" {
+                             :count 10
+                             :location [6 12 0 10]
+                            }
+                  "archer"  {
+                             :count 10
+                             :location [2 6 0 16]
+                            }
+                  "knight"  {
+                             :count 4
+                             :location [6 12 10 16]
+                            }
                   }
                1 {
-                  "footman" {:count 10}
-                  "archer"  {:count 10}
-                  "knight"  {:count 4}
+                  "footman" {
+                             :count 10
+                             :location [12 18 0 10]
+                            }
+                  "archer"  {
+                             :count 10
+                             :location [18 22 0 16]
+                            }
+                  "knight"  {
+                             :count 4
+                             :location [12 18 10 16]
+                            }
                   }
                }
  :experiment  {
