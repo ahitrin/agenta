@@ -44,9 +44,8 @@
   "Choose locations for units respecting to the free space and location rules."
   [^GameMap m setting]
   (let [map-spec (:map setting)
-        size-x   (:size-x map-spec)
-        size-y   (:size-y map-spec)
-        xys      (->> (repeatedly #(rnd/xy! size-x size-y))
+        location [0 (:size-x map-spec) 0 (:size-y map-spec)]
+        xys      (->> (repeatedly #(apply rnd/xy! location))
                       distinct
                       (filter #(can-place? m %)))]
     xys))

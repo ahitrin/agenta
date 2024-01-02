@@ -21,8 +21,10 @@
 
 (defn xy!
   "Makes a random pair of coordinates within given boundaries"
-  [mx my]
-  (m/xy (.nextInt generator mx) (.nextInt generator my)))
+  ([mx my]       (m/xy (.nextInt generator mx)
+                       (.nextInt generator my)))
+  ([x1 x2 y1 y2] (m/xy (+ x1 (.nextInt generator (- x2 x1)))
+                       (+ y1 (.nextInt generator (- y2 y1))))))
 
 (defn i!
   "Makes a random integer between 0 (inclusive) and n (exclusive)"
