@@ -40,6 +40,17 @@
        (= :grass (cell-type m xy))
        (nil? (object-at m xy))))
 
+(defn choose-xys
+  "Choose locations for units respecting to the free space and location rules."
+  [^GameMap m setting]
+  (let [map-spec (:map setting)
+        size-x   (:size-x map-spec)
+        size-y   (:size-y map-spec)
+        xys      (->> (repeatedly #(rnd/xy! size-x size-y))
+                      distinct
+                      (filter #(can-place? m %)))]
+    xys))
+
 (defn make-map
   "Build game map from given setting."
   [setting]
@@ -49,8 +60,7 @@
         map-type    (resolve (:type map-spec))
         m           (GameMap. size-x size-y (apply map-type [size-x size-y]) {} {})
         units       (u/init-units setting)
-        xys         (filter #(can-place? m %)
-                            (distinct (repeatedly #(rnd/xy! size-x size-y))))
+        xys         (choose-xys m setting)
         objs        (zipmap xys units)]
     (new-map m #(into % objs))))
 
