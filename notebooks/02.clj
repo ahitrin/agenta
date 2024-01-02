@@ -146,7 +146,7 @@
     ["object-at"        ['GameMap 'xy]                              'unit]
     ["cell-type"        ['GameMap 'xy]                              ":grass/:tree"]
     ["can-place?"       ['GameMap 'xy]                              'boolean]
-    ["choose-xys"       ['GameMap 'setting '[unit]]                 '[xy]]
+    ["choose-xys"       ['GameMap 'setting '[unit]]                 "{xy -> unit}"]
     ["make-map"         ['setting]                                  'GameMap]
     ["obj-by-id"        ['GameMap 'int]                             'unit]
     ["objects-in-raius" ['GameMap 'int 'double]                     '[unit]]

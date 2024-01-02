@@ -42,13 +42,25 @@
 
 (defn choose-xys
   "Choose locations for units respecting to the free space and location rules."
-  [^GameMap m setting]
+  [^GameMap m setting units]
   (let [map-spec (:map setting)
         location [0 (:size-x map-spec) 0 (:size-y map-spec)]
-        xys      (->> (repeatedly #(apply rnd/xy! location))
-                      distinct
-                      (filter #(can-place? m %)))]
-    xys))
+        free     (into #{}
+                       (for [x (range (:size-x m))
+                             y (range (:size-y m))
+                             :let [p (m/xy x y)]
+                             :when (can-place? m p)]
+                         p))]
+    (loop [placed {} not-placed units free-cells free]
+      (if (empty? not-placed)
+        placed
+        (let [next-unit (first not-placed)
+              next-xy   (->> (repeatedly #(apply rnd/xy! location))
+                             (filter #(contains? free-cells %))
+                             first)]
+          (recur (assoc placed next-xy next-unit)
+                 (rest not-placed)
+                 (disj free-cells next-xy)))))))
 
 (defn make-map
   "Build game map from given setting."
@@ -59,8 +71,7 @@
         map-type    (resolve (:type map-spec))
         m           (GameMap. size-x size-y (apply map-type [size-x size-y]) {} {})
         units       (u/init-units setting)
-        xys         (choose-xys m setting)
-        objs        (zipmap xys units)]
+        objs        (choose-xys m setting units)]
     (new-map m #(into % objs))))
 
 (defn obj-by-id [m oid]
