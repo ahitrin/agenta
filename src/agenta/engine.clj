@@ -64,8 +64,8 @@
           (do
             (log/debugf "%s strikes %s with %d" (u/pretty actor) (u/pretty u) damage)
             (let [m1 (gm/new-map m #(update-in % [xy :attack-counter] ctr/reset))
-                  m2 (gm/new-map m1 #(update-in % [target-xy :health] - damage))
-                  u1 (update-in u [:health] - damage)]
+                  m2 (gm/new-map m1 #(assoc-in % [target-xy :health] new-hp))
+                  u1 (assoc-in u [:health] new-hp)]
               (if-not (pos-int? new-hp)
                 (do
                   (log/debugf "%s is dead" (u/pretty u1))
