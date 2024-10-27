@@ -24,7 +24,7 @@
   (let [u (first start-units)]
     (agenta.game-map/objects-in-radius start-map (:id u) (:visibility u))))
 
-;; The tricky question is how to interpret this data in a generic way suitable for a wide variaty of "perks".
+;; The tricky question is how to interpret this data in a generic way suitable for a wide variety of "perks".
 ;; In one hand, we want to provide enough amount information to make it possible to generate various data processing logic.
 ;; In other hand, it shouldn't be too complex.
 
@@ -74,13 +74,24 @@
 ;; Currently, all unit perks are separated into various types, and each type one has its own interface.
 ;; Just compare:
 
-(clerk/code (clojure.repl/source-fn 'agenta.perk/select-random))
+(comment
+(defn select-random
+  "Given several units select one of them absolutely randomly"
+  [actor units]
+  {:target (.get units (rnd/i! (count units)))}))
 
 ;; This is a `:select-perk`.
 ;; It receieves a current actor and a list of _pre-filtered_ enemies.
 ;; It returns `:target` value which is then transformed into action by engine.
 
-(clerk/code (clojure.repl/source-fn 'agenta.perk/move-to-friends))
+(comment
+(defn move-to-friends [xy actor visible-objects]
+  "Move towards the center of friendly units of any type"
+  (let [player (:player actor)
+        friends (filter #(= player (:player (second %))) visible-objects)
+        dx (->> friends (map first) (map :x) (map #(- % (:x xy))) (reduce +) float Math/signum int)
+        dy (->> friends (map first) (map :y) (map #(- % (:y xy))) (reduce +) float Math/signum int)]
+    {:type :move :dx dx :dy dy})))
 
 ;; This is a `:move-perk`.
 ;; It receives current coordinates, a current user, and **all** visible objects (both friends and enemies).
