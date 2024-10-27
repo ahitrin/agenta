@@ -10,7 +10,7 @@
                 :attackSpeed 3
                 :baseAttack  1
                 :randAttack  4
-                :hitPoints   10
+                :max-health  10
                 :max-spd     3
                 :thinkSpeed  3
                 :visibility  10
@@ -24,7 +24,7 @@
                 :attackSpeed 3
                 :baseAttack  1
                 :randAttack  4
-                :hitPoints   10
+                :max-health  10
                 :max-spd     3
                 :thinkSpeed  3
                 :visibility  10

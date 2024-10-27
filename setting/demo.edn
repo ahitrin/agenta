@@ -14,7 +14,7 @@
                 :visibility  7
                 :max-spd     40
                 :thinkSpeed  25
-                :hitPoints   70
+                :max-health  70
                 :image       "footman"
                 :perk        {
                               :select agenta.perk/select-random-memoized
@@ -28,7 +28,7 @@
                 :visibility  7
                 :max-spd     40
                 :thinkSpeed  25
-                :hitPoints   55
+                :max-health  55
                 :image       "archer"
                 :perk        {
                               :select agenta.perk/select-weakest
@@ -42,7 +42,7 @@
                 :visibility  7
                 :max-spd     25
                 :thinkSpeed  25
-                :hitPoints   110
+                :max-health  110
                 :image       "knight"
                 :perk        {
                               :select agenta.perk/select-random-memoized

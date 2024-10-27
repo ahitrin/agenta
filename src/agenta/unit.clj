@@ -8,7 +8,7 @@
   "Create one unit dictionary from given specs"
   {; "static" properties (do not change during game)
    :max-spd        (:max-spd unit-type)
-   :max-health     (:hitPoints unit-type)
+   :max-health     (:max-health unit-type)
    :visibility     (:visibility unit-type)
    :base-attack    (:baseAttack unit-type)
    :rnd-attack     (:randAttack unit-type)
@@ -27,7 +27,7 @@
    :health-counter (ctr/make (inc (rnd/i! 100)) 100)
    :speed-counter  (ctr/make (inc (rnd/i! (:max-spd unit-type))) (:max-spd unit-type))
    :think-counter  (ctr/make (inc (rnd/i! (:thinkSpeed unit-type))) (:thinkSpeed unit-type))
-   :health         (:hitPoints unit-type)
+   :health         (:max-health unit-type)
    :state          :attack
    :kills          0})
 
