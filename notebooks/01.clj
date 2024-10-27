@@ -15,8 +15,8 @@
 (agenta.random/init! 1234567)
 
 (def setting (clojure.edn/read-string (slurp "setting/demo.edn")))
-(def start-units (agenta.engine/init-units setting))
-(def start-map (agenta.game-map/make-map (:map setting) start-units))
+(def start-map (agenta.game-map/make-map setting))
+(def start-units (vals (:objs start-map)))
 
 ;; Every unit has some information about self, and some information about its neighbourhood.
 
