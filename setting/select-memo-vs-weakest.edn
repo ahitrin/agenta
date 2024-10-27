@@ -8,7 +8,7 @@
  :unit-types  [
                {:name        "Assassin"
                 :attackSpeed 3
-                :baseAttack  1
+                :base-attack 1
                 :randAttack  4
                 :max-health  10
                 :max-spd     3
@@ -22,7 +22,7 @@
                               }}
                {:name        "Warrior"
                 :attackSpeed 3
-                :baseAttack  1
+                :base-attack 1
                 :randAttack  4
                 :max-health  10
                 :max-spd     3

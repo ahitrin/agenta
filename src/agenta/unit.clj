@@ -10,7 +10,7 @@
    :max-spd        (:max-spd unit-type)
    :max-health     (:max-health unit-type)
    :visibility     (:visibility unit-type)
-   :base-attack    (:baseAttack unit-type)
+   :base-attack    (:base-attack unit-type)
    :rnd-attack     (:randAttack unit-type)
    :range          (:range unit-type)
    :select-perk    (resolve (.get (:perk unit-type) :select))

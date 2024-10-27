@@ -7,7 +7,7 @@
                }
  :unit-types  [
                {:name        "Footman"
-                :baseAttack  5
+                :base-attack 5
                 :randAttack  6
                 :range       1.45
                 :attackSpeed 25
@@ -21,7 +21,7 @@
                               :move   agenta.perk/move-to-friends
                               }}
                {:name        "Archer"
-                :baseAttack  3
+                :base-attack 3
                 :randAttack  5
                 :range       5.5
                 :attackSpeed 40
@@ -35,7 +35,7 @@
                               :move   agenta.perk/move-randomly
                               }}
                {:name        "Knight"
-                :baseAttack  9
+                :base-attack 9
                 :randAttack  7
                 :range       1.45
                 :attackSpeed 40
