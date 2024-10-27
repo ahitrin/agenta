@@ -11,7 +11,7 @@
                 :baseAttack  1
                 :randAttack  4
                 :hitPoints   10
-                :speed       3
+                :max-spd     3
                 :thinkSpeed  3
                 :visibility  10
                 :range       1.45
@@ -25,7 +25,7 @@
                 :baseAttack  1
                 :randAttack  4
                 :hitPoints   10
-                :speed       3
+                :max-spd     3
                 :thinkSpeed  3
                 :visibility  10
                 :range       1.45

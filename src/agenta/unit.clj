@@ -7,7 +7,7 @@
 (defn make-unit [unit-type]
   "Create one unit dictionary from given specs"
   {; "static" properties (do not change during game)
-   :max-spd        (:speed unit-type)
+   :max-spd        (:max-spd unit-type)
    :max-health     (:hitPoints unit-type)
    :visibility     (:visibility unit-type)
    :base-attack    (:baseAttack unit-type)
@@ -25,7 +25,7 @@
    ; "dynamic" properties (change during game)
    :attack-counter (ctr/make (inc (rnd/i! (:attackSpeed unit-type))) (:attackSpeed unit-type))
    :health-counter (ctr/make (inc (rnd/i! 100)) 100)
-   :speed-counter  (ctr/make (inc (rnd/i! (:speed unit-type))) (:speed unit-type))
+   :speed-counter  (ctr/make (inc (rnd/i! (:max-spd unit-type))) (:max-spd unit-type))
    :think-counter  (ctr/make (inc (rnd/i! (:thinkSpeed unit-type))) (:thinkSpeed unit-type))
    :health         (:hitPoints unit-type)
    :state          :attack
