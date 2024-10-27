@@ -109,7 +109,7 @@
     :run    (assoc s :stage :pause)
     :pause  (assoc s :stage :run)))
 
-(defn pause-game []
+(defn pause-game! []
   "Return true when current stage is :pause."
   (= :pause (:stage @*state)))
 
@@ -124,7 +124,7 @@
                   (:winner @*state)
                   (:tick @*state)
                   (:end-tick @*state)
-                  pause-game))))))
+                  pause-game!))))))
 
 (defmethod event-handler ::exit [e]
   (System/exit 0))
