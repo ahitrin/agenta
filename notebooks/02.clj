@@ -219,7 +219,6 @@
 
 ;; 1. Functions `engine/into-defs` should be moved into `unit` ns.
 ;; Probably, `init-units` too.
-;; (applied ✓)
 
 ;; 2. There's a duplication between `unit` and `unit-def` structures.
 ;; It should be removed.
@@ -237,9 +236,32 @@
 
 ;; 6. We should rename `pause-game` into `pause-game!` because it's not pure.
 
-;; 7. Perk functions should return results in common format.
+;; 7. Perk functions should return results in a common format.
 ;; It could become an another record.
 
-;; 8.
+;; ## Implementation
 
+;; ### 1. Functions `engine/into-defs` should be moved into `unit` ns
+;; Applied long ago.
+
+;; ### 2. There's a duplication between `unit` and `unit-def` structures
+;; Plan is the following:
+;; 1. Convert `unit-def` structure closer to `unit`.
+;; Replace keys both in code and in `.edn` files.
+;; 2. Within `make-unit` fn, try to migrate into standard map fns like `assoc`, instead of constructing a duplicated map manually.
+
+;; ### 3. There're a lot of usages of mapping `{xy -> unit}`
 ;; TODO
+
+;; ### 4. Overall game state should contain the following fields
+;; TODO
+
+;; ### 5. We should also synchronize an internal state in `fxui` with this record
+;; TODO
+
+;; ### 6. We should rename `pause-game` into `pause-game!` because it's not pure
+;; Renamed.
+
+;; ### 7. Perk functions should return results in a common format
+;; Not a part of this work.
+;; See [Notebook 01](01).
