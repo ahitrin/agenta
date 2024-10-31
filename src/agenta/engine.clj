@@ -124,14 +124,18 @@
    :tick        0
    :end-tick    (:max-ticks (:experiment setting))})
 
+(defn single-step! [m]
+  (let [m1      (gm/new-map m tick-health)
+        objs    (gm/xy-to-unit m1)
+        actions (set (filter #(some? (second %)) (map #(unit-action! % m1) objs)))
+        new-m   (apply-actions! actions m1)]
+    new-m))
+
 (defn run-loop! [viewer m winner tick end-tick stopper]
   (viewer m {:winner winner :tick tick})
   (if (or (<= 0 winner) (<= end-tick tick) (stopper))
     {:winner winner :steps tick}
-    (let [m1                (gm/new-map m tick-health)
-          objs              (gm/xy-to-unit m1)
-          actions           (set (filter #(some? (second %)) (map #(unit-action! % m1) objs)))
-          new-m             (apply-actions! actions m1)
+    (let [new-m             (single-step! m)
           units-per-player  (group-by :player (vals (gm/xy-to-unit new-m)))
           new-winner        (cond (empty? (units-per-player 0)) 1
                                   (empty? (units-per-player 1)) 0
