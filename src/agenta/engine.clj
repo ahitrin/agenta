@@ -125,10 +125,9 @@
    :end-tick    (:max-ticks (:experiment setting))})
 
 (defn single-step! [m]
-  (let [m1      (gm/new-map m tick-health)
-        objs    (gm/xy-to-unit m1)
-        actions (set (filter #(some? (second %)) (map #(unit-action! % m1) objs)))
-        new-m   (apply-actions! actions m1)]
+  (let [objs    (gm/xy-to-unit m)
+        actions (set (filter #(some? (second %)) (map #(unit-action! % m) objs)))
+        new-m   (gm/new-map (apply-actions! actions m) tick-health)]
     new-m))
 
 (defn current-winner [m]
