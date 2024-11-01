@@ -116,6 +116,10 @@
              m1)]
     m2))
 
+(defn phase-regeneration [m [xy a]]
+  (when (< (:health a) (:max-health a))
+    {:sender :engine :receiver (:id a) :message {:hp 1}}))
+
 (defn tick-health [objs]
   (reduce-kv #(assoc %1 %2 (on-hp-tick %3)) {} objs))
 
@@ -124,7 +128,7 @@
    :tick        0
    :end-tick    (:max-ticks (:experiment setting))})
 
-(def all-phases [])
+(def all-phases [[:health-counter   phase-regeneration]])
 
 (defn produce-messages [m phases]
   "Run all given phases against ready actors, and return all produced messages."
