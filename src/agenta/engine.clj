@@ -118,7 +118,7 @@
 
 (defn phase-regeneration [m [xy a]]
   (when (< (:health a) (:max-health a))
-    {:sender :engine :receiver (:id a) :message {:hp 1}}))
+    {:receiver (:id a) :message :regen}))
 
 (defn tick-health [objs]
   (reduce-kv #(assoc %1 %2 (on-hp-tick %3)) {} objs))
@@ -139,6 +139,36 @@
                  (filter #(ctr/ready? (get (val %) ctr)))
                  (mapv (partial phase m))
                  (filter some?)))))
+
+; ---
+(comment
+
+(def objs [{:id 0 :health 2 :health-counter [0 5]}
+           {:id 1 :health 5 :health-counter [1 5]}])
+(def msgs [{:receiver 0 :message :regen}])
+(def msg-per-unit (group-by :receiver msgs))
+
+(apply-actor-msgs! objs msg-per-unit)
+
+)
+; ---
+
+(defn apply-msg! [actor* msg]
+  "Apply single message to the single mutaable actor."
+  (case (:message msg)
+    :regen
+    (assoc! actor* :health (inc (:health actor*)))
+    actor*))
+
+(defn apply-actor-msgs! [objs msg-per-unit]
+  "Apply all messages to all actors, returning new actor sequence."
+  (for [actor objs
+        :let [actor-msgs (get msg-per-unit (:id actor))]]
+    (loop [[msg & msgs] actor-msgs
+           actor*       (transient actor)]
+      (if msg
+        (recur msgs (apply-msg! actor* msg))
+        (persistent! actor*)))))
 
 (defn single-step! [m]
   (let [msgs    (produce-messages m all-phases)
