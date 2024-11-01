@@ -133,7 +133,8 @@
             (->> m
                  :objs
                  (filter #(ctr/ready? (get (val %) ctr)))
-                 (mapv (partial phase m))))))
+                 (mapv (partial phase m))
+                 (filter some?)))))
 
 (defn single-step! [m]
   (let [msgs    (produce-messages m all-phases)
