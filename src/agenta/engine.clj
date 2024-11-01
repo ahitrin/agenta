@@ -124,6 +124,8 @@
    :tick        0
    :end-tick    (:max-ticks (:experiment setting))})
 
+(def all-phases [])
+
 (defn produce-messages [m phases]
   "Run all given phases against ready actors, and return all produced messages."
   (reduce concat
@@ -134,9 +136,12 @@
                  (mapv (partial phase m))))))
 
 (defn single-step! [m]
-  (let [objs    (gm/xy-to-unit m)
+  (let [msgs    (produce-messages m all-phases)
+        objs    (gm/xy-to-unit m)
         actions (set (filter #(some? (second %)) (map #(unit-action! % m) objs)))
         new-m   (gm/new-map (apply-actions! actions m) tick-health)]
+    (when (pos? (count msgs))
+      (log/debugf msgs))
     new-m))
 
 (defn current-winner [m]
