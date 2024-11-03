@@ -143,8 +143,8 @@
 ; ---
 (comment
 
-(def objs [{:id 0 :health 2 :health-counter [0 5]}
-           {:id 1 :health 5 :health-counter [1 5]}])
+(def objs {[1 2] {:id 0 :health 2 :health-counter [0 5]}
+           [5 1] {:id 1 :health 5 :health-counter [1 5]}})
 (def msgs [{:receiver 0 :message :regen}])
 (def msg-per-unit (group-by :receiver msgs))
 
@@ -162,19 +162,23 @@
 
 (defn apply-actor-msgs! [objs msg-per-unit]
   "Apply all messages to all actors, returning new actor sequence."
-  (for [actor objs
-        :let [actor-msgs (get msg-per-unit (:id actor))]]
-    (loop [[msg & msgs] actor-msgs
-           actor*       (transient actor)]
-      (if msg
-        (recur msgs (apply-msg! actor* msg))
-        (persistent! actor*)))))
+  (into {}
+    (for [[xy actor] objs
+          :let [actor-msgs (get msg-per-unit (:id actor))]]
+      (loop [[msg & msgs] actor-msgs
+             actor*       (transient actor)]
+        (if msg
+          (recur msgs (apply-msg! actor* msg))
+          {xy (persistent! actor*)})))))
 
 (defn single-step! [m]
-  (let [msgs    (produce-messages m all-phases)
-        objs    (gm/xy-to-unit m)
-        actions (set (filter #(some? (second %)) (map #(unit-action! % m) objs)))
-        new-m   (gm/new-map (apply-actions! actions m) tick-health)]
+  (let [msgs            (produce-messages m all-phases)
+        objs            (gm/xy-to-unit m)
+        actions         (set (filter #(some? (second %)) (map #(unit-action! % m) objs)))
+        m1              (apply-actions! actions m)
+        msg-per-unit    (group-by :receiver msgs)
+        m2              (gm/new-map m1 #(apply-actor-msgs! % msg-per-unit))
+        new-m           (gm/new-map m2 tick-health)]
     (when (pos? (count msgs))
       (log/debugf msgs))
     new-m))
