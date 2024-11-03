@@ -104,17 +104,10 @@
 
 (defn on-hp-tick [m]
   (let [m1 (-> m
-               (update :health-counter ctr/tick)
                (update :speed-counter ctr/tick)
                (update :attack-counter ctr/tick)
-               (update :think-counter ctr/tick))
-        grow (if (< (:health m1) (:max-health m1)) 1 0)
-        m2 (if (ctr/ready? (:health-counter m1))
-             (-> m1
-                 (update :health-counter ctr/reset)
-                 (update :health + grow))
-             m1)]
-    m2))
+               (update :think-counter ctr/tick))]
+    m1))
 
 (defn phase-regeneration [m [xy a]]
   (when (< (:health a) (:max-health a))
@@ -156,6 +149,8 @@
 (defn apply-msg! [actor* msg]
   "Apply single message to the single mutaable actor."
   (case (:message msg)
+    :tick
+    (assoc! actor* :health-counter (ctr/next-val (:health-counter actor*)))
     :regen
     (assoc! actor* :health (inc (:health actor*)))
     actor*))
@@ -164,7 +159,8 @@
   "Apply all messages to all actors, returning new actor sequence."
   (into {}
     (for [[xy actor] objs
-          :let [actor-msgs (get msg-per-unit (:id actor))]]
+          :let [actor-msgs (cons {:receiver (:id actor) :message :tick}
+                                 (get msg-per-unit (:id actor)))]]
       (loop [[msg & msgs] actor-msgs
              actor*       (transient actor)]
         (if msg

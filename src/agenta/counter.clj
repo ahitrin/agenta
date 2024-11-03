@@ -12,3 +12,8 @@
 
 (defn reset [counter]
   (make (second counter) (second counter)))
+
+(defn next-val [counter]
+  (if (ready? counter)
+      (reset counter)
+      (tick counter)))
