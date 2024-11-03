@@ -180,7 +180,7 @@
         m2              (gm/new-map m1 #(apply-actor-msgs! % msg-per-unit))
         new-m           (gm/new-map m2 tick-health)]
     (when (pos? (count msgs))
-      (log/debugf msgs))
+      (log/debugf (str (into [] msgs))))
     new-m))
 
 (defn current-winner [m]
