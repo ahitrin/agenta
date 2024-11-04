@@ -106,6 +106,9 @@
   (-> m
     (update :think-counter ctr/tick)))
 
+(defn phase-tick [m [xy a]]
+  {:receiver (:id a) :message :tick})
+
 (defn phase-regeneration [m [xy a]]
   (when (< (:health a) (:max-health a))
     {:receiver (:id a) :message :regen}))
@@ -118,10 +121,13 @@
    :tick        0
    :end-tick    (:max-ticks (:experiment setting))})
 
-(def all-phases [[:health-counter   phase-regeneration]])
+(def all-phases [[::always          phase-tick]
+                 [:health-counter   phase-regeneration]])
 
 (defn applicable? [phase-key]
-  (fn [[xy actor]] (ctr/ready? (get actor phase-key))))
+  (if (= ::always phase-key)
+      (fn [_]           true)
+      (fn [[xy actor]]  (ctr/ready? (get actor phase-key)))))
 
 (defn produce-messages [m phases]
   "Run all given phases against ready actors, and return all produced messages."
@@ -162,8 +168,7 @@
   "Apply all messages to all actors, returning new actor sequence."
   (into {}
     (for [[xy actor] objs
-          :let [actor-msgs (cons {:receiver (:id actor) :message :tick}
-                                 (get msg-per-unit (:id actor)))]]
+          :let [actor-msgs (get msg-per-unit (:id actor))]]
       (loop [[msg & msgs] actor-msgs
              actor*       (transient actor)]
         (if msg
