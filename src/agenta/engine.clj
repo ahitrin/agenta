@@ -104,8 +104,6 @@
 
 (defn on-tick-old [m]
   (-> m
-    (update :speed-counter ctr/tick)
-    (update :attack-counter ctr/tick)
     (update :think-counter ctr/tick)))
 
 (defn phase-regeneration [m [xy a]]
@@ -149,7 +147,10 @@
   "Apply single message to the single mutaable actor."
   (case (:message msg)
     :tick
-    (assoc! actor* :health-counter (ctr/next-val (:health-counter actor*)))
+    (assoc! actor*
+           :health-counter  (ctr/next-val (:health-counter  actor*))
+           :speed-counter   (ctr/next-val (:speed-counter   actor*))
+           :attack-counter  (ctr/next-val (:attack-counter  actor*)))
     :regen
     (assoc! actor* :health (inc (:health actor*)))
     actor*))
