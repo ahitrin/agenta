@@ -120,13 +120,16 @@
 
 (def all-phases [[:health-counter   phase-regeneration]])
 
+(defn applicable? [phase-key]
+  (fn [[xy actor]] (ctr/ready? (get actor phase-key))))
+
 (defn produce-messages [m phases]
   "Run all given phases against ready actors, and return all produced messages."
   (reduce concat
           (for [[ctr phase] phases]
             (->> m
                  :objs
-                 (filter #(ctr/ready? (get (val %) ctr)))
+                 (filter (applicable? ctr))
                  (mapv (partial phase m))
                  (filter some?)))))
 
