@@ -6,6 +6,11 @@
             [agenta.unit :as u]
             [clojure.tools.logging :as log]))
 
+(defn init-game [setting]
+  {:map         (gm/make-map setting)
+   :tick        0
+   :end-tick    (:max-ticks (:experiment setting))})
+
 (defn choose-enemy [actor enemies]
   (:target (apply (:select-perk actor) actor [(map second enemies)])))
 
@@ -111,11 +116,6 @@
 
 (defn tick-health [objs]
   (reduce-kv #(assoc %1 %2 (update %3 :think-counter ctr/tick)) {} objs))
-
-(defn init-game [setting]
-  {:map         (gm/make-map setting)
-   :tick        0
-   :end-tick    (:max-ticks (:experiment setting))})
 
 (def all-phases [[::always          phase-tick]
                  [:health-counter   phase-regeneration]])
