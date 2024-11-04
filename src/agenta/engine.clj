@@ -102,19 +102,18 @@
 (defn apply-actions! [actions m]
   (reduce apply-action! m actions))
 
-(defn on-hp-tick [m]
-  (let [m1 (-> m
-               (update :speed-counter ctr/tick)
-               (update :attack-counter ctr/tick)
-               (update :think-counter ctr/tick))]
-    m1))
+(defn on-tick-old [m]
+  (-> m
+    (update :speed-counter ctr/tick)
+    (update :attack-counter ctr/tick)
+    (update :think-counter ctr/tick)))
 
 (defn phase-regeneration [m [xy a]]
   (when (< (:health a) (:max-health a))
     {:receiver (:id a) :message :regen}))
 
 (defn tick-health [objs]
-  (reduce-kv #(assoc %1 %2 (on-hp-tick %3)) {} objs))
+  (reduce-kv #(assoc %1 %2 (on-tick-old %3)) {} objs))
 
 (defn init-game [setting]
   {:map         (gm/make-map setting)
