@@ -11,9 +11,11 @@
    :tick        0
    :end-tick    (:max-ticks (:experiment setting))})
 
+; probably, old
 (defn choose-enemy [actor enemies]
   (:target (apply (:select-perk actor) actor [(map second enemies)])))
 
+; old
 (defn act! [xy actor visible-objects]
   (let [enemies         (filter #(not (u/friends? actor (second %))) visible-objects)
         closest-enemies (filter #(m/in-radius? xy (:range actor) (first %)) enemies)]
@@ -44,6 +46,7 @@
         :else
         (apply (:move-perk actor) [xy actor visible-objects])))))
 
+; old
 (defn unit-action! [[xy u] m]
   (let [max-hp (:max-health u)
         new-hp (:health u)]
@@ -55,6 +58,7 @@
         [u1 action xy])
       [u nil xy])))
 
+; old
 (defn perform-attack! [m actor action xy]
   (let [obj (gm/obj-by-id m (:target action))]
     (if (and
@@ -80,6 +84,7 @@
           m))
       m)))
 
+; old
 (defn perform-move [m actor action xy]
   (if (ctr/ready? (:speed-counter actor))
     (let [nx    (+ (:x xy) (int (:dx action)))
@@ -91,10 +96,12 @@
         m))
     m))
 
+; old
 (def action-selector
   {:attack perform-attack!
    :move   perform-move})
 
+; old
 (defn apply-action! [m [actor action xy]]
   (let [obj     (gm/obj-by-id m (:id actor))
         atype   (:type action)]
@@ -104,6 +111,7 @@
       (apply (action-selector atype) [m actor action xy])
       m)))
 
+; old
 (defn apply-actions! [actions m]
   (reduce apply-action! m actions))
 
@@ -114,6 +122,7 @@
   (when (< (:health a) (:max-health a))
     {:receiver (:id a) :message :regen}))
 
+; old
 (defn tick-health [objs]
   (reduce-kv #(assoc %1 %2 (update %3 :think-counter ctr/tick)) {} objs))
 
