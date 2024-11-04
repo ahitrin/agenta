@@ -102,10 +102,6 @@
 (defn apply-actions! [actions m]
   (reduce apply-action! m actions))
 
-(defn on-tick-old [m]
-  (-> m
-    (update :think-counter ctr/tick)))
-
 (defn phase-tick [m [xy a]]
   {:receiver (:id a) :message :tick})
 
@@ -114,7 +110,7 @@
     {:receiver (:id a) :message :regen}))
 
 (defn tick-health [objs]
-  (reduce-kv #(assoc %1 %2 (on-tick-old %3)) {} objs))
+  (reduce-kv #(assoc %1 %2 (update %3 :think-counter ctr/tick)) {} objs))
 
 (defn init-game [setting]
   {:map         (gm/make-map setting)
