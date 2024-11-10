@@ -144,19 +144,6 @@
                  (mapv (partial phase m))
                  (filter some?)))))
 
-; ---
-(comment
-
-(def objs {[1 2] {:id 0 :health 2 :health-counter [0 5]}
-           [5 1] {:id 1 :health 5 :health-counter [1 5]}})
-(def msgs [{:receiver 0 :message :regen}])
-(def msg-per-unit (group-by :receiver msgs))
-
-(apply-actor-msgs! objs msg-per-unit)
-
-)
-; ---
-
 (defn apply-msg! [actor* msg]
   "Apply single message to the single mutable actor."
   (case (:message msg)
