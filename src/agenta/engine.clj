@@ -144,7 +144,7 @@
 ; ---
 
 (defn apply-msg! [actor* msg]
-  "Apply single message to the single mutaable actor."
+  "Apply single message to the single mutable actor."
   (case (:message msg)
     :tick
     (assoc! actor*
