@@ -5,3 +5,4 @@ profiles.clj
 /.nrepl-port
 *.iml
 .clerk
+.DS_Store
