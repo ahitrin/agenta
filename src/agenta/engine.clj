@@ -6,16 +6,9 @@
             [agenta.unit :as u]
             [clojure.tools.logging :as log]))
 
-(defn init-game [setting]
-  {:map         (gm/make-map setting)
-   :tick        0
-   :end-tick    (:max-ticks (:experiment setting))})
-
-; probably, old
 (defn choose-enemy [actor enemies]
   (:target (apply (:select-perk actor) actor [(map second enemies)])))
 
-; old
 (defn act! [xy actor visible-objects]
   (let [enemies         (filter #(not (u/friends? actor (second %))) visible-objects)
         closest-enemies (filter #(m/in-radius? xy (:range actor) (first %)) enemies)]
@@ -46,7 +39,6 @@
         :else
         (apply (:move-perk actor) [xy actor visible-objects])))))
 
-; old
 (defn unit-action! [[xy u] m]
   (let [max-hp (:max-health u)
         new-hp (:health u)]
@@ -58,7 +50,6 @@
         [u1 action xy])
       [u nil xy])))
 
-; old
 (defn perform-attack! [m actor action xy]
   (let [obj (gm/obj-by-id m (:target action))]
     (if (and
@@ -84,7 +75,6 @@
           m))
       m)))
 
-; old
 (defn perform-move [m actor action xy]
   (if (ctr/ready? (:speed-counter actor))
     (let [nx    (+ (:x xy) (int (:dx action)))
@@ -96,12 +86,10 @@
         m))
     m))
 
-; old
 (def action-selector
   {:attack perform-attack!
    :move   perform-move})
 
-; old
 (defn apply-action! [m [actor action xy]]
   (let [obj     (gm/obj-by-id m (:id actor))
         atype   (:type action)]
@@ -111,73 +99,36 @@
       (apply (action-selector atype) [m actor action xy])
       m)))
 
-; old
 (defn apply-actions! [actions m]
   (reduce apply-action! m actions))
 
-(defn phase-tick [m [xy a]]
-  {:receiver (:id a) :message :tick})
+(defn on-hp-tick [m]
+  (let [m1 (-> m
+               (update :health-counter ctr/tick)
+               (update :speed-counter ctr/tick)
+               (update :attack-counter ctr/tick)
+               (update :think-counter ctr/tick))
+        grow (if (< (:health m1) (:max-health m1)) 1 0)
+        m2 (if (ctr/ready? (:health-counter m1))
+             (-> m1
+                 (update :health-counter ctr/reset)
+                 (update :health + grow))
+             m1)]
+    m2))
 
-(defn phase-regeneration [m [xy a]]
-  (when (< (:health a) (:max-health a))
-    {:receiver (:id a) :message :regen}))
-
-; old
 (defn tick-health [objs]
-  (reduce-kv #(assoc %1 %2 (update %3 :think-counter ctr/tick)) {} objs))
+  (reduce-kv #(assoc %1 %2 (on-hp-tick %3)) {} objs))
 
-(def all-phases [[::always          phase-tick]
-                 [:health-counter   phase-regeneration]])
-
-(defn applicable? [phase-key]
-  (if (= ::always phase-key)
-      (fn [_]           true)
-      (fn [[xy actor]]  (ctr/ready? (get actor phase-key)))))
-
-(defn produce-messages [m phases]
-  "Run all given phases against ready actors, and return all produced messages."
-  (reduce concat
-          (for [[ctr phase] phases]
-            (->> m
-                 :objs
-                 (filter (applicable? ctr))
-                 (mapv (partial phase m))
-                 (filter some?)))))
-
-(defn apply-msg! [actor* msg]
-  "Apply single message to the single mutable actor."
-  (case (:message msg)
-    :tick
-    (assoc! actor*
-           :health-counter  (ctr/next-val (:health-counter  actor*))
-           :speed-counter   (ctr/next-val (:speed-counter   actor*))
-           :attack-counter  (ctr/next-val (:attack-counter  actor*)))
-    :regen
-    (assoc! actor* :health (inc (:health actor*)))
-    actor*))
-
-(defn apply-actor-msgs! [objs msg-per-unit]
-  "Apply all messages to all actors, returning new actor sequence."
-  (into {}
-    (for [[xy actor] objs
-          :let [actor-msgs (get msg-per-unit (:id actor))]]
-      (loop [[msg & msgs] actor-msgs
-             actor*       (transient actor)]
-        (if msg
-          (recur msgs (apply-msg! actor* msg))
-          {xy (persistent! actor*)})))))
+(defn init-game [setting]
+  {:map         (gm/make-map setting)
+   :tick        0
+   :end-tick    (:max-ticks (:experiment setting))})
 
 (defn single-step! [m]
-  (let [msgs            (produce-messages m all-phases)
-        objs            (gm/xy-to-unit m)
-        actions         (set (filter #(some? (second %)) (map #(unit-action! % m) objs)))
-        m1              (apply-actions! actions m)
-        msg-per-unit    (group-by :receiver msgs)
-        m2              (gm/new-map m1 #(apply-actor-msgs! % msg-per-unit))
-        new-m           (gm/new-map m2 tick-health)]
-    (comment
-      (when (pos? (count msgs))
-        (log/debugf (str (into [] msgs)))))
+  (let [m1      (gm/new-map m tick-health)
+        objs    (gm/xy-to-unit m1)
+        actions (set (filter #(some? (second %)) (map #(unit-action! % m1) objs)))
+        new-m   (apply-actions! actions m1)]
     new-m))
 
 (defn current-winner [m]
