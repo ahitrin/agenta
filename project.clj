@@ -8,7 +8,7 @@
                  [cljfx "1.7.24"]
                  [com.github.javafaker/javafaker "1.0.2"]
                  [ch.qos.logback/logback-classic "1.1.2"]]
-  :profiles {:dev {:plugins [[dev.weavejester/lein-cljfmt "0.11.2"]]
+  :profiles {:dev {:plugins [[dev.weavejester/lein-cljfmt "0.16.5"]]
                    :dependencies [[com.clojure-goes-fast/clj-async-profiler "1.0.5"]]}}
   :java-source-paths ["src/main/java"
                       "src/test/java"]
