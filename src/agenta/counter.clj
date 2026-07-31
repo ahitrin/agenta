@@ -1,14 +1,17 @@
-(ns agenta.counter)
+(ns agenta.counter
+  (:import [agenta.domain Counter]))
 
 (defn make
   ([max_value] (make max_value max_value))
-  ([init_value max_value] [init_value max_value]))
+  ([init_value max_value] (Counter. init_value max_value)))
 
 (defn ready? [counter]
-  (zero? (first counter)))
+  (.isReady counter))
 
 (defn tick [counter]
-  (make (max (dec (first counter)) 0) (second counter)))
+  (.tick counter)
+  counter)
 
 (defn reset [counter]
-  (make (second counter) (second counter)))
+  (.reset counter)
+  counter)
