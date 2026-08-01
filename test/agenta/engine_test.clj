@@ -19,7 +19,7 @@
                          :think-counter (make 3 5)
                          :health 10
                          :max-health 10}}]
-      (is (= target (tick-health objs)))))
+      (is (= target (tick-health! objs)))))
   (testing "counter that reaches zero should be reset after tick"
     (let [objs {[1 1] {:name "Barry"
                        :health-counter (make 1 5)
@@ -35,4 +35,4 @@
                          :think-counter (make 0 5)
                          :health 10
                          :max-health 10}}]
-      (is (= target (tick-health objs))))))
+      (is (= target (tick-health! objs))))))

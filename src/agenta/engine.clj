@@ -76,7 +76,7 @@
           m))
       m)))
 
-(defn perform-move [m actor action xy]
+(defn perform-move! [m actor action xy]
   (if (ctr/ready? (:speed-counter actor))
     (let [nx    (+ (:x xy) (int (:dx action)))
           ny    (+ (:y xy) (int (:dy action)))
@@ -90,7 +90,7 @@
 
 (def action-selector
   {:attack perform-attack!
-   :move   perform-move})
+   :move   perform-move!})
 
 (defn apply-action! [m [actor action xy]]
   (let [obj     (gm/obj-by-id m (:id actor))
@@ -104,7 +104,7 @@
 (defn apply-actions! [actions m]
   (reduce apply-action! m actions))
 
-(defn on-hp-tick [m]
+(defn on-hp-tick! [m]
   (mapv ctr/tick! [(:health-counter m)
                    (:speed-counter m)
                    (:attack-counter m)
@@ -116,8 +116,8 @@
         (update m :health + grow))
       m)))
 
-(defn tick-health [objs]
-  (reduce-kv #(assoc %1 %2 (on-hp-tick %3)) {} objs))
+(defn tick-health! [objs]
+  (reduce-kv #(assoc %1 %2 (on-hp-tick! %3)) {} objs))
 
 (defn init-game [setting]
   {:map         (gm/make-map setting)
@@ -125,7 +125,7 @@
    :end-tick    (:max-ticks (:experiment setting))})
 
 (defn single-step! [m]
-  (let [m1      (gm/new-map m tick-health)
+  (let [m1      (gm/new-map m tick-health!)
         objs    (gm/xy-to-unit m1)
         actions (set (filter #(some? (second %)) (map #(unit-action! % m1) objs)))
         new-m   (apply-actions! actions m1)]
