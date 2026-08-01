@@ -8,9 +8,8 @@
 (defn ready? [counter]
   (.isReady counter))
 
-(defn tick [counter]
-  (.tick counter)
-  counter)
+(defn tick! [counter]
+  (.tick counter))
 
 (defn reset [counter]
   (.reset counter)

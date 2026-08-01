@@ -103,18 +103,16 @@
   (reduce apply-action! m actions))
 
 (defn on-hp-tick [m]
-  (let [m1 (-> m
-               (update :health-counter ctr/tick)
-               (update :speed-counter ctr/tick)
-               (update :attack-counter ctr/tick)
-               (update :think-counter ctr/tick))
-        grow (if (< (:health m1) (:max-health m1)) 1 0)
-        m2 (if (ctr/ready? (:health-counter m1))
-             (-> m1
-                 (update :health-counter ctr/reset)
-                 (update :health + grow))
-             m1)]
-    m2))
+  (mapv ctr/tick! [(:health-counter m)
+                   (:speed-counter m)
+                   (:attack-counter m)
+                   (:think-counter m)])
+  (let [grow (if (< (:health m) (:max-health m)) 1 0)]
+    (if (ctr/ready? (:health-counter m))
+      (-> m
+          (update :health-counter ctr/reset)
+          (update :health + grow))
+      m)))
 
 (defn tick-health [objs]
   (reduce-kv #(assoc %1 %2 (on-hp-tick %3)) {} objs))
