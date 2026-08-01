@@ -43,9 +43,10 @@
   (let [max-hp (:max-health u)
         new-hp (:health u)]
     (if (ctr/ready? (:think-counter u))
-      (let [u1              (u/update-state (update u :think-counter ctr/reset) new-hp max-hp)
+      (let [u1              (u/update-state u new-hp max-hp)
             visible-objects (gm/objects-in-radius m (:id u) (:visibility u))
             action          (act! xy u1 visible-objects)]
+        (ctr/c-reset! (:think-counter u1))
         (log/debugf "%s wants %s" (u/pretty u1) action)
         [u1 action xy])
       [u nil xy])))
@@ -61,17 +62,17 @@
             hp          (:health u)
             new-hp      (- hp damage)]
         (if (and (pos? damage) (pos? hp))
-          (let [m1 (gm/new-map m #(update-in % [xy :attack-counter] ctr/reset))
-                m2 (gm/new-map m1 #(assoc-in % [target-xy :health] new-hp))
+          (let [m1 (gm/new-map m #(assoc-in % [target-xy :health] new-hp))
                 u1 (assoc-in u [:health] new-hp)]
+            (ctr/c-reset! (:attack-counter actor))
             (log/debugf "%s strikes %s with %d" (u/pretty actor) (u/pretty u) damage)
             (if-not (pos-int? new-hp)
               (do
                 (log/debugf "%s is dead" (u/pretty u1))
-                (-> m2
+                (-> m1
                     (gm/new-map #(update-in % [xy :kills] inc))
                     (gm/new-map #(dissoc % target-xy))))
-              m2))
+              m1))
           m))
       m)))
 
@@ -81,8 +82,9 @@
           ny    (+ (:y xy) (int (:dy action)))
           xy'   (m/xy nx ny)]
       (if (gm/can-place? m xy')
-        (let [actor1 (update actor :speed-counter ctr/reset)]
-          (gm/new-map m #(assoc (dissoc % xy) xy' actor1)))
+        (do
+          (ctr/c-reset! (:speed-counter actor))
+          (gm/new-map m #(assoc (dissoc % xy) xy' actor)))
         m))
     m))
 
@@ -109,9 +111,9 @@
                    (:think-counter m)])
   (let [grow (if (< (:health m) (:max-health m)) 1 0)]
     (if (ctr/ready? (:health-counter m))
-      (-> m
-          (update :health-counter ctr/reset)
-          (update :health + grow))
+      (do
+        (ctr/c-reset! (:health-counter m))
+        (update m :health + grow))
       m)))
 
 (defn tick-health [objs]

@@ -11,6 +11,5 @@
 (defn tick! [counter]
   (.tick counter))
 
-(defn reset [counter]
-  (.reset counter)
-  counter)
+(defn c-reset! [counter]
+  (.reset counter))
