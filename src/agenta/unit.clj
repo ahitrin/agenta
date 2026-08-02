@@ -11,7 +11,7 @@
    :max-health     (:max-health unit-type)
    :visibility     (:visibility unit-type)
    :base-attack    (:base-attack unit-type)
-   :rnd-attack     (:randAttack unit-type)
+   :rnd-attack     (:rnd-attack unit-type)
    :range          (:range unit-type)
    :select-perk    (resolve (.get (:perk unit-type) :select))
    :move-perk      (resolve (.get (:perk unit-type) :move))

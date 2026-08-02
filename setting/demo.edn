@@ -8,7 +8,7 @@
  :unit-types  [
                {:name        "Footman"
                 :base-attack 5
-                :randAttack  6
+                :rnd-attack  6
                 :range       1.45
                 :attackSpeed 25
                 :visibility  7
@@ -22,7 +22,7 @@
                               }}
                {:name        "Archer"
                 :base-attack 3
-                :randAttack  5
+                :rnd-attack  5
                 :range       5.5
                 :attackSpeed 40
                 :visibility  7
@@ -36,7 +36,7 @@
                               }}
                {:name        "Knight"
                 :base-attack 9
-                :randAttack  7
+                :rnd-attack  7
                 :range       1.45
                 :attackSpeed 40
                 :visibility  7
